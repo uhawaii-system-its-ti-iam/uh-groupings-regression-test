@@ -51,8 +51,8 @@ public class AdminPageManageGroupingsTabTest {
         $x(rowOneDescription).shouldBe(text("Hello"));
         $x(rowOneGroupingName).shouldBe(text("win-single"));
         $x(sortByDescription).click();
-        $x(rowOneDescription).shouldBe(text("West Oahu employees able to view restricted HR content via VPA Intranet"));
-        $x(rowOneGroupingName).shouldBe(text("hr-content-authorized-uhwo"));
+        $x(rowOneDescription).shouldBe(text("Windows users test groupings 0000000000 1111111111 2222222222 3333333333 4444444444 maxlen testing"));
+        $x(rowOneGroupingName).shouldBe(text("win-aux"));
 
 
         $x(sortByGroupingName).click();
@@ -83,7 +83,7 @@ public class AdminPageManageGroupingsTabTest {
         open(admin.baseURL + "/admin");
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, admin.timeout);
         String newDesc = admin.username + ": Test Description";
-        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > input").setValue(admin.username + "-aux");
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > input").setValue(admin.username + "-aux");
         String oldDesc = $("#manage-groupings > div.table-responsive > table > tbody > tr > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.col-auto > div").getText();
 
         $("#manage-groupings > div.table-responsive > table > tbody > tr > td.w-35.p-10.clickable.align-middle.ng-binding").click();
@@ -96,7 +96,7 @@ public class AdminPageManageGroupingsTabTest {
 
         open(admin.baseURL + "admin");
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, admin.timeout);
-        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > input").setValue(admin.username + "-aux");
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > input").setValue(admin.username + "-aux");
         $("#manage-groupings > div.table-responsive > table > tbody > tr > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.col-auto > div").shouldHave(text(newDesc));
 
         $("#manage-groupings > div.table-responsive > table > tbody > tr > td.w-35.p-10.clickable.align-middle.ng-binding").click();
@@ -145,13 +145,13 @@ public class AdminPageManageGroupingsTabTest {
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, admin.timeout);
         $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldNotBe(visible);
         $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.col-auto > div").shouldBe(visible);
-        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > div > button").click();
-        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > div > ul").shouldBe(visible);
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > button").click();
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > ul").shouldBe(visible);
         $(byText("Show Grouping Path")).click();
         $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(and("Visible and text", visible, text("Grouping Path")));
         $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(2)").shouldNotBe(visible);
         $("#hawaii\\.edu\\:custom\\:test\\:listserv-tests\\:JTTEST-L").shouldBe(visible);
-        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > div > button").click();
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > button").click();
         $(byText("Show All")).click();
         $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(2)").shouldBe(and("Is visible with text", visible, text("Description")));
         $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(text("Grouping Path"));
