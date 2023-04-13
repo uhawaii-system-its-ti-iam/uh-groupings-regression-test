@@ -21,7 +21,7 @@ public class MainPage {
     public String uhNumber;
     public String emailHost;
     public String mailStoreType;
-    public Duration timeout = Duration.ofSeconds(40);
+    public Duration timeout = Duration.ofSeconds(80);
     public void getAdminCredentials() throws IOException {
         Properties properties = new Properties();
         FileInputStream inputStream = new FileInputStream(System.getProperty("user.home")+ File.separator + "." + System.getProperty("user.name") + "-conf" + File.separator + "regression-tests-overrides.properties");

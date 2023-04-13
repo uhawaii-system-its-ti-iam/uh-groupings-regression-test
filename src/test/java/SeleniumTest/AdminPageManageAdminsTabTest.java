@@ -12,6 +12,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static com.codeborne.selenide.Condition.*;
@@ -50,77 +54,105 @@ public class AdminPageManageAdminsTabTest {
     @RegisterExtension
     public static ScreenShooterExtension screenShooterExtension = new ScreenShooterExtension().to("target/screenshots");
     @Test
-    public void filterAdminsSort(){
-        String rowOneAdminName = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[1]";
-        String rowOneUHNumber = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[2]";
-        String rowOneUHUsername = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[3]";
-        String sortByAdminName = "//*[@id=\"manage-admins\"]/div[2]/table/thead/tr/th[1]";
-        String sortByUHNumber = "//*[@id=\"manage-admins\"]/div[2]/table/thead/tr/th[2]";
-        String sortByUHUsername = "//*[@id=\"manage-admins\"]/div[2]/table/thead/tr/th[3]";
+    public void filterAdminsSort() {
+        ArrayList<String> adminList = new ArrayList<>();
+        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1)").doubleClick();
+        while (true) {
+            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
+            if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
+                break;
+            }
+            $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+        }
+        ArrayList<String> tempNameList = new ArrayList<String>(adminList);
+        tempNameList.sort(String::compareToIgnoreCase);
+        assertEquals(adminList, tempNameList);
+        adminList.clear();
 
-        int numTableRows = ($("tbody").findAll("tr").size());
-
-        //$x(sortByAdminName).click();
-//        $x(rowOneUHUsername).shouldBe(text("N/A"));
-//        $x(rowOneAdminName).shouldBe(empty);
-//        $x(rowOneUHNumber).shouldBe(text("26526604"));
-        for(int i = 1; i <= numTableRows - 1; i++) {
-            String xPath = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + i + "]/td[1]";
-            String xPath2 = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + (i + 1) + "]/td[1]";
-            assertTrue($x(xPath).getText().compareTo($x(xPath2).getText()) <= 0);
+        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
         }
-
-        $x(sortByAdminName).click();
-        $x(rowOneAdminName).shouldBe(text("Zachary T Gilbert"));
-        $x(rowOneUHNumber).shouldBe(text("17118183"));
-        $x(rowOneUHUsername).shouldBe(text("gilbertz"));
-        for(int i = 1; i <= 19; i++) {
-            String xPath = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + i + "]/td[1]";
-            String xPath2 = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + (i + 1) + "]/td[1]";
-            System.out.println($x(xPath).getText());
-            System.out.println($x(xPath2).getText());
-            assertTrue($x(xPath).getText().compareTo($x(xPath2).getText()) >= 0);
+        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1)").click();
+        while (true) {
+            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
+            if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
+                break;
+            }
+            $$(byText("Next")).filterBy(visible).first().parent().parent().click();
         }
+        Collections.reverse(tempNameList);
+        System.out.println(tempNameList);
+        assertEquals(tempNameList, adminList);
 
-        $x(sortByUHNumber).click();
-        $x(rowOneAdminName).shouldBe(text("Mitchell K Ochi"));
-        $x(rowOneUHNumber).shouldBe(text("10190024"));
-        $x(rowOneUHUsername).shouldBe(text("ochi"));
-        for(int i = 1; i <= 19; i++) {
-            String xPath = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + i + "]/td[2]";
-            String xPath2 = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + (i + 1) + "]/td[2]";
-            assertTrue($x(xPath).getText().compareTo($x(xPath2).getText()) <= 0);
+        adminList.clear();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
         }
-        $x(sortByUHNumber).click();
-        $x(rowOneAdminName).shouldBe(text("Luke F Pagtulingan"));
-        $x(rowOneUHNumber).shouldBe(text("27789205"));
-        $x(rowOneUHUsername).shouldBe(text("lukepag"));
-        for(int i = 1; i <= 19; i++) {
-            String xPath = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + i + "]/td[2]";
-            String xPath2 = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + (i + 1) + "]/td[2]";
-            assertTrue($x(xPath).getText().compareTo($x(xPath2).getText()) >= 0);
+        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
+        while (true) {
+            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
+            if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
+                break;
+            }
+            $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+        }
+        ArrayList<String> tempNumberList = new ArrayList<String>(adminList);
+        tempNumberList.sort(String::compareToIgnoreCase);
+        assertEquals(tempNumberList, adminList);
+
+        adminList.clear();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
         }
 
-        $x(sortByUHUsername).click();
-//        $x(rowOneAdminName).shouldBe(empty);
-//        $x(rowOneUHNumber).shouldBe(text("26526604"));
-//        $x(rowOneUHUsername).shouldBe(text("N/A"));
-        for(int i = 1; i <= 19; i++) {
-            String xPath = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + i + "]/td[3]";
-            String xPath2 = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + (i + 1) + "]/td[3]";
-            assertTrue($x(xPath).getText().compareTo($x(xPath2).getText()) <= 0);
+        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
+        while (true) {
+            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
+            if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
+                break;
+            }
+            $$(byText("Next")).filterBy(visible).first().parent().parent().click();
         }
-        $x(sortByUHUsername).click();
-        $x(rowOneAdminName).shouldBe(text("Victor H Lee"));
-        $x(rowOneUHNumber).shouldBe(text("10222954"));
-        $x(rowOneUHUsername).shouldBe(text("vhlee"));
-        for(int i = 1; i <= 19; i++) {
-            String xPath = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + i + "]/td[3]";
-            String xPath2 = "//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[" + (i + 1) + "]/td[3]";
-            assertTrue($x(xPath).getText().compareTo($x(xPath2).getText()) >= 0);
+        Collections.reverse(tempNumberList);
+        assertEquals(tempNumberList, adminList);
+
+
+        adminList.clear();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
         }
-        $("input[title=\"Filter Admins\"]").setValue(admin.username);
-        $("#manage-admins > div.table-responsive-sm > table > tbody > tr").shouldHave(and("Row should contain username uh number and name", text(admin.username), text(admin.firstName)));
+        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
+        while (true) {
+            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
+            if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
+                break;
+            }
+            $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+        }
+        ArrayList<String> tempUsernameList = new ArrayList<String>(adminList);
+        tempUsernameList.sort(String::compareToIgnoreCase);
+        assertEquals(tempUsernameList, adminList);
+
+        adminList.clear();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        }
+
+        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
+        while (true) {
+            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
+            if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
+                break;
+            }
+            $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+        }
+        Collections.reverse(tempUsernameList);
+        assertEquals(tempUsernameList, adminList);
+
+        System.out.println(adminList);
+
+        $("#manage-admins > div.row.m-auto.pt-3.pb-3.d-flex > div.col-lg-3.col-md-4.col-12.p-0.pt-1 > input").setValue(admin.username);
+        $("#manage-admins > div.table-responsive-sm > table > tbody > tr").shouldHave(text(admin.username));
     }
 
     @Test
@@ -172,11 +204,14 @@ public class AdminPageManageAdminsTabTest {
     @Test
     public void autoLogoutTest() {
         $("input[name=\"Add Admin\"]").setValue(user.username).pressEnter();
-        $(byText("Yes")).click();
-        $(byText("Testf-iwt-a TestIAM-staff has been successfully added to the admins list.")).should(appear);
-        $(byText("OK")).click();
+        $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div").should(appear);
+        $("#modal-body > table > tbody").shouldHave(text(user.username));
+        $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
+        $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div").should(appear);
+        $("#modal-body").shouldHave(text(user.firstName));
+        $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button").click();
         $x("//*[@id=\"overlay\"]/div").should(disappear, admin.timeout);
-        SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl(user.baseURL));
+        SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().headless(false).baseUrl(user.baseURL));
         browser1.open("/");
         user.loggingInNoDuoAuth(browser1);
         browser1.open("/admin");

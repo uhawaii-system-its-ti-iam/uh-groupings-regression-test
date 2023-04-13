@@ -82,9 +82,9 @@ public class ManageGroupingsTest {
                 break;
             }
         }
+        System.out.println(ownedGroupings);
         ownedGroupings.forEach(e -> {
-            $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.d-sm-flex > input").setValue(
-                    e);
+            $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.d-sm-flex > input").setValue(e);
             $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").click();
             $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
             $("#group-pills > li:nth-child(5) > a").click();
