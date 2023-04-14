@@ -83,6 +83,7 @@ public class ManageGroupingsTest {
             }
         }
         System.out.println(ownedGroupings);
+        // Adds admin user as owner to each of test groupings. Removes test account from owners for each test grouping.
         ownedGroupings.forEach(e -> {
             $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.d-sm-flex > input").setValue(e);
             $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").click();
@@ -109,21 +110,21 @@ public class ManageGroupingsTest {
         closeWebDriver();
         admin.loggingIn();
         open(admin.baseURL + "groupings");
-
+        // Cleanup: Adds test user back to testgroupings and removes admin
         ownedGroupings.forEach(e -> {
             $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.d-sm-flex > input").setValue(e);
-            $("#manage-groupings > div.table-responsive > table > tbody > tr > td.w-35.p-10.align-middle.ng-binding").click();
+            $(byText(e)).click();
             $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
             $("#group-pills > li:nth-child(5) > a").click();
             $("#owner-input").setValue(user.username).pressEnter();
             $("#modal-body > table > tbody").shouldHave(text(user.username));
             $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
             $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div").shouldBe(visible);
-            $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button").click();
+            $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button").click(); // cancels adding user back
             $("#owner-input").setValue(admin.uhNumber);
             $("#owners-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memBtns > button.btn.btn-remove.add-margin").click();
             $("#modal-body > table > tbody").shouldHave(text(admin.username));
-            $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
+            $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click(); // removes admin from each grouping
             $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
         });
 
