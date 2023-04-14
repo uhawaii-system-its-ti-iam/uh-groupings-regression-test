@@ -36,7 +36,6 @@ public class AdminPageManageAdminsTabTest {
             System.out.println("not found");
         }
         Configuration.browserSize = "1280x800";
-//        Configuration.browser = "safari";
         SelenideLogger.addListener("allure", new AllureSelenide());
         admin.loggingIn();
     }
@@ -56,7 +55,7 @@ public class AdminPageManageAdminsTabTest {
     @Test
     public void filterAdminsSort() {
         ArrayList<String> adminList = new ArrayList<>();
-        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1)").doubleClick();
+        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1) > i").doubleClick();
         while (true) {
             adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
