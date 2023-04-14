@@ -71,9 +71,9 @@ public class AdminPageManageGroupingsTabTest {
 
     @Test
     public void groupingNameTest() {
-        String nameInTable = $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.clickable.align-middle.ng-binding").getText();
-        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.clickable.align-middle.ng-binding").click();
-        assertEquals(0, nameInTable.compareTo($("#groupNameCol > h2").getText()));
+        String nameInTable = $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").getText().trim();
+        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").click();
+        assertEquals(0, nameInTable.compareTo($("#groupNameCol > h2").getText().trim()));
     }
 
     @Test
@@ -119,6 +119,7 @@ public class AdminPageManageGroupingsTabTest {
         $x("//*[@id=\"hawaii.edu:custom:test:awy:awy-test\"]").shouldBe(visible);
 
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr/td[3]/form/div/div/button/i").click();
+
         System.out.println(clipboard().getText());
         assertEquals("hawaii.edu:custom:test:awy:awy-test", clipboard().getText());
     }
