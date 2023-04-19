@@ -40,7 +40,7 @@ public class GroupingSelectionTest {
         Configuration.browserSize = "1280x800";
         Configuration.headless = false;
 //        Configuration.proxyEnabled = true;
-//        Configuration.browser = "firefox";
+//        Configuration.browser = "safari";
         Configuration.fileDownload = FileDownloadMode.FOLDER;
         Configuration.downloadsFolder = System.getProperty("user.dir") + File.separator + "downloadFile";
         SelenideLogger.addListener("allure", new AllureSelenide());
@@ -103,7 +103,11 @@ public class GroupingSelectionTest {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            assertEquals("testiwta-many_members_list.csv", downloadedFile.getName(), "File name does not match");
+            if (!Configuration.browser.equals("firefox")) {
+                assertEquals("testiwta-many_members_list.csv", downloadedFile.getName(), "File name does not match");
+            } else {
+                assertEquals("testiwta-many members_list.csv", downloadedFile.getName(), "File name does not match");
+            }
         } catch (FileNotFoundException e) {
             System.out.println("Could download file to path");
             throw new RuntimeException(e);
@@ -134,7 +138,11 @@ public class GroupingSelectionTest {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            assertEquals("testiwta-many_basis_list.csv", downloadedFile.getName(), "File name does not match");
+            if (!Configuration.browser.equals("firefox")) {
+                assertEquals("testiwta-many_basis_list.csv", downloadedFile.getName(), "File name does not match");
+            } else {
+                assertEquals("testiwta-many basis_list.csv", downloadedFile.getName(), "File name does not match");
+            }
         } catch (FileNotFoundException e) {
             System.out.println("Could download file to path");
             throw new RuntimeException(e);
