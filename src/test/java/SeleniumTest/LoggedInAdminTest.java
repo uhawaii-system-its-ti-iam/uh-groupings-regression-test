@@ -98,7 +98,7 @@ public class LoggedInAdminTest {
             String path = downloadedFile.getPath();
             InputStream downloadedPDF = Files.newInputStream(Paths.get(path));
             String downloadedHash = DigestUtils.sha1Hex(downloadedPDF);
-            InputStream expectedPDF = Files.newInputStream(Paths.get(System.getProperty("user.dir") + File.separator + "ep2.210.pdf"));
+            InputStream expectedPDF = Files.newInputStream(Paths.get(path));
             String expectedHash = DigestUtils.sha1Hex(expectedPDF);
             assertEquals(expectedHash, downloadedHash);
             FileUtils.deleteDirectory(new File(System.getProperty("user.dir") + File.separator + "downloadFile"));
@@ -133,19 +133,19 @@ public class LoggedInAdminTest {
 
     @Test
     public void adminButton() {
-        $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/a").click();
+        $("#navbarSupportedContent > ul > li:nth-child(1) > a").click();
         webdriver().shouldHave(url(admin.baseURL + "admin"));
     }
 
     @Test
     public void membershipsButton() {
-        $x("/html/body/main/div[2]/div[2]/div/div[2]/div[2]/a").click();
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[2]/a").click();
         webdriver().shouldHave(url(admin.baseURL + "memberships"));
     }
 
     @Test
     public void groupingsButton() {
-        $x("/html/body/main/div[2]/div[2]/div/div[3]/div[2]/a").click();
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[3]/a").click();
         webdriver().shouldHave(url(admin.baseURL + "groupings"));
     }
 

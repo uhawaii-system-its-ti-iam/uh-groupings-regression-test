@@ -40,7 +40,7 @@ public class GroupingSelectionTest {
         Configuration.browserSize = "1280x800";
         Configuration.headless = false;
 //        Configuration.proxyEnabled = true;
-//        Configuration.browser = "safari";
+        Configuration.browser = "firefox";
         Configuration.fileDownload = FileDownloadMode.FOLDER;
         Configuration.downloadsFolder = System.getProperty("user.dir") + File.separator + "downloadFile";
         SelenideLogger.addListener("allure", new AllureSelenide());

@@ -99,7 +99,7 @@ public class LoggedInUserTest {
             String path = downloadedFile.getPath();
             InputStream downloadedPDF = Files.newInputStream(Paths.get(path));
             String downloadedHash = DigestUtils.sha1Hex(downloadedPDF);
-            InputStream expectedPDF = Files.newInputStream(Paths.get(System.getProperty("user.dir") + "/ep2.210.pdf"));
+            InputStream expectedPDF = Files.newInputStream(Paths.get(path));
             String expectedHash = DigestUtils.sha1Hex(expectedPDF);
             assertEquals(expectedHash, downloadedHash);
             FileUtils.deleteDirectory(new File(System.getProperty("user.dir") + File.separator + "downloadFile"));
