@@ -65,8 +65,8 @@ public class MembershipsPageCurrentMembershipsTabTest {
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/div/ul/li[3]/label/input").click();
         $(byText("Show All")).click();
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue(user.username);
-        $x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr/td[3]/form/div/div/button").click();
-        assertEquals(clipboard().getText(), "tmp:testiwta:testiwta-single");
+        $("#current-memberships > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(2) > td:nth-child(3) > form > div > div > button").click();
+       assertEquals(clipboard().getText(), "tmp:testiwta:testiwta-single");
     }
 
     @Test

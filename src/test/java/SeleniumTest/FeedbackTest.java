@@ -52,6 +52,7 @@ public class FeedbackTest {
         $("option[value=general]").shouldBe(selected);
         String email = $("input[id=input-email]").getAttribute("value");
         assertEquals(user.username + "@hawaii.edu", email);
+        $("#input-name").setValue(user.username);
         $("textarea[id=input-feedback]").setValue(content);
         $(byText("Submit")).click();
         $(byText("Your feedback has successfully been submitted.")).should(exist);
@@ -66,6 +67,7 @@ public class FeedbackTest {
         $("option[value=problem]").shouldBe(selected);
         String email = $("input[id=input-email]").getAttribute("value");
         assertEquals(user.username + "@hawaii.edu", email);
+        $("#input-name").setValue(user.username);
         $("textarea[id=input-feedback]").setValue(content);
         $(byText("Submit")).click();
         $(byText("Your feedback has successfully been submitted.")).should(exist);
@@ -80,6 +82,7 @@ public class FeedbackTest {
         $("option[value=feature]").shouldBe(selected);
         String email = $("input[id=input-email]").getAttribute("value");
         assertEquals(user.username + "@hawaii.edu", email);
+        $("#input-name").setValue(user.username);
         $("textarea[id=input-feedback]").setValue("Feature feedback test");
         $(byText("Submit")).click();
         $(byText("Your feedback has successfully been submitted.")).should(exist);
@@ -94,6 +97,7 @@ public class FeedbackTest {
         $("option[value=question]").shouldBe(selected);
         String email = $("input[id=input-email]").getAttribute("value");
         assertEquals(user.username + "@hawaii.edu", email);
+        $("#input-name").setValue(user.username);
         $("textarea[id=input-feedback]").setValue(content);
         $(byText("Submit")).click();
         $(byText("Your feedback has successfully been submitted.")).should(exist);
