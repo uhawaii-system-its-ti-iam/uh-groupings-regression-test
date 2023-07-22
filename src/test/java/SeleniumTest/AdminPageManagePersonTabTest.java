@@ -130,9 +130,16 @@ public class AdminPageManagePersonTabTest {
         $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.inExclude')]/p").forEach(row -> row.shouldHave(or("Yes or No", text("Yes"), text("No"))));
     }
     @Test
-    public void removeCheckbox() {
+    public void removeCheckbox() { //Cancel from within the Remove modal
         searchPerson();
         $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div/label/input").forEach(checkbox -> checkbox.shouldBe(visible));
+        $("#manage-person > div.row.m-auto.pt-3.pb-3.d-flex > div:nth-child(2) > input").setValue("JTTEST-L");
+        $x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr[1]/td[6]/div/label/input").click();
+        $("#manage-person > div.row.m-auto.pt-3.pb-3.d-flex > div:nth-child(4) > form > div > div > button").click();
+        $(byText("Are you sure you want to remove")).parent().shouldHave(and("name of user and name of grouping", text(user.firstName), text("JTTEST-L")));
+        $(byText("Cancel")).click();
+        $("#manage-person > div.table-responsive-sm > table > tbody > tr:nth-child(1) > td.p-10.ng-binding").shouldHave(text("JTTEST-L"));
+        $("#manage-person > div.table-responsive-sm > table > tbody > tr:nth-child(1) > td:nth-child(6) > div > label > input").shouldBe(not(selected));
     }
 
     //@Test

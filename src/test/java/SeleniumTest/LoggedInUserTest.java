@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LoggedInUserTest {
     static MainPage user = new MainPage();
     // WebDriver driver = new ChromeDriver();
-     Configuration config = new Configuration();
+    // Configuration config = new Configuration();
 
     @BeforeAll
     public static void setUpAll() {
@@ -145,9 +145,11 @@ public class LoggedInUserTest {
     }
 
     @Test
-    public void adminPage() {
-        open(user.baseURL + "admin");
-        $(byText("403")).shouldBe(visible);
+    public void adminButton() {
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a").click();
+        System.out.println(user.baseURL);
+        webdriver().shouldHave(url(user.baseURL + "admin"));
+        $(byText("UH Groupings Administration")).shouldBe(visible);
     }
 
     @Test
