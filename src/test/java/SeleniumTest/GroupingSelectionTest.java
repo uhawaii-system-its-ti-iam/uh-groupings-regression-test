@@ -390,7 +390,7 @@ public class GroupingSelectionTest {
         browser1.open("groupings");
         browser1.$(byText("testiwta-store-empty")).click();
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
-        browser1.$("#group-pills > li:nth-child(6) > a").click();
+        browser1.$("#group-pills > li:nth-child(7) > a > i").click();
         browser1.$("#allowOptIn").shouldNotBe(selected);
         browser1.$("#allowOptOut").shouldNotBe(selected);
         browser1.$("#allowOptIn").click();
@@ -417,7 +417,7 @@ public class GroupingSelectionTest {
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
         browser1.$(byText("testiwta-store-empty")).click();
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
-        browser1.$("#group-pills > li:nth-child(6) > a").click();
+        browser1.$("#group-pills > li:nth-child(7) > a > i").click();
         browser1.$("#allowOptIn").shouldBe(selected);
         browser1.$("#allowOptOut").shouldBe(selected);
         browser1.$("#allowOptIn").click();
