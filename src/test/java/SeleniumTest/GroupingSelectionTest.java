@@ -8,10 +8,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import com.opencsv.CSVWriter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -24,6 +21,7 @@ import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GroupingSelectionTest {
     static MainPage user = new MainPage();
     static MainPage admin = new MainPage();
@@ -37,6 +35,7 @@ public class GroupingSelectionTest {
         } catch(Exception e) {
             System.out.println("not found");
         }
+        Configuration.browser = "firefox";
         Configuration.browserSize = "1280x800";
         Configuration.headless = false;
         // Configuration.proxyEnabled = true;
@@ -61,30 +60,36 @@ public class GroupingSelectionTest {
     }
 
     @Test
+    @Order(1)
     public void groupingName() {
         $x("//*[@id=\"groupNameCol\"]/h2").shouldBe(text("testiwta-many"));
     }
     @Test
+    @Order(2)
     public void groupingPath() {
         $(byText("tmp:testiwta:testiwta-many")).shouldBe(visible);
     }
     @Test
+    @Order(3)
     public void groupingDescription() {
         $x("//*[@id=\"sel\"]/div/section[1]/div/div[3]/div/div[1]/p").shouldHave(text("Test Many Groups In Basis"));
     }
     @Test
+    @Order(4)
     public void returnToGroupingsButton() {
         $(byText("Return to Groupings List")).click();
         $x("//*[@id=\"sel\"]/div").should(disappear);
         $x("//*[@id=\"manage-groupings\"]/div[2]").shouldBe(visible);
     }
     @Test
+    @Order(5)
     public void filterMembers() {
         $x("//*[@id=\"all\"]/div[1]/div[2]/input").setValue("kl");
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
         $$x("//*[@id=\"all\"]/div[2]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldHave(text("kl")));
     }
     @Test
+    @Order(6)
     public void exportMembersCSV() {
         $("#csvButton > button").shouldBe(not(disabled), user.timeout);
 //        $(byText("Export Members")).click();
@@ -119,6 +124,7 @@ public class GroupingSelectionTest {
         }
     }
     @Test
+    @Order(7)
     public void exportBasisCSV() {
         $("#csvButton > button").shouldBe(not(disabled), user.timeout);
         $("#csvButton > button").click();
@@ -232,6 +238,7 @@ public class GroupingSelectionTest {
     }
 
     @Test
+    @Order(8)
     public void addRemoveMembersUsername() {
         open(user.baseURL + "groupings");
         $(byText("testiwta-store-empty")).click();
@@ -248,6 +255,7 @@ public class GroupingSelectionTest {
     }
 
     @Test
+    @Order(9)
     public void addRemoveMembersUhNumber() {
         open(user.baseURL + "groupings");
         $(byText("testiwta-store-empty")).click();
@@ -264,6 +272,7 @@ public class GroupingSelectionTest {
     }
 
     @Test
+    @Order(10)
     public void removeMemberTrashCan() {
         open(user.baseURL + "groupings");
         $(byText("testiwta-store-empty")).click();
@@ -304,6 +313,7 @@ public class GroupingSelectionTest {
         $(byText(admin.username)).shouldNot(exist);
     }
     @Test
+    @Order(11)
     public void multiAddMembersUsername() {
         open(user.baseURL + "groupings");
         $x("//*[@id=\"overlay\"]").should(disappear, admin.timeout);
@@ -324,6 +334,7 @@ public class GroupingSelectionTest {
         $x("//*[@id=\"pill-content\"]").shouldNotHave(and("Admin and user should not be in include table", text(admin.username), text(user.username)));
     }
     @Test
+    @Order(12)
     public void multiAddMembersUhNumber() {
         open(user.baseURL + "groupings");
         $x("//*[@id=\"overlay\"]").should(disappear, admin.timeout);
@@ -375,6 +386,7 @@ public class GroupingSelectionTest {
         }
     }
     @Test
+    @Order(13)
     public void groupingPreferences() {
         closeWebDriver();
         SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl(admin.baseURL));

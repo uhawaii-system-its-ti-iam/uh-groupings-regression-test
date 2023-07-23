@@ -68,9 +68,10 @@ public class AdminPageManageAdminsTabTest {
         assertEquals(adminList, tempNameList);
         adminList.clear();
 
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
+
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1)").click();
         while (true) {
             adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
@@ -84,8 +85,8 @@ public class AdminPageManageAdminsTabTest {
         assertEquals(tempNameList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
         while (true) {
@@ -100,8 +101,8 @@ public class AdminPageManageAdminsTabTest {
         assertEquals(tempNumberList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
 
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
@@ -117,8 +118,8 @@ public class AdminPageManageAdminsTabTest {
 
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
         while (true) {
@@ -133,8 +134,8 @@ public class AdminPageManageAdminsTabTest {
         assertEquals(tempUsernameList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
 
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
@@ -190,6 +191,7 @@ public class AdminPageManageAdminsTabTest {
         browser1.open("/admin");
         browser1.$x("//*[@id=\"overlay\"]/div").should(disappear, admin.timeout);
         browser1.$x("//*[@id=\"adminTab\"]/li[2]/a").click();
+        browser1.close();
         $("input[title=\"Filter Admins\"]").setValue(user.username);
         $("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
         $(byText("Are you sure you want to remove")).shouldBe(visible);
@@ -197,7 +199,6 @@ public class AdminPageManageAdminsTabTest {
         $(byText("Yes")).click();
         $x("//*[@id=\"overlay\"]/div").should(appear, admin.timeout);
         $x("//*[@id=\"overlay\"]/div").should(disappear, admin.timeout);
-        browser1.close();
     }
 
     @Test
