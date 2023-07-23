@@ -190,20 +190,20 @@ public class ManageGroupingsTest {
 
         $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.d-sm-flex > div > ul > li").shouldBe(visible);
         $(byText("Show Description")).click();
-        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th.w-35.align-middle").shouldBe(and("Visible and text", visible, text("Grouping Name")));
-        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th.clickable.d-none.d-sm-table-cell").shouldBe(and("Visible and text", visible, text("Description ")));
+        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(1)").shouldBe(and("Visible and text", visible, text("Grouping Name")));
+        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(2)").shouldBe(and("Visible and text", visible, text("Description ")));
         $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(not(visible));
 
         $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.d-sm-flex > div > button").click();
         $(byText("Show Grouping Path")).click();
-        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th.w-35.align-middle").shouldBe(and("Visible and text", visible, text("Grouping Name")));
-        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th.clickable.d-none.d-sm-table-cell").shouldNotBe(visible);
+        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(1)").shouldBe(and("Visible and text", visible, text("Grouping Name")));
+        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(2)").shouldNotBe(visible);
         $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(and("Visible and text", visible,text("Grouping Path")));
 
         $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.d-sm-flex > div > button").click();
         $(byText("Show All")).click();
-        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th.w-35.align-middle").shouldBe(and("Visible and text", visible, text("Grouping Name")));
-        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th.clickable.d-none.d-sm-table-cell").shouldBe(and("Visible and text", visible, text("Description ")));
+        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(1)").shouldBe(and("Visible and text", visible, text("Grouping Name")));
+        $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(2)").shouldBe(and("Visible and text", visible, text("Description ")));
         $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(and("Visible and text", visible,text("Grouping Path")));
 
     }
