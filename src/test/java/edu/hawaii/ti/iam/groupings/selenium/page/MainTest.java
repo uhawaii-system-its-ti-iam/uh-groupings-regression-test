@@ -22,19 +22,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import io.qameta.allure.selenide.AllureSelenide;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.codeborne.selenide.logevents.SelenideLogger;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
@@ -43,25 +39,12 @@ import edu.hawaii.ti.iam.groupings.selenium.core.User;
 public class MainTest {
 
     private static final Log logger = LogFactory.getLog(MainTest.class);
-    private static User admin;
 
     private final Property property;
 
     // Constructor.
-    @Autowired
-    public MainTest(Property property) {
+    public MainTest(@Autowired Property property) {
         this.property = property;
-    }
-
-    @BeforeAll
-    public static void beforeAll() {
-        // Configuration.browserSize = "1280x800";
-        // Configuration.downloadsFolder = "target/downloads";
-        if ("off".equals("")) {
-            AllureSelenide allureSelenide = new AllureSelenide();
-            allureSelenide.screenshots(false);
-            SelenideLogger.addListener("allure", allureSelenide);
-        }
     }
 
     @AfterAll
@@ -71,17 +54,9 @@ public class MainTest {
 
     @BeforeEach
     public void setUp() {
-        admin = new User.Builder()
-                .username(property.value("admin.user.username"))
-                .password(property.value("admin.user.password"))
-                .firstname(property.value("admin.user.firstname"))
-                .uhnumber(property.value("admin.user.uhnumber"))
-                .create();
-
         open(property.value("app.url.home"));
     }
 
-    @Disabled
     @Test
     public void navBarInfo() {
         final String urlFull = property.value("url.info");
@@ -91,7 +66,6 @@ public class MainTest {
         webdriver().shouldHave(url(urlFull));
     }
 
-    @Disabled
     @Test
     public void learnMoreButton() {
         String url = property.value("url.bwiki");
@@ -99,7 +73,6 @@ public class MainTest {
         webdriver().shouldHave(url("" + url + ""));
     }
 
-    @Disabled
     @Test
     public void navBarLogin() {
         String urlRel = property.value("url.relative.login");
@@ -111,13 +84,11 @@ public class MainTest {
         webdriver().shouldHave(url(loginUrl + "?service=" + encodeUrl(serviceUrl)));
     }
 
-    @Disabled
     @Test
     public void loginHereButton() {
         $x("//button[@class='btn btn-lg dark-teal-bg'][text()='Login Here']").click();
     }
 
-    @Disabled
     @Test
     public void groupingsIcon() {
         $x("//img[@alt='UH Groupings Logo']").click();
@@ -125,33 +96,42 @@ public class MainTest {
         $x("//p[@class='lead'][text()='Manage your groupings in one place, use them in many.']").should(exist);
     }
 
-    @Disabled
     @Test
     public void equalOpportunity() {
         $x("//a[text()='equal opportunity/affirmative action institution']").click();
         webdriver().shouldHave(url(property.value("url.policy")));
     }
 
-    @Disabled
     @Test
     public void loggingIn() {
+        User admin = new User.Builder()
+                .username(property.value("admin.user.username"))
+                .password(property.value("admin.user.password"))
+                .firstname(property.value("admin.user.firstname"))
+                .uhnumber(property.value("admin.user.uhnumber"))
+                .create();
+
         navBarLogin();
+
         $("#username").val(admin.getUsername());
         $("#password").val(admin.getPassword());
         $x("//button[@name='submit']").click();
+
         switchTo().frame($("#duo_iframe"));
+
         $("#username").should(disappear);
         $("button").should(appear);
         $x("//button[text()='Send Me a Push ']").click();
         $x("//h2[text()='Choose an authentication method']").should(disappear);
-        $x("//span[text()='treyyy']").shouldBe(visible);
+        $x("//span[text()='" + admin.getUsername() + "']").shouldBe(visible);
+
         closeWebDriver();
     }
 
+    @Disabled
     @Test
     public void usagePolicyTest() throws Exception {
         File downloadedFile = $("#footer-top > div > div > div.col-md-8.col-sm-7 > p:nth-child(2) > a").download();
-        // String path = downloadedFile.getPath();
         Path path = Paths.get(downloadedFile.getPath());
         InputStream downloadedPDF = Files.newInputStream(path);
         String downloadedHash = DigestUtils.sha1Hex(downloadedPDF);
