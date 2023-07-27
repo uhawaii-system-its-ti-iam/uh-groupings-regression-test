@@ -28,7 +28,7 @@ public class Selenium {
         Assert.notNull(downloadsFolder, "Property 'downloadsFolder' not set.");
         Assert.isTrue(timeout > 0, "Property 'timeout' not set.");
 
-        Configuration.browserSize = "1280x800";
+        Configuration.browserSize = getBrowserSize();
         Configuration.downloadsFolder = getDownloadsFolder();
         Configuration.timeout = getTimeout();
     }
