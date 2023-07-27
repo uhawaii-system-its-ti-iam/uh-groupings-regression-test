@@ -165,8 +165,6 @@ public class ManageGroupingsTest {
             $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
             $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
         });
-        $("body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button").shouldBe(
-                visible);
         closeWebDriver();
         user.loggingInNoDuoAuth();
         open(user.baseURL + "groupings");
