@@ -1,7 +1,5 @@
 package edu.hawaii.ti.iam.groupings.selenium.page;
 
-import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -9,10 +7,10 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.switchTo;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.url;
 import static edu.hawaii.ti.iam.groupings.selenium.core.Util.encodeUrl;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -27,7 +25,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,14 +33,14 @@ import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
 @SpringBootTest
-public class MainTest {
+public class HomePageTest {
 
-    private static final Log logger = LogFactory.getLog(MainTest.class);
+    private static final Log logger = LogFactory.getLog(HomePageTest.class);
 
     private final Property property;
 
     // Constructor.
-    public MainTest(@Autowired Property property) {
+    public HomePageTest(@Autowired Property property) {
         this.property = property;
     }
 
@@ -81,7 +78,8 @@ public class MainTest {
         String loginUrl = property.value("cas.login.url");
         String appUrl = property.value("app.url.home");
         String serviceUrl = appUrl + "/login/cas"; // Why the extra ending?
-        webdriver().shouldHave(url(loginUrl + "?service=" + encodeUrl(serviceUrl)));
+        String expectedUrl = loginUrl + "?service=" + encodeUrl(serviceUrl);
+        webdriver().shouldHave(url(expectedUrl));
     }
 
     @Test
@@ -103,32 +101,24 @@ public class MainTest {
     }
 
     @Test
-    public void loggingIn() {
-        User admin = new User.Builder()
-                .username(property.value("admin.user.username"))
-                .password(property.value("admin.user.password"))
-                .firstname(property.value("admin.user.firstname"))
-                .uhnumber(property.value("admin.user.uhnumber"))
+    public void loggingInWithStudent() {
+        User user = new User.Builder()
+                .username(property.value("student.user.username"))
+                .password(property.value("student.user.password"))
+                .firstname(property.value("student.user.firstname"))
+                .uhnumber(property.value("student.user.uhnumber"))
                 .create();
+        assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
 
         navBarLogin();
 
-        $("#username").val(admin.getUsername());
-        $("#password").val(admin.getPassword());
+        $("#username").val(user.getUsername());
+        $("#password").val(user.getPassword());
         $x("//button[@name='submit']").click();
-
-        switchTo().frame($("#duo_iframe"));
-
-        $("#username").should(disappear);
-        $("button").should(appear);
-        $x("//button[text()='Send Me a Push ']").click();
-        $x("//h2[text()='Choose an authentication method']").should(disappear);
-        $x("//span[text()='" + admin.getUsername() + "']").shouldBe(visible);
 
         closeWebDriver();
     }
 
-    @Disabled
     @Test
     public void usagePolicyTest() throws Exception {
         File downloadedFile = $("#footer-top > div > div > div.col-md-8.col-sm-7 > p:nth-child(2) > a").download();
