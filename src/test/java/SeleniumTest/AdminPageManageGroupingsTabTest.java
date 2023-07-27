@@ -107,7 +107,16 @@ public class AdminPageManageGroupingsTabTest {
         $("#sel > div > section:nth-child(1) > div > div:nth-child(3) > div > div.grouping-description-form > form > span:nth-child(2) > button > i").click();
         $("#sel > div > section:nth-child(1) > div > div:nth-child(3) > div > div:nth-child(1) > p").shouldHave(text(oldDesc));
     }
-
+    @Test
+    public void groupingPath() {
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > button > i").click();
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > ul").shouldBe(visible);
+        $(byText("Show Grouping Path")).click();
+        String groupingName = admin.username + "-aux";
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > input").setValue(groupingName);
+        String path = "#tmp\\:" + admin.username + "\\:" + groupingName;
+        $(path).shouldBe(visible);
+    }
     @Test
     public void clipboardCopy() {
 

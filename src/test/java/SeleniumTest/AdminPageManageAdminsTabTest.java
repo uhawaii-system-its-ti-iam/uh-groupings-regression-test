@@ -68,9 +68,10 @@ public class AdminPageManageAdminsTabTest {
         assertEquals(adminList, tempNameList);
         adminList.clear();
 
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
+
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1)").click();
         while (true) {
             adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
@@ -84,8 +85,8 @@ public class AdminPageManageAdminsTabTest {
         assertEquals(tempNameList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
         while (true) {
@@ -100,8 +101,8 @@ public class AdminPageManageAdminsTabTest {
         assertEquals(tempNumberList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
 
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
@@ -117,8 +118,8 @@ public class AdminPageManageAdminsTabTest {
 
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
         while (true) {
@@ -133,8 +134,8 @@ public class AdminPageManageAdminsTabTest {
         assertEquals(tempUsernameList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
-            $("#manage-admins > div.row.justify-content-between > div.col > nav > ul > li:nth-child(1)").click();
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+            $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
 
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();

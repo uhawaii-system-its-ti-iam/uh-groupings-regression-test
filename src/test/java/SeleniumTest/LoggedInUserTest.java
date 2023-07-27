@@ -145,11 +145,9 @@ public class LoggedInUserTest {
     }
 
     @Test
-    public void adminButton() {
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a").click();
-        System.out.println(user.baseURL);
-        webdriver().shouldHave(url(user.baseURL + "admin"));
-        $(byText("UH Groupings Administration")).shouldBe(visible);
+    public void adminPage() {
+        open(user.baseURL + "admin");
+        $(byText("403")).shouldBe(visible);
     }
 
     @Test
