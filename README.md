@@ -8,7 +8,7 @@ Install the necessary project dependencies:
 
     $ ./mvnw install
 
-##### Building
+##### Testing
 
 To run the tests from the Command Line:
 
