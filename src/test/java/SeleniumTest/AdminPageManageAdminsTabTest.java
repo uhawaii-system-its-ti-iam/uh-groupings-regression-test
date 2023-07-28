@@ -191,6 +191,7 @@ public class AdminPageManageAdminsTabTest {
         browser1.open("/admin");
         browser1.$x("//*[@id=\"overlay\"]/div").should(disappear, admin.timeout);
         browser1.$x("//*[@id=\"adminTab\"]/li[2]/a").click();
+        browser1.close();
         $("input[title=\"Filter Admins\"]").setValue(user.username);
         $("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
         $(byText("Are you sure you want to remove")).shouldBe(visible);
@@ -198,7 +199,6 @@ public class AdminPageManageAdminsTabTest {
         $(byText("Yes")).click();
         $x("//*[@id=\"overlay\"]/div").should(appear, admin.timeout);
         $x("//*[@id=\"overlay\"]/div").should(disappear, admin.timeout);
-        browser1.close();
     }
 
     @Test

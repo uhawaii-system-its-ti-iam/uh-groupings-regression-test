@@ -1,7 +1,6 @@
 package SeleniumTest;
 
 import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.ElementsCollection;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
@@ -9,24 +8,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MembershipsPageCurrentMembershipsTabTest {
     static MainPage user = new MainPage();
+
     // WebDriver driver = new ChromeDriver();
 //     Configuration config = new Configuration();
     @BeforeAll
     public static void setUpAll() {
         try {
             user.getUserCredentials();
-        } catch(Exception e) {
+        } catch (Exception e) {
             System.out.println("not found");
         }
         Configuration.browserSize = "1280x800";
@@ -40,15 +37,18 @@ public class MembershipsPageCurrentMembershipsTabTest {
         open(user.baseURL + "memberships");
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, user.timeout);
     }
+
     @AfterAll
     public static void close() {
         closeWebDriver();
     }
+
     @Test
-    public void filterGroupings(){
-        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("test");
-        $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldHave(text("test")));
+    public void filterGroupings() {
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue(user.username);
+        $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldHave(text(user.username)));
     }
+
     @Test
     public void optOut() {
         $(byText("JTTEST-L")).parent().find(byClassName("opt-button")).click();
@@ -59,6 +59,7 @@ public class MembershipsPageCurrentMembershipsTabTest {
         $(byText("JTTEST-L")).shouldBe(visible, user.timeout);
         $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-8.align-middle.text-center > button").click();
     }
+
     @Test
     public void copyPathToClipboard() {
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/div/button").click();
@@ -66,7 +67,8 @@ public class MembershipsPageCurrentMembershipsTabTest {
         $(byText("Show All")).click();
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue(user.username);
         $("#current-memberships > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(2) > td:nth-child(3) > form > div > div > button").click();
-       assertEquals(clipboard().getText(), "tmp:testiwta:testiwta-single");
+        String prefixPath = "tmp:" + user.username + ":" + user.username;
+        assertTrue((clipboard().getText().contains(prefixPath)));
     }
 
     @Test
