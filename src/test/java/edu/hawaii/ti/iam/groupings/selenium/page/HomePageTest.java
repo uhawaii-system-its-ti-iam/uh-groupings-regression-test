@@ -20,14 +20,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import com.codeborne.selenide.WebDriverRunner;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
@@ -44,6 +49,12 @@ public class HomePageTest {
         this.property = property;
     }
 
+    @BeforeAll
+    public static void beforeAll() {
+        WebDriverManager.chromedriver().setup();
+        WebDriverRunner.setWebDriver(new ChromeDriver());
+    }
+
     @AfterAll
     public static void afterAll() {
         closeWebDriver();
@@ -55,9 +66,9 @@ public class HomePageTest {
     }
 
     @Test
-    public void navBarInfo() {
-        final String urlFull = property.value("url.info");
-        final String urlRel = property.value("url.relative.info");
+    public void navBarAbout() {
+        final String urlFull = property.value("url.about");
+        final String urlRel = property.value("url.relative.about");
         $x("//a[@href='/" + urlRel + "']").click();
         $x("/html/body/main/div[1]/div/div[1]/div[1]/h1").shouldHave(text("What is a UH Grouping?"));
         webdriver().shouldHave(url(urlFull));
@@ -107,7 +118,7 @@ public class HomePageTest {
                 .password(property.value("student.user.password"))
                 .firstname(property.value("student.user.firstname"))
                 .uhnumber(property.value("student.user.uhnumber"))
-                .create();
+                .build();
         assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
 
         navBarLogin();
@@ -121,7 +132,7 @@ public class HomePageTest {
 
     @Test
     public void usagePolicyTest() throws Exception {
-        File downloadedFile = $("#footer-top > div > div > div.col-md-8.col-sm-7 > p:nth-child(2) > a").download();
+        File downloadedFile = $("a[href*='ep2.210.pdf']").download();
         Path path = Paths.get(downloadedFile.getPath());
         InputStream downloadedPDF = Files.newInputStream(path);
         String downloadedHash = DigestUtils.sha1Hex(downloadedPDF);

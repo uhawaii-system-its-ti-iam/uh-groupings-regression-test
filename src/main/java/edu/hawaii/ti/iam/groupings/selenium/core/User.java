@@ -60,7 +60,7 @@ public class User {
             return this;
         }
 
-        public User create() {
+        public User build() {
             Objects.requireNonNull(username, "username cannot be null.");
             Objects.requireNonNull(password, "password cannot be null.");
             Objects.requireNonNull(firstname, "firstname cannot be null.");
