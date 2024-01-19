@@ -10,6 +10,7 @@ import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.url;
 import static edu.hawaii.ti.iam.groupings.selenium.core.Util.encodeUrl;
+import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -25,9 +26,13 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,6 +48,7 @@ public class HomePageTest {
     private static final Log logger = LogFactory.getLog(HomePageTest.class);
 
     private final Property property;
+    private WebDriver driver;
 
     // Constructor.
     public HomePageTest(@Autowired Property property) {
@@ -63,6 +69,12 @@ public class HomePageTest {
     @BeforeEach
     public void setUp() {
         open(property.value("app.url.home"));
+        driver = WebDriverRunner.getWebDriver();
+    }
+
+    @AfterEach
+    public void afterEach() {
+        driver.close();
     }
 
     @Test
@@ -126,8 +138,6 @@ public class HomePageTest {
         $("#username").val(user.getUsername());
         $("#password").val(user.getPassword());
         $x("//button[@name='submit']").click();
-
-        closeWebDriver();
     }
 
     @Test
@@ -139,6 +149,10 @@ public class HomePageTest {
         InputStream expectedPDF = Files.newInputStream(path);
         String expectedHash = DigestUtils.sha1Hex(expectedPDF);
         assertThat(expectedHash, equalTo(downloadedHash));
+
+        WebElement field = driver.findElement(By.linkText("Usage Policy"));
+        assertThat(field.getText(), equalTo("Usage Policy"));
+        assertThat(field.getAttribute("href"), endsWith("ep2.210.pdf"));
     }
 
 }
