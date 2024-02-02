@@ -1,9 +1,11 @@
 package edu.hawaii.ti.iam.groupings.selenium.page;
 
 import static com.codeborne.selenide.Condition.and;
+import static com.codeborne.selenide.Condition.checked;
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.or;
 import static com.codeborne.selenide.Condition.selected;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -18,18 +20,12 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static com.codeborne.selenide.Condition.*;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
 import java.time.Duration;
 import java.util.ArrayList;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,36 +35,26 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.EnableLoadTimeWeaving;
-import org.w3c.dom.Text;
 
 import com.codeborne.selenide.WebDriverRunner;
-import com.codeborne.selenide.conditions.Not;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 @SpringBootTest
-public class AdminPageManagePersonTabTest {
+public class AdminPageManagePersonTabTest extends AbstractTestBase {
 
-    private static final Log logger = LogFactory.getLog(HomePageTest.class);
-
-    private final Property property;
     private WebDriver driver;
 
     // Constructor.
     public AdminPageManagePersonTabTest(@Autowired Property property) {
-        this.property = property;
+        super(property = property);
     }
 
     @BeforeAll
     public static void beforeAll() {
         WebDriverManager.chromedriver().setup();
         WebDriverRunner.setWebDriver(new ChromeDriver());
-        //        WebDriverManager.firefoxdriver().setup();
-        //        WebDriverRunner.setWebDriver(new FirefoxDriver());
     }
 
     @AfterAll
@@ -88,9 +74,7 @@ public class AdminPageManagePersonTabTest {
                 .build();
         assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
 
-        $("#username").val(user.getUsername());
-        $("#password").val(user.getPassword());
-        $x("//*[@id=\"login-form-controls\"]/button").click();
+        loginWith(driver, user);
 
         open(property.value("url.admin"));
         $x("//*[@id=\"overlay\"]/div/div").shouldBe(disappear, Duration.ofSeconds(30));
@@ -152,7 +136,7 @@ public class AdminPageManagePersonTabTest {
 
     @Test
     public void removeFromGrouping() {
-        //make sure at least 2 owner, then you can remove an owner form Grouping.
+        // make sure at least 2 owner, then you can remove an owner form Grouping.
         searchPerson();
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
                 property.value("test.grouping.name"));
@@ -193,7 +177,7 @@ public class AdminPageManagePersonTabTest {
     }
 
     @Test
-    public void OwnerStatus(){
+    public void OwnerStatus() {
         searchPerson();
         $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, 'l.inOwner')]/p").forEach(row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
 
@@ -205,11 +189,13 @@ public class AdminPageManagePersonTabTest {
 
         $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, 'l.inBasis')]/p").forEach(row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
     }
+
     @Test
     public void includeStatus() {
         searchPerson();
         $$x("//div[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.inInclude')]/p").forEach(row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
     }
+
     @Test
     public void excludeStatus() {
         searchPerson();

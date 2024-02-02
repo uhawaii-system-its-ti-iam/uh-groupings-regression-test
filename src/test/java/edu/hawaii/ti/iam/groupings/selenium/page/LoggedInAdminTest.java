@@ -9,7 +9,6 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.url;
-import static edu.hawaii.ti.iam.groupings.selenium.core.Util.encodeUrl;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,10 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,30 +35,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
-import com.codeborne.selenide.conditions.Text;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
 @SpringBootTest
-public class LoggedInAdminTest {
+public class LoggedInAdminTest extends AbstractTestBase {
 
-    private static final Log logger = LogFactory.getLog(HomePageTest.class);
-
-    private final Property property;
     private WebDriver driver;
 
     // Constructor.
     public LoggedInAdminTest(@Autowired Property property) {
-        this.property = property;
+        super(property);
     }
 
     @BeforeAll
     public static void beforeAll() {
         WebDriverManager.chromedriver().setup();
         WebDriverRunner.setWebDriver(new ChromeDriver());
-        //        WebDriverManager.firefoxdriver().setup();
-        //        WebDriverRunner.setWebDriver(new FirefoxDriver());
     }
 
     @AfterAll
@@ -82,10 +72,7 @@ public class LoggedInAdminTest {
                 .build();
         assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
 
-        $("#username").val(user.getUsername());
-        $("#password").val(user.getPassword());
-        $x("//*[@id=\"login-form-controls\"]/button").click();
-
+        loginWith(driver, user);
     }
 
     @AfterEach
@@ -188,7 +175,7 @@ public class LoggedInAdminTest {
 
     @Test
     public void welcomeMessageTest() {
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + property.value("admin.user.firstname") +"!" ));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + property.value("admin.user.firstname") + "!"));
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Admin"));
     }
 

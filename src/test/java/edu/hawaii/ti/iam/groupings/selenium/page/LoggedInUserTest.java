@@ -20,9 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,27 +39,21 @@ import com.codeborne.selenide.WebDriverRunner;
 import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 @SpringBootTest
-public class LoggedInUserTest {
+public class LoggedInUserTest extends AbstractTestBase {
 
-    private static final Log logger = LogFactory.getLog(HomePageTest.class);
-
-    private final Property property;
     private WebDriver driver;
+    private User user;
 
     // Constructor.
     public LoggedInUserTest(@Autowired Property property) {
-        this.property = property;
+        super(property);
     }
 
     @BeforeAll
     public static void beforeAll() {
         WebDriverManager.chromedriver().setup();
         WebDriverRunner.setWebDriver(new ChromeDriver());
-        //        WebDriverManager.firefoxdriver().setup();
-        //        WebDriverRunner.setWebDriver(new FirefoxDriver());
     }
 
     @AfterAll
@@ -72,7 +65,7 @@ public class LoggedInUserTest {
     public void setUp() {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
-        User user = new User.Builder()
+        user = new User.Builder()
                 .username(property.value("student.user.username"))
                 .password(property.value("student.user.password"))
                 .firstname(property.value("student.user.firstname"))
@@ -80,10 +73,7 @@ public class LoggedInUserTest {
                 .build();
         assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
 
-        $("#username").val(user.getUsername());
-        $("#password").val(user.getPassword());
-        $x("//*[@id=\"login-form-controls\"]/button").click();
-
+        loginWith(driver, user);
     }
 
     @AfterEach
@@ -142,7 +132,6 @@ public class LoggedInUserTest {
         WebElement statusLabel = driver.findElement(By.xpath("/html/body/div[2]/div/div/p[2]/span[2]"));
         assertThat(statusCode.getText(), equalTo("403"));
         assertThat(statusLabel.getText(), equalTo("(Forbidden)"));
-
     }
 
     @Test
@@ -152,7 +141,7 @@ public class LoggedInUserTest {
     }
 
     @Test
-    public void navbarGroupingsTest() {
+    public void AbstractTestBase() {
         $x("//*[@id=\"navbarSupportedContent\"]/ul/li[2]/a").click();
         webdriver().shouldHave(url(property.value("url.groupings")));
     }
@@ -184,7 +173,7 @@ public class LoggedInUserTest {
 
     @Test
     public void welcomeMessageTest() {
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + property.value("student.user.firstname") +"!" ));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + user.getFirstname() + "!"));
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Owner"));
     }
 

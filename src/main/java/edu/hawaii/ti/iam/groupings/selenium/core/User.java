@@ -33,6 +33,10 @@ public class User {
         return uhnumber;
     }
 
+    public String toString() {
+        return "User [username=" + username + "]";
+    }
+
     public static class Builder {
 
         private String username;
