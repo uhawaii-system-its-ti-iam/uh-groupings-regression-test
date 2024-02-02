@@ -14,6 +14,10 @@ public class Selenium {
 
     private static final Log logger = LogFactory.getLog(Selenium.class);
 
+    static {
+        System.setProperty("java.awt.headless", "false");
+    }
+
     private String browserSize;
     private String downloadsFolder;
     private long timeout;
