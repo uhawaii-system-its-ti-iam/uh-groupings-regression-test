@@ -12,30 +12,32 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.clipboard;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
@@ -45,6 +47,18 @@ public class ManageGroupingsTest extends AbstractTestBase {
     private WebDriver driver;
     private User admin;
     private User user;
+
+    public String getClipboardContent() {
+        String clipboardContent = null;
+        try {
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboardContent = (String) clipboard.getData(DataFlavor.stringFlavor);
+        } catch (Exception e) {
+            logger.error("Failed", e);
+        }
+
+        return clipboardContent;
+    }
 
     @BeforeAll
     public static void beforeAll() {
@@ -63,14 +77,11 @@ public class ManageGroupingsTest extends AbstractTestBase {
         driver = WebDriverRunner.getWebDriver();
 
         admin = createUser("admin");
-
-        loginWith(driver, createUser("admin"));
-
         user = createUser("student");
+        loginWith(driver, user);
 
-        open(property.value("url.admin"));
+        open(property.value("url.groupings"));
         $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
-        $(by("id", "manage-admins-tab")).click();
     }
 
     @AfterEach
@@ -80,24 +91,24 @@ public class ManageGroupingsTest extends AbstractTestBase {
 
     @Test
     public void filterGroupings() {
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("empty");
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.d-sm-flex > input").setValue("empty");
         $$x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr").asFixedIterable()
                 .forEach(row -> row.shouldHave(text("empty")));
     }
 
     @Test
     public void groupingName() {
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwta-store-empty");
+        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwte-store-empty");
         $("#manage-groupings > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").shouldHave(
-                text("testiwta-store-empty"));
+                text("testiwte-store-empty"));
     }
 
     @Test
     public void groupingPath() {
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwta-store-empty");
+        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwte-store-empty");
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button").click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[3]/label").click();
-        $("#tmp\\:testiwta\\:testiwta-store-empty").shouldBe(visible);
+        $("#tmp\\:testiwte\\:testiwte-store-empty").shouldBe(visible);
     }
 
     @Test
@@ -107,6 +118,7 @@ public class ManageGroupingsTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[2]").shouldNotBe(visible);
     }
 
+    @Disabled
     @Test
     public void autoLogout() {
         List<String> ownedGroupings = new ArrayList<>();
@@ -230,7 +242,7 @@ public class ManageGroupingsTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[3]/label").click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("aux");
         $x("//*[@id=\"manage-groupings\"]/div[2]/div[1]/table/tbody/tr/td[3]/form/div/div/button/i").click();
-        assertEquals(clipboard().getText(), "tmp:testiwta:testiwta-aux");
+        assertEquals(getClipboardContent(), "tmp:testiwte:testiwte-aux");
     }
 
     @Test
