@@ -11,9 +11,6 @@ import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
 import java.awt.Toolkit;
@@ -27,27 +24,17 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
-
-import edu.hawaii.ti.iam.groupings.selenium.core.Property;
-import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
 @SpringBootTest
 public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
 
     private WebDriver driver;
-
-    // Constructor.
-    public AdminPageManageGroupingsTabTest(@Autowired Property property) {
-        super(property);
-    }
 
     @BeforeAll
     public static void beforeAll() {
@@ -64,16 +51,6 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
     public void setUp() {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
-
-        User user = new User.Builder()
-                .username(property.value("admin.user.username"))
-                .password(property.value("admin.user.password"))
-                .firstname(property.value("admin.user.firstname"))
-                .uhnumber(property.value("admin.user.uhnumber"))
-                .build();
-        assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
-
-        loginWith(driver, user);
 
         open(property.value("url.admin"));
         $x("//*[@id=\"overlay\"]/div/div").shouldBe(disappear, Duration.ofSeconds(80));
@@ -175,7 +152,6 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         $(path).shouldBe(visible);
     }
 
-    @Disabled("broken for some reason")
     @Test
     public void clipboardCopyTest() {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").val(property.value("test.grouping.name"));
@@ -184,10 +160,8 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[3]").shouldHave(text(" Grouping Path "));
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr/td[3]/form/div/div/button/i").click();
         $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[3]/form/div/div/button/i").click();
-        // System.out.println(clipboard().getText());
-        // assertEquals("hawaii.edu:custom:test:awy:awy-test", clipboard().getText());
         String clipboardValue = getClipboardContent();
-        assertEquals(clipboardValue, "get");
+        assertEquals(clipboardValue, "hawaii.edu:custom:test:listserv-tests:JTTEST-L");
     }
 
     @Test

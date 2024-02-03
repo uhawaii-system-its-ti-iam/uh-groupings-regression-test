@@ -10,7 +10,6 @@ import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.url;
 import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -31,12 +30,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
-import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
 @SpringBootTest
@@ -44,11 +41,6 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     private WebDriver driver;
     private User user;
-
-    // Constructor.
-    public LoggedInUserTest(@Autowired Property property) {
-        super(property);
-    }
 
     @BeforeAll
     public static void beforeAll() {
@@ -65,14 +57,7 @@ public class LoggedInUserTest extends AbstractTestBase {
     public void setUp() {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
-        user = new User.Builder()
-                .username(property.value("student.user.username"))
-                .password(property.value("student.user.password"))
-                .firstname(property.value("student.user.firstname"))
-                .uhnumber(property.value("student.user.uhnumber"))
-                .build();
-        assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
-
+        user = createUser("student");
         loginWith(driver, user);
     }
 
@@ -92,7 +77,7 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void navBarLogoutButtonText() {
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").shouldHave(text("Logout (" + property.value("student.user.username") + ")"));
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").shouldHave(text("Logout (" + user.getUsername() + ")"));
         $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").shouldHave(text("Login"));
     }

@@ -10,7 +10,6 @@ import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.url;
 import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -31,22 +30,17 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
-
-import edu.hawaii.ti.iam.groupings.selenium.core.Property;
-import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
 @SpringBootTest
 public class LoggedInAdminTest extends AbstractTestBase {
 
     private WebDriver driver;
 
-    // Constructor.
-    public LoggedInAdminTest(@Autowired Property property) {
-        super(property);
+    public LoggedInAdminTest() {
+        super();
     }
 
     @BeforeAll
@@ -64,15 +58,7 @@ public class LoggedInAdminTest extends AbstractTestBase {
     public void setUp() {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
-        User user = new User.Builder()
-                .username(property.value("admin.user.username"))
-                .password(property.value("admin.user.password"))
-                .firstname(property.value("admin.user.firstname"))
-                .uhnumber(property.value("admin.user.uhnumber"))
-                .build();
-        assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
-
-        loginWith(driver, user);
+        loginWith(driver, createUser("admin"));
     }
 
     @AfterEach

@@ -31,23 +31,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
-
-import edu.hawaii.ti.iam.groupings.selenium.core.Property;
-import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
 @SpringBootTest
 public class HomePageTest extends AbstractTestBase {
 
     private WebDriver driver;
-
-    // Constructor.
-    public HomePageTest(@Autowired Property property) {
-        super(property);
-    }
 
     @BeforeAll
     public static void beforeAll() {
@@ -126,15 +117,7 @@ public class HomePageTest extends AbstractTestBase {
     @Test
     public void loggingInWithStudent() {
         clickLoginOnHomePage();
-
-        User user = new User.Builder()
-                .username(property.value("student.user.username"))
-                .password(property.value("student.user.password"))
-                .firstname(property.value("student.user.firstname"))
-                .uhnumber(property.value("student.user.uhnumber"))
-                .build();
-
-        loginWith(driver, user);
+        loginWith(driver, createUser("student"));
     }
 
     @Test

@@ -1,19 +1,29 @@
 package edu.hawaii.ti.iam.groupings.selenium.page;
 
+import static com.codeborne.selenide.Condition.and;
+import static com.codeborne.selenide.Condition.cssClass;
+import static com.codeborne.selenide.Condition.disappear;
+import static com.codeborne.selenide.Condition.interactable;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.by;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.clipboard;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.SelenideWait;
-import com.codeborne.selenide.WebDriverRunner;
-import com.codeborne.selenide.logevents.SelenideLogger;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
-import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -21,55 +31,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.codeborne.selenide.Selectors.by;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 
-import static com.codeborne.selenide.Condition.*;
-import static com.codeborne.selenide.Selenide.*;
-import static com.codeborne.selenide.Selectors.byText;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
-import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
 
 @SpringBootTest
 public class ManageGroupingsTest extends AbstractTestBase {
+
     private WebDriver driver;
     private User admin;
     private User user;
-
-    // Constructor
-    public ManageGroupingsTest(@Autowired Property property) {
-        super(property);
-        createAdmin();
-        createUser();
-    }
-
-    private void createAdmin() {
-        this.admin = new User.Builder()
-                .username(property.value("admin.user.username"))
-                .password(property.value("admin.user.password"))
-                .firstname(property.value("admin.user.firstname"))
-                .uhnumber(property.value("admin.user.uhnumber"))
-                .build();
-    }
-
-    private void createUser() {
-        this.user = new User.Builder()
-                .username(property.value("student.user.username"))
-                .password(property.value("student.user.password"))
-                .firstname(property.value("student.user.firstname"))
-                .uhnumber(property.value("student.user.uhnumber"))
-                .build();
-    }
 
     @BeforeAll
     public static void beforeAll() {
@@ -86,9 +61,12 @@ public class ManageGroupingsTest extends AbstractTestBase {
     public void setUp() {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
-        assertThat(admin.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
 
-        loginWith(driver, admin);
+        admin = createUser("admin");
+
+        loginWith(driver, createUser("admin"));
+
+        user = createUser("student");
 
         open(property.value("url.admin"));
         $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
@@ -242,8 +220,8 @@ public class ManageGroupingsTest extends AbstractTestBase {
 
         }
         assertEquals(ownedGroupings, ownedGroupingsAfterTest);
-        System.out.println(ownedGroupings);
-        System.out.println(ownedGroupingsAfterTest);
+        logger.info("autoLogout; ownedGroupings: " + ownedGroupings);
+        logger.info("autoLogout; ownedGroupingsAfterTest: " + ownedGroupingsAfterTest);
     }
 
     @Test
@@ -278,7 +256,7 @@ public class ManageGroupingsTest extends AbstractTestBase {
         String groupingName = randomGrouping.parent().$$("td").first().getText();
         String groupingDescription = randomGrouping.parent().$$("td").get(1).getText();
         String groupingPath = randomGrouping.parent().$$("td").get(2).$("form").$("input").getValue();
-        System.out.println(groupingName + groupingDescription + groupingPath);
+        logger.info("listingInfoTest; " + groupingName + groupingDescription + groupingPath);
         randomGrouping.click();
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(80));
         $("#groupNameCol > h2").shouldHave(text(groupingName));

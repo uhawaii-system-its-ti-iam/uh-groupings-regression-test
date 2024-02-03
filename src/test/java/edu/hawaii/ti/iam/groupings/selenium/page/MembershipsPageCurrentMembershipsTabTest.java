@@ -1,6 +1,24 @@
 package edu.hawaii.ti.iam.groupings.selenium.page;
 
-import com.codeborne.selenide.WebDriverRunner;
+import static com.codeborne.selenide.Condition.disappear;
+import static com.codeborne.selenide.Condition.exactText;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selectors.by;
+import static com.codeborne.selenide.Selectors.byClassName;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.time.Duration;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
@@ -10,54 +28,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static com.codeborne.selenide.Condition.disappear;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.exactText;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selectors.by;
-import static com.codeborne.selenide.Selectors.byClassName;
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.$$x;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertEquals;
+import com.codeborne.selenide.WebDriverRunner;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.time.Duration;
-
-import edu.hawaii.ti.iam.groupings.selenium.core.Property;
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
 
 @SpringBootTest
 public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
+
     private WebDriver driver;
-
     private User user;
-
-    // Constructor
-    public MembershipsPageCurrentMembershipsTabTest(@Autowired Property property) {
-        super(property);
-        this.createUser();
-    }
-
-    private void createUser() {
-        this.user = new User.Builder()
-                .username(property.value("student.user.username"))
-                .password(property.value("student.user.password"))
-                .firstname(property.value("student.user.firstname"))
-                .uhnumber(property.value("student.user.uhnumber"))
-                .build();
-    }
 
     public String getClipboardContent() {
         String clipboardContent = null;
@@ -86,8 +67,8 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
     public void setUp() {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
-        assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
 
+        user = createUser("student");
         loginWith(driver, user);
 
         open(property.value("url.memberships"));
@@ -123,7 +104,7 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
         $(byText("Show All")).click();
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("acer-cc-ics");
         $("#current-memberships > div:nth-child(2) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > button:nth-child(1) > i:nth-child(1)").click();
-        assertEquals(getClipboardContent(), "hawaii.edu:custom:test:julio:acer-cc-ics");
+        assertThat(getClipboardContent(), equalTo("hawaii.edu:custom:test:julio:acer-cc-ics"));
     }
 
     @Test
