@@ -9,6 +9,7 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.clipboard;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static org.hamcrest.CoreMatchers.not;
@@ -16,18 +17,15 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
 import java.time.Duration;
 import java.util.ArrayList;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -92,7 +90,8 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[1]").doubleClick();
         ArrayList<String> groupingsName = new ArrayList<>();
         while (true) {
-            groupingsName.addAll($$("#manage-groupings > div.table-responsive > table > tbody > tr >td:nth-child(1)").texts());
+            groupingsName.addAll(
+                    $$("#manage-groupings > div.table-responsive > table > tbody > tr >td:nth-child(1)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -107,7 +106,8 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[3]/nav/ul/li[1]").click();
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[2]").click();
         while (true) {
-            groupingsDescription.addAll($$("#manage-groupings > div.table-responsive > table > tbody > tr >td:nth-child(2)").texts());
+            groupingsDescription.addAll(
+                    $$("#manage-groupings > div.table-responsive > table > tbody > tr >td:nth-child(2)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -122,7 +122,8 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[3]/nav/ul/li[1]").click();
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[3]").doubleClick();
         while (true) {
-            groupingsPath.addAll($$("#manage-groupings > div.table-responsive > table > tbody > tr >td:nth-child(3)").texts());
+            groupingsPath.addAll(
+                    $$("#manage-groupings > div.table-responsive > table > tbody > tr >td:nth-child(3)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -175,48 +176,38 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         $(path).shouldBe(visible);
     }
 
-    @Disabled("broken for some reason")
     @Test
     public void clipboardCopyTest() {
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").val(property.value("test.grouping.name"));
+        System.setProperty("java.awt.headless", "false");
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button/i").click();
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[2]/label").click();
-        $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[3]").shouldHave(text(" Grouping Path "));
+        $(byText("Show Grouping Path")).click();
+        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").val(property.value("test.grouping.name"));
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr/td[3]/form/div/div/button/i").click();
-        $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[3]/form/div/div/button/i").click();
-        // System.out.println(clipboard().getText());
-        // assertEquals("hawaii.edu:custom:test:awy:awy-test", clipboard().getText());
-        String clipboardValue = getClipboardContent();
-        assertEquals(clipboardValue, "get");
+        assertEquals(property.value("test.grouping.path"), clipboard().getText());
     }
 
     @Test
     public void tableSettingTest() {
         $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldNotBe(visible);
-        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.col-auto > div").shouldBe(visible);
+        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.col-auto > div").shouldBe(
+                visible);
         $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > button").click();
-        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > ul").shouldBe(visible);
+        $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > ul").shouldBe(
+                visible);
         $(byText("Show Grouping Path")).click();
-        $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(and("Visible and text", visible, text("Grouping Path")));
+        $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(
+                and("Visible and text", visible, text("Grouping Path")));
         $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(2)").shouldNotBe(visible);
         $("#hawaii\\.edu\\:custom\\:test\\:listserv-tests\\:JTTEST-L").shouldBe(visible);
         $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > button").click();
         $(byText("Show All")).click();
-        $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(2)").shouldBe(and("Is visible with text", visible, text("Description")));
-        $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(text("Grouping Path"));
-        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td:nth-child(3)").should(visible);
-        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.w-35 > div").should(visible);
-    }
-
-    public String getClipboardContent() {
-        String clipboardContent = null;
-        try {
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboardContent = (String) clipboard.getData(DataFlavor.stringFlavor);
-        } catch (Exception e) {
-            logger.error("Failed", e);
-        }
-
-        return clipboardContent;
+        $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(2)").shouldBe(
+                and("Is visible with text", visible, text("Description")));
+        $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(
+                text("Grouping Path"));
+        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td:nth-child(3)").should(
+                visible);
+        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.w-35 > div").should(
+                visible);
     }
 }

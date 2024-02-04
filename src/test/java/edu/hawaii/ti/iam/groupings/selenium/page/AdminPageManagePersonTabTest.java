@@ -26,6 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -136,8 +137,20 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
 
     @Test
     public void removeFromGrouping() {
-        // make sure at least 2 owner, then you can remove an owner form Grouping.
+        // unable to remove the sole owner of any grouping such as aux grouping type of test account
         searchPerson();
+        $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
+                property.value("admin.user.username") + "-" +
+                        property.value("test.grouping.type"));
+        $(".manage-person > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1)").shouldHave(
+                text(property.value("admin.user.username") + "-" + property.value("test.grouping.type")));
+
+        $x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td[6]/div/label/input").click();
+        $x("//*[@id=\"manage-person\"]/div[1]/div[4]/form/div/div/button").click();
+        $(byText("You are unable to remove this owner. There must be at least one owner remaining.")).shouldBe(visible);
+        $(byText("Close")).click();
+
+        //remove an owner form Grouping which has at least 2 owners .
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
                 property.value("test.grouping.name"));
         $(".manage-person > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1)").shouldHave(
@@ -179,7 +192,8 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
     @Test
     public void OwnerStatus() {
         searchPerson();
-        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, 'l.inOwner')]/p").forEach(row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
+        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, 'l.inOwner')]/p").forEach(
+                row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
 
     }
 
@@ -187,27 +201,32 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
     public void basisStatus() {
         searchPerson();
 
-        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, 'l.inBasis')]/p").forEach(row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
+        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, 'l.inBasis')]/p").forEach(
+                row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
     }
 
     @Test
     public void includeStatus() {
         searchPerson();
-        $$x("//div[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.inInclude')]/p").forEach(row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
+        $$x("//div[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.inInclude')]/p").forEach(
+                row -> row.shouldBe(or("Yes or No", text("Yes"), text("No"))));
     }
 
     @Test
     public void excludeStatus() {
         searchPerson();
-        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.inExclude')]/p").forEach(row -> row.shouldHave(or("Yes or No", text("Yes"), text("No"))));
+        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.inExclude')]/p").forEach(
+                row -> row.shouldHave(or("Yes or No", text("Yes"), text("No"))));
     }
 
     @Test
     public void remove() {
         searchPerson();
-        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.remove')]/p").forEach(row -> row.shouldNotBe(checked));
+        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.remove')]/p").forEach(
+                row -> row.shouldNotBe(checked));
         CheckAll();
-        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.remove')]/p").forEach(row -> row.shouldBe(checked));
+        $$x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td/div[contains(@ng-if, '!l.remove')]/p").forEach(
+                row -> row.shouldBe(checked));
 
     }
 
@@ -225,7 +244,7 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
                         text(property.value("test.grouping.name"))));
         $(byText("Cancel")).click();
 
-        // check if exit
+        // check if the groupings exist
         GroupingName();
     }
 
