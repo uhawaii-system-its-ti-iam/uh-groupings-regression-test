@@ -118,8 +118,20 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
 
     @Test
     public void removeFromGrouping() {
-        // make sure at least 2 owner, then you can remove an owner form Grouping.
+        // unable to remove the sole owner of any grouping such as aux grouping type of test account
         searchPerson();
+        $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
+                property.value("admin.user.username") + "-" +
+                        property.value("test.grouping.type"));
+        $(".manage-person > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1)").shouldHave(
+                text(property.value("admin.user.username") + "-" + property.value("test.grouping.type")));
+
+        $x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td[6]/div/label/input").click();
+        $x("//*[@id=\"manage-person\"]/div[1]/div[4]/form/div/div/button").click();
+        $(byText("You are unable to remove this owner. There must be at least one owner remaining.")).shouldBe(visible);
+        $(byText("Close")).click();
+
+        //remove an owner form Grouping which has at least 2 owners .
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
                 property.value("test.grouping.name"));
         $(".manage-person > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1)").shouldHave(
@@ -148,6 +160,7 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
         $(byText("OK")).click();
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(30));
     }
+
 
     @Test
     public void GroupingName() {
@@ -208,7 +221,7 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
                         text(property.value("test.grouping.name"))));
         $(byText("Cancel")).click();
 
-        // check if exit
+        // check if the groupings exist
         GroupingName();
     }
 

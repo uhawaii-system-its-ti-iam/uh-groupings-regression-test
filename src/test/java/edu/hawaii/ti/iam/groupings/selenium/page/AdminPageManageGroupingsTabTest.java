@@ -9,6 +9,7 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.clipboard;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.Assert.assertEquals;
@@ -51,7 +52,7 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
     public void setUp() {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
-
+        loginWith(driver, createUser("admin"));
         open(property.value("url.admin"));
         $x("//*[@id=\"overlay\"]/div/div").shouldBe(disappear, Duration.ofSeconds(80));
     }
@@ -154,14 +155,12 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
 
     @Test
     public void clipboardCopyTest() {
+        System.setProperty("java.awt.headless", "false");
+        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button").click();
+        $(byText("Show Grouping Path")).click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").val(property.value("test.grouping.name"));
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button/i").click();
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[2]/label").click();
-        $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[3]").shouldHave(text(" Grouping Path "));
-        $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr/td[3]/form/div/div/button/i").click();
-        $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/table/tbody/tr[1]/td[3]/form/div/div/button/i").click();
-        String clipboardValue = getClipboardContent();
-        assertEquals(clipboardValue, "hawaii.edu:custom:test:listserv-tests:JTTEST-L");
+        $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr[1]/td[3]/form/div/div/button/i").click();
+        assertEquals(property.value("test.grouping.path"), clipboard().getText());
     }
 
     @Test
@@ -182,15 +181,4 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.w-35 > div").should(visible);
     }
 
-    public String getClipboardContent() {
-        String clipboardContent = null;
-        try {
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            clipboardContent = (String) clipboard.getData(DataFlavor.stringFlavor);
-        } catch (Exception e) {
-            logger.error("Failed", e);
-        }
-
-        return clipboardContent;
-    }
 }
