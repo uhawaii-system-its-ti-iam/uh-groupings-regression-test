@@ -66,7 +66,6 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         driver = WebDriverRunner.getWebDriver();
 
         user = createUser("student");
-
         admin = createUser("admin");
         loginWith(driver, admin);
 

@@ -91,7 +91,6 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
         $$x("//*[@id=\"membership-opportunities\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldHave(or("should have test", text("large"), value("large"))));
     }
 
-    @Disabled("broken")
     @Test
     public void optIn() {
         $x("//*[@id=\"optIn\"]").setValue("testiwta-many");
@@ -107,7 +106,6 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
         $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldNotHave(text("testiwta-many")));
     }
 
-    @Disabled("broken")
     @Test
     public void copyPathToClipboard() {
         $("#membership-opportunities > div.row.m-auto.pt-2.pb-2 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > div > button").click();

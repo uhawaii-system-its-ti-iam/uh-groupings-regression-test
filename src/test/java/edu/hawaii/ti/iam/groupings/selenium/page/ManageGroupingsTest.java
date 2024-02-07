@@ -118,7 +118,7 @@ public class ManageGroupingsTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[2]").shouldNotBe(visible);
     }
 
-    @Disabled
+    @Disabled("broken")
     @Test
     public void autoLogout() {
         List<String> ownedGroupings = new ArrayList<>();
