@@ -177,16 +177,16 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
 
         System.out.println(adminList);
 
-        $("#manage-admins > div.row.m-auto.pt-3.pb-3.d-flex > div.col-lg-3.col-md-4.col-12.p-0.pt-1 > input").setValue(admin.getUsername());
-        $("#manage-admins > div.table-responsive-sm > table > tbody > tr").shouldHave(text(admin.getUsername()));
+        $("#manage-admins > div.row.m-auto.pt-3.pb-3.d-flex > div.col-lg-3.col-md-4.col-12.p-0.pt-1 > input").setValue(admin.username());
+        $("#manage-admins > div.table-responsive-sm > table > tbody > tr").shouldHave(text(admin.username()));
     }
 
     @Test
     public void filterAdminsSearch() {
-        $x("//*[@id=\"manage-admins\"]/div[1]/div[2]/input").val(admin.getUsername());
-        $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[1]").shouldHave(text(admin.getFirstname()));
-        $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[2]").shouldBe(text(admin.getUhnumber()));
-        $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[3]").shouldBe(text(admin.getUsername()));
+        $x("//*[@id=\"manage-admins\"]/div[1]/div[2]/input").val(admin.username());
+        $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[1]").shouldHave(text(admin.firstname()));
+        $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[2]").shouldBe(text(admin.uhnumber()));
+        $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[3]").shouldBe(text(admin.username()));
     }
 
     @Test
@@ -203,7 +203,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
     @Disabled("broken for some reason")
     @Test
     public void addAdminTest() {
-        $("input[name=\"Add Admin\"]").setValue(user.getUsername()).pressEnter();
+        $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();
         $(byText("Yes")).click();
         $(byText("Testf-iwt-e TestIAM-student has been successfully added to the admins list.")).should(appear);
         $(byText("OK")).click();
@@ -213,10 +213,10 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl("https://www.test.hawaii.edu/uhgroupings/"));
         browser1.open("login");
 //        browser1.open("https://www.test.hawaii.edu/uhgroupings/" + "login");
-        browser1.$("#username").val(user.getUsername());
-        browser1.$("#password").val(user.getPassword());
+        browser1.$("#username").val(user.username());
+        browser1.$("#password").val(user.password());
         browser1.$(byText("Login")).click();
-        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span").shouldBe(text(user.getFirstname()), Duration.ofSeconds(80));
+        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span").shouldBe(text(user.firstname()), Duration.ofSeconds(80));
         browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1/span/span").shouldBe(text("Admin"), Duration.ofSeconds(80));
 //        browser1.$x("/html/body/main/div[1]/div/div[1]/div/div/form/button").click(); //logs out
         browser1.open("/admin");
@@ -224,7 +224,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         browser1.$x("//*[@id=\"adminTab\"]/li[2]/a").click();
 //        browser1.close();
 
-        $("input[title=\"Filter Admins\"]").setValue(user.getUsername());
+        $("input[title=\"Filter Admins\"]").setValue(user.username());
         $("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
         $(byText("Are you sure you want to remove")).shouldBe(visible);
         $(byText("Testf-iwt-e TestIAM-student")).shouldBe(visible);

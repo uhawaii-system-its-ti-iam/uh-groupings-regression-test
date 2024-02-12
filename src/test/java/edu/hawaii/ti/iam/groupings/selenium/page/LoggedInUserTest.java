@@ -77,7 +77,7 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void navBarLogoutButtonText() {
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").shouldHave(text("Logout (" + user.getUsername() + ")"));
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").shouldHave(text("Logout (" + user.username() + ")"));
         $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").shouldHave(text("Login"));
     }
@@ -158,7 +158,7 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void welcomeMessageTest() {
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + user.getFirstname() + "!"));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + user.firstname() + "!"));
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Owner"));
     }
 

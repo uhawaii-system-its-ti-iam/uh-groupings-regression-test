@@ -37,10 +37,10 @@ public class AbstractTestBase {
         logger.info("Logging in with " + user);
 
         WebElement loginUsername = driver.findElement(By.cssSelector("#username"));
-        loginUsername.sendKeys(user.getUsername());
+        loginUsername.sendKeys(user.username());
 
         WebElement loginPassword = driver.findElement(By.cssSelector("#password"));
-        loginPassword.sendKeys(user.getPassword());
+        loginPassword.sendKeys(user.password());
 
         WebElement loginButton = driver.findElement(By.name("submitBtn"));
         loginButton.click();

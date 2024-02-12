@@ -82,8 +82,8 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
 
     @Test
     public void filterGroupings() {
-        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue(user.getUsername());
-        $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldHave(text(user.getUsername())));
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue(user.username());
+        $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldHave(text(user.username())));
     }
 
     @Test
