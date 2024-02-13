@@ -87,6 +87,21 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
     }
 
     @Test
+    public void groupingName() {
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("JTTEST-L");
+        $("#current-memberships > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").shouldHave(
+                text("JTTEST-L"));
+    }
+
+    @Test
+    public void groupingPath() {
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("JTTEST-L");
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/div/button").click();
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/div/ul/li[3]/label").click();
+        $("#hawaii\\.edu\\:custom\\:test\\:listserv-tests\\:JTTEST-L").shouldBe(visible);
+    }
+
+    @Test
     public void optOut() {
         $(byText("acer-cc-ics")).parent().find(byClassName("opt-button")).click();
         $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldNotHave(exactText("acer-cc-ics")));

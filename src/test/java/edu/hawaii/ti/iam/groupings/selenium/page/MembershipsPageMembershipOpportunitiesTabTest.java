@@ -92,6 +92,21 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
     }
 
     @Test
+    public void groupingName() {
+        $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/input").setValue("testiwta-many");
+        $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-35.p-10.align-middle.ng-binding").shouldHave(
+                text("testiwta-many"));
+    }
+
+    @Test
+    public void groupingPath() {
+        $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/input").setValue("testiwta-many");
+        $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/div/button").click();
+        $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/div/ul/li[3]/label").click();
+        $("#tmp\\:testiwta\\:testiwta-many").shouldBe(visible);
+    }
+
+    @Test
     public void optIn() {
         $x("//*[@id=\"optIn\"]").setValue("testiwta-many");
         $(byText("No groupings are currently available.")).should(disappear, Duration.ofSeconds(80));
