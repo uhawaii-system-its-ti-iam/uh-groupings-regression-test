@@ -8,7 +8,7 @@ public record User(String username, String password, String firstname, String uh
         private String username;
         private String password;
         private String firstname;
-        private String uhnumber;
+        private String uhuuid;
 
         public Builder username(String username) {
             this.username = username;
@@ -25,8 +25,8 @@ public record User(String username, String password, String firstname, String uh
             return this;
         }
 
-        public Builder uhnumber(String uhnumber) {
-            this.uhnumber = uhnumber;
+        public Builder uhuuid(String uhuuid) {
+            this.uhuuid = uhuuid;
             return this;
         }
 
@@ -34,8 +34,8 @@ public record User(String username, String password, String firstname, String uh
             Objects.requireNonNull(username, "username cannot be null.");
             Objects.requireNonNull(password, "password cannot be null.");
             Objects.requireNonNull(firstname, "firstname cannot be null.");
-            Objects.requireNonNull(uhnumber, "uhnumber cannot be null.");
-            return new User(username, password, firstname, uhnumber);
+            Objects.requireNonNull(uhuuid, "uhuuid cannot be null.");
+            return new User(username, password, firstname, uhuuid);
         }
     }
 }

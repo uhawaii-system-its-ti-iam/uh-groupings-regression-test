@@ -14,7 +14,7 @@ public class UserFactory {
                 .username(property.value(key + ".user.username"))
                 .password(property.value(key + ".user.password"))
                 .firstname(property.value(key + ".user.firstname"))
-                .uhnumber(property.value(key + ".user.uhnumber"))
+                .uhuuid(property.value(key + ".user.uhuuid"))
                 .build();
     }
 
