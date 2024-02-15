@@ -2,7 +2,7 @@ package edu.hawaii.ti.iam.groupings.selenium.core;
 
 import java.util.Objects;
 
-public record User(String username, String password, String firstname, String uhnumber) {
+public record User(String username, String password, String firstname, String uhuuid) {
 
     public static final class Builder {
         private String username;

@@ -185,7 +185,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
     public void filterAdminsSearch() {
         $x("//*[@id=\"manage-admins\"]/div[1]/div[2]/input").val(admin.username());
         $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[1]").shouldHave(text(admin.firstname()));
-        $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[2]").shouldBe(text(admin.uhnumber()));
+        $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[2]").shouldBe(text(admin.uhuuid()));
         $x("//*[@id=\"manage-admins\"]/div[2]/table/tbody/tr[1]/td[3]").shouldBe(text(admin.username()));
     }
 
