@@ -200,7 +200,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         String ss = screenshot("admin_table");
     }
 
-    @Disabled("broken for some reason")
+    @Disabled("broken")
     @Test
     public void addAdminTest() {
         $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();

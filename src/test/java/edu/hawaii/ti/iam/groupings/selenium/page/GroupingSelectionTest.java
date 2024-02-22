@@ -1,6 +1,12 @@
 package edu.hawaii.ti.iam.groupings.selenium.page;
 
-import com.codeborne.selenide.*;
+import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.WebElementCondition;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideDriver;
+import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.ex.FileNotDownloadedError;
 import com.codeborne.selenide.logevents.SelenideLogger;
 
@@ -11,28 +17,53 @@ import org.apache.commons.codec.digest.DigestUtils;
 import com.opencsv.CSVWriter;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.*;
-import org.openqa.selenium.Proxy;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Disabled;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.disappear;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.not;
+import static com.codeborne.selenide.Condition.disabled;
+import static com.codeborne.selenide.Condition.interactable;
+import static com.codeborne.selenide.Condition.and;
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.cssClass;
+import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.empty;
+import static com.codeborne.selenide.Condition.selected;
 import static com.codeborne.selenide.FileDownloadMode.FOLDER;
 import static com.codeborne.selenide.DownloadOptions.using;
-import static com.codeborne.selenide.files.FileFilters.withExtension;
-import static com.codeborne.selenide.FileDownloadMode.PROXY;
-import static com.codeborne.selenide.Selectors.*;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selectors.by;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.refresh;
+import static com.codeborne.selenide.Selenide.clearBrowserCookies;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
@@ -44,7 +75,7 @@ public class GroupingSelectionTest extends AbstractTestBase {
     private WebDriver driver;
     private User admin;
     private User user;
-    private Duration timeout = Duration.ofSeconds(80);
+    private final Duration timeout = Duration.ofSeconds(80);
 
     public GroupingSelectionTest() {
         super();
@@ -97,17 +128,9 @@ public class GroupingSelectionTest extends AbstractTestBase {
     }
 
     @Test
-    public void testForTests() {
-//        System.out.println(System.getProperty("user.dir") + File.separator + "downloadFile" + "HERE");
-        System.out.println(System.getProperty("user.home")+ File.separator + "." + System.getProperty("user.name") + "-conf" + File.separator + "batch-import.txt");
-    }
-
-    @Test
     @Order(1)
     public void groupingName() {
-//        $x("//*[@id=\"groupNameCol\"]/h2").shouldBe(text("testiwta-many"));
         $(by("id", "selectedGroupHeader")).shouldHave(text("testiwta-many"));
-//        System.out.println(System.getProperty("user.dir") + File.separator + "downloadFile");
     }
     @Test
     @Order(2)
@@ -117,23 +140,19 @@ public class GroupingSelectionTest extends AbstractTestBase {
     @Test
     @Order(3)
     public void groupingDescription() {
-//        $x("//*[@id=\"sel\"]/div/section[1]/div/div[3]/div/div[1]/p").shouldHave(text("Test Many Groups In Basis"));
         $("#sel > div > section:nth-child(1) > div > div:nth-child(3) > div > div:nth-child(1) > p").shouldHave(text("Test Many Groups In Basis"));
     }
     @Test
     @Order(4)
     public void returnToGroupingsButton() {
         $(byText("Return to Groupings List")).click();
-//        $x("//*[@id=\"sel\"]/div").should(disappear);
         $(by("id", "sel")).should(disappear);
-//        $x("//*[@id=\"manage-groupings\"]/div[2]").shouldBe(visible);
         $(by("id", "manage-groupings")).shouldBe(visible);
     }
     @Test
     @Order(5)
     public void filterMembers() {
         $("#all > div.row > div.col-md-4.py-2 > input").setValue("ab");
-//        $x("//*[@id=\"overlay\"]/div/div").should(disappear, timeout);
         $$x("//*[@id=\"all\"]/div[2]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldHave(text("ab")));
     }
     @Disabled
@@ -345,14 +364,13 @@ public class GroupingSelectionTest extends AbstractTestBase {
         $(byText("Yes")).click();
         $("#modal-body").shouldHave(text(user.firstname()));
         $(byText("OK")).click();
-        $x("//*[@id=\"overlay\"]/div/div").should(disappear, timeout);
+        $("#overlay").should(disappear, timeout);
         $("#include-display tbody").shouldNotHave(text(user.username()));
     }
 
-    //    @Test
     public void removeMemberTextBox(String userInfo) {
         open(property.value("url.groupings"));
-        $x("//*[@id=\"overlay\"]").should(disappear);
+        $("#overlay").should(disappear);
         $(byText("testiwta-store-empty")).click();
         $x("//*[@id=\"group-pills\"]/li[3]/a").click();
         $("#include-display > div.table-responsive-sm > table > tbody").shouldHave(text(userInfo));
@@ -362,7 +380,6 @@ public class GroupingSelectionTest extends AbstractTestBase {
         $("#modal-body").shouldHave(text(userInfo));
         $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
         $(byText("OK")).click();
-//        $x("//*[@id=\"overlay\"]").should(disappear);
         $("#overlay").should(disappear);
         $(byText(user.username())).shouldNot(exist);
     }
@@ -370,13 +387,13 @@ public class GroupingSelectionTest extends AbstractTestBase {
     @Order(11)
     public void multiAddMembersUsername() {
         open(property.value("url.groupings"));
-        $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+        $("#overlay").should(disappear, timeout);
         $(byText("testiwta-store-empty")).click();
         $x("//*[@id=\"group-pills\"]/li[3]/a").click();
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(admin.username() + " " + user.username()).pressEnter();
         $("#modal-body").shouldBe(visible);
         $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
-        $x("//*[@id=\"overlay\"]").should(disappear);
+        $("#overlay").should(disappear);
         $(byText("OK")).click();
         $x("//*[@id=\"pill-content\"]").shouldHave(and("Admin and user first name should be in the include table", text(admin.firstname()), text(user.firstname())));
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(admin.username() + " " + user.username());
@@ -384,20 +401,20 @@ public class GroupingSelectionTest extends AbstractTestBase {
         $x("//*[@id=\"modal-body\"]").shouldHave(and("Modal is visible and contains admin and user username", text(admin.username()), text(user.username())));
         $(byText("Yes")).click();
         $(byText("OK")).click();
-        $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+        $("#overlay").should(disappear, timeout);
         $x("//*[@id=\"pill-content\"]").shouldNotHave(and("Admin and user should not be in include table", text(admin.username()), text(user.username())));
     }
     @Test
     @Order(12)
     public void multiAddMembersUhNumber() {
         open(property.value("url.groupings"));
-        $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+        $("#overlay").should(disappear, timeout);
         $(byText("testiwta-store-empty")).click();
         $x("//*[@id=\"group-pills\"]/li[3]/a").click();
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(admin.uhuuid() + " " + user.uhuuid()).pressEnter();
         $("#modal-body").shouldBe(visible);
         $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
-        $x("//*[@id=\"overlay\"]").should(disappear);
+        $("#overlay").should(disappear);
         $(byText("OK")).click();
         $x("//*[@id=\"pill-content\"]").shouldHave(and("Admin and user first name should be in the include table", text(admin.firstname()), text(user.firstname())));
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(admin.uhuuid() + " " + user.uhuuid());
@@ -405,17 +422,18 @@ public class GroupingSelectionTest extends AbstractTestBase {
         $x("//*[@id=\"modal-body\"]").shouldHave(and("Modal is visible and contains admin and user username", text(admin.username()), text(user.username())));
         $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
         $(byText("OK")).click();
-        $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+        $("#overlay").should(disappear, timeout);
         $x("//*[@id=\"pill-content\"]").shouldNotHave(and("Admin and user should not be in include table", text(admin.username()), text(user.username())));
     }
     @Test
+    @Order(13)
     public void batchImport() {
         open(property.value("url.groupings"));
-        $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+        $("#overlay").should(disappear, timeout);
         $(byText("testiwta-store-empty")).click();
-        $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+        $("#overlay").should(disappear, timeout);
         $x("//*[@id=\"group-pills\"]/li[3]/a").click();
-        $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+        $("#overlay").should(disappear, timeout);
         $(byText("Import File")).click();
         $("#modal-body").should(exist);
         try {
@@ -426,31 +444,23 @@ public class GroupingSelectionTest extends AbstractTestBase {
             $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
             $("#modal-body").should(exist, timeout);
             $(byText("OK")).click();
-            $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+            $("#overlay").should(disappear, timeout);
             $x("//*[@id=\"include-display\"]/div[2]").shouldHave(and("Table should have user and admin username", text(user.username()), text(admin.username())));
             $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(admin.username() + " " + user.username());
             $(byText("Remove")).click();
             $("#modal-body > div > table > tbody").shouldHave(and("Modal is visible and contains admin and user username", text(admin.username()), text(user.username())));
             $(byText("Yes")).click();
             $(byText("OK")).click();
-            $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+            $("#overlay").should(disappear, timeout);
             $x("//*[@id=\"pill-content\"]").shouldNotHave(and("Admin and user should not be in include table", text(admin.username()), text(user.username())));
         } catch(NullPointerException e) {
             throw new RuntimeException(e);
         }
     }
     @Test
-    @Order(13)
+    @Order(14)
     public void groupingPreferences() {
-//        closeWebDriver();
         SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl(property.value("app.url.home")));
-//        open(property.value("app.url.home"));
-
-        //        admin.loggingIn();
-        //        Login as an admin
-//        open(property.value("app.url.login"));
-//        driver = WebDriverRunner.getWebDriver();
-//        loginWith(driver, admin);
 
         open(property.value("url.memberships"));
         $("#memberTab > li:nth-child(2) > a").shouldBe(visible, timeout);
@@ -459,10 +469,8 @@ public class GroupingSelectionTest extends AbstractTestBase {
         $(byText("No groupings are currently available.")).should(disappear, timeout);
         $("#membership-opportunities tbody").shouldBe(empty);
 
-        //        user.loggingInNoDuoAuth(browser1);
         //        Login as a user
         browser1.open(property.value("app.url.login"));
-//        driver = browser1.getWebDriver();
         loginWith(browser1.getWebDriver(), user);
 
         browser1.open(property.value("url.groupings"));
@@ -474,7 +482,6 @@ public class GroupingSelectionTest extends AbstractTestBase {
         browser1.$("#allowOptIn").click();
         open(property.value("url.memberships"));
         $("#memberTab > li:nth-child(2) > a").click();
-        //        sleep(10000);
         refresh();
         $(byText("Membership Opportunities")).click();
         $("#optIn").setValue("testiwte-store-empty").pressEnter();
@@ -503,11 +510,5 @@ public class GroupingSelectionTest extends AbstractTestBase {
         browser1.$("#allowOptOut").click();
         browser1.close();
         clearBrowserCookies();
-//        closeWebDriver();
-        //        user.loggingInNoDuoAuth();
-        //        Login as a user
-//        open(property.value("app.url.login"));
-//        driver = WebDriverRunner.getWebDriver();
-//        loginWith(driver, user);
     }
 }
