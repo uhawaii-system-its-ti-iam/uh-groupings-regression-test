@@ -174,7 +174,6 @@ public class ManageGroupingsTest extends AbstractTestBase {
         $("body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button").shouldBe(
                 visible);
         closeWebDriver();
-//        admin.loggingIn();
         loginWith(driver, admin);
         open(property.value("url.relative.groupings"));
         // Cleanup: Adds test user back to testgroupings and removes admin
@@ -201,7 +200,6 @@ public class ManageGroupingsTest extends AbstractTestBase {
             $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(80));
         });
         closeWebDriver();
-//        user.loggingInNoDuoAuth();
         loginWith(driver, user);
         open(property.value("url.relative.groupings"));
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(80));
@@ -309,6 +307,5 @@ public class ManageGroupingsTest extends AbstractTestBase {
                 and("Visible and text", visible, text("Description ")));
         $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(
                 and("Visible and text", visible, text("Grouping Path")));
-
     }
 }
