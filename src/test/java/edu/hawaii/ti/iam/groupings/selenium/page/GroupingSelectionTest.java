@@ -145,7 +145,7 @@ public class GroupingSelectionTest extends AbstractTestBase {
     @Test
     @Order(4)
     public void returnToGroupingsButton() {
-        $(byText("Return to Groupings List")).click();
+        $("body > main > div.container > div:nth-child(3) > div.mt-4 > button:nth-child(1)").click();
         $(by("id", "sel")).should(disappear);
         $(by("id", "manage-groupings")).shouldBe(visible);
     }
@@ -465,17 +465,16 @@ public class GroupingSelectionTest extends AbstractTestBase {
         open(property.value("url.memberships"));
         $("#memberTab > li:nth-child(2) > a").shouldBe(visible, timeout);
         $("#memberTab > li:nth-child(2) > a").click();
-        $("#optIn").setValue("testiwte-store-empty").pressEnter();
+        $("#optIn").setValue("testiwtb-store-empty").pressEnter();
         $(byText("No groupings are currently available.")).should(disappear, timeout);
         $("#membership-opportunities tbody").shouldBe(empty);
 
-        //        Login as a user
         browser1.open(property.value("app.url.login"));
         loginWith(browser1.getWebDriver(), user);
 
         browser1.open(property.value("url.groupings"));
-        browser1.$(byText("testiwte-store-empty")).click();
-        $(by("id", "overlay")).should(disappear, timeout);
+        browser1.$(byText("testiwtb-store-empty")).click();
+        browser1.$(by("id", "overlay")).should(disappear, timeout);
         browser1.$("#group-pills > li:nth-child(7) > a > i").click();
         browser1.$("#allowOptIn").shouldNotBe(selected);
         browser1.$("#allowOptOut").shouldNotBe(selected);
@@ -484,24 +483,24 @@ public class GroupingSelectionTest extends AbstractTestBase {
         $("#memberTab > li:nth-child(2) > a").click();
         refresh();
         $(byText("Membership Opportunities")).click();
-        $("#optIn").setValue("testiwte-store-empty").pressEnter();
+        $("#optIn").setValue("testiwtb-store-empty").pressEnter();
         $(byText("No groupings are currently available.")).should(disappear, timeout);
-        $("#membership-opportunities tbody").shouldHave(text("testiwte-store-empty"), timeout);
+        $("#membership-opportunities tbody").shouldHave(text("testiwtb-store-empty"), timeout);
         $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-8.align-middle.text-center > button").should(exist);
         $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-8.align-middle.text-center > button").click();
         $(by("id", "overlay")).should(disappear, timeout);
         $("#memberTab > li:nth-child(1) > a").click();
-        $("#current-memberships input").setValue("testiwte-store-empty");
+        $("#current-memberships input").setValue("testiwtb-store-empty");
         $("#current-memberships tbody > tr:nth-child(1) > td.w-8.align-middle.text-center > span").shouldHave(text("Required"));
         browser1.$("#allowOptOut").click();
         open(property.value("url.memberships"));
         $(by("id", "overlay")).shouldBe(disappear, timeout);
-        $("#current-memberships input").setValue("testiwte-store-empty");
+        $("#current-memberships input").setValue("testiwtb-store-empty");
         $("#current-memberships > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-8.align-middle.text-center > div > button").click();
         $(by("id", "overlay")).should(disappear, timeout);
         browser1.open(property.value("url.groupings"));
         $(by("id", "overlay")).should(disappear, timeout);
-        browser1.$(byText("testiwte-store-empty")).click();
+        browser1.$(byText("testiwtb-store-empty")).click();
         $(by("id", "overlay")).should(disappear, timeout);
         browser1.$("#group-pills > li:nth-child(7) > a > i").click();
         browser1.$("#allowOptIn").shouldBe(selected);

@@ -98,17 +98,17 @@ public class ManageGroupingsTest extends AbstractTestBase {
 
     @Test
     public void groupingName() {
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwte-store-empty");
+        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwtb-store-empty");
         $("#manage-groupings > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").shouldHave(
-                text("testiwte-store-empty"));
+                text("testiwtb-store-empty"));
     }
 
     @Test
     public void groupingPath() {
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwte-store-empty");
+        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwtb-store-empty");
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button").click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[3]/label").click();
-        $("#tmp\\:testiwte\\:testiwte-store-empty").shouldBe(visible);
+        $("#tmp\\:testiwtb\\:testiwtb-store-empty").shouldBe(visible);
     }
 
     @Test
@@ -171,8 +171,7 @@ public class ManageGroupingsTest extends AbstractTestBase {
             $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
             $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(80));
         });
-        $("body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button").shouldBe(
-                visible);
+        $("body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button").shouldBe(visible);
         closeWebDriver();
         loginWith(driver, admin);
         open(property.value("url.relative.groupings"));
@@ -240,7 +239,7 @@ public class ManageGroupingsTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[3]/label").click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("aux");
         $x("//*[@id=\"manage-groupings\"]/div[2]/div[1]/table/tbody/tr/td[3]/form/div/div/button/i").click();
-        assertEquals(getClipboardContent(), "tmp:testiwte:testiwte-aux");
+        assertEquals(getClipboardContent(), "tmp:testiwtb:testiwtb-aux");
     }
 
     @Test

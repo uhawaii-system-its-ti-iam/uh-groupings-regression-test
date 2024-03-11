@@ -103,6 +103,7 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
 
     @Test
     public void optOut() {
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("acer-cc-ics");
         $(byText("acer-cc-ics")).parent().find(byClassName("opt-button")).click();
         $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldNotHave(exactText("acer-cc-ics")));
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(80));

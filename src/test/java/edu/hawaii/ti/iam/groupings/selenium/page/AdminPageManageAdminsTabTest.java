@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
@@ -72,6 +73,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         open(property.value("url.admin"));
         $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         $(by("id", "manage-admins-tab")).click();
+        $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
     }
 
     @AfterEach
@@ -88,6 +90,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
         List<String> tempNameList = new ArrayList<>(adminList);
         tempNameList.sort(String::compareToIgnoreCase);
@@ -105,6 +108,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
         Collections.reverse(tempNameList);
         System.out.println(tempNameList);
@@ -121,6 +125,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
 
         List<String> tempNumberList = new ArrayList<>(adminList);
@@ -139,6 +144,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
         Collections.reverse(tempNumberList);
         assertEquals(tempNumberList, adminList);
@@ -154,6 +160,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
         List<String> tempUsernameList = new ArrayList<>(adminList);
         tempUsernameList.sort(String::compareToIgnoreCase);
@@ -171,6 +178,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
+            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
         Collections.reverse(tempUsernameList);
         assertEquals(tempUsernameList, adminList);
@@ -200,41 +208,29 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         String ss = screenshot("admin_table");
     }
 
-    @Disabled("broken")
     @Test
-    public void addAdminTest() {
+    public void addAdminAndAutologoutTest() {
         $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();
         $(byText("Yes")).click();
-        $(byText("Testf-iwt-e TestIAM-student has been successfully added to the admins list.")).should(appear);
+        $(byText("Testf-iwt-b TestIAM-staff has been successfully added to the admins list.")).should(appear);
         $(byText("OK")).click();
         $x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
 
-        // Open another browser session to login as testfiwte.
-        SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl("https://www.test.hawaii.edu/uhgroupings/"));
-        browser1.open("login");
-//        browser1.open("https://www.test.hawaii.edu/uhgroupings/" + "login");
-        browser1.$("#username").val(user.username());
-        browser1.$("#password").val(user.password());
-        browser1.$(byText("Login")).click();
+        SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl(property.value("app.url.home")));
+        browser1.open(property.value("app.url.login"));
+        loginWith(browser1.getWebDriver(), user);
         browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span").shouldBe(text(user.firstname()), Duration.ofSeconds(80));
         browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1/span/span").shouldBe(text("Admin"), Duration.ofSeconds(80));
-//        browser1.$x("/html/body/main/div[1]/div/div[1]/div/div/form/button").click(); //logs out
         browser1.open("/admin");
         browser1.$x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
         browser1.$x("//*[@id=\"adminTab\"]/li[2]/a").click();
-//        browser1.close();
 
-        $("input[title=\"Filter Admins\"]").setValue(user.username());
-        $("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
-        $(byText("Are you sure you want to remove")).shouldBe(visible);
-        $(byText("Testf-iwt-e TestIAM-student")).shouldBe(visible);
-        $(byText("Yes")).click();
-        $x("//*[@id=\"overlay\"]/div").should(appear, Duration.ofSeconds(80));
-        $x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
-
-        // Make sure that testfiwte is automatically logged out when it is removed from the admin list.
-        // This test fails.
-        // $(by("id", "loginForm")).shouldBe(visible, Duration.ofSeconds(300));
+        browser1.$("input[title=\"Filter Admins\"]").setValue(user.username()).pressEnter();
+        browser1.$("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
+        browser1.$(byText("Are you sure you want to remove")).shouldBe(visible);
+        browser1.$(byText("Testf-iwt-b TestIAM-staff")).shouldBe(visible);
+        browser1.$(byText("Yes")).click();
+        browser1.$("body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button").shouldBe(visible);
         browser1.close();
     }
 }

@@ -57,9 +57,10 @@ public class IdleLogoutTest extends AbstractTestBase {
 
         open(property.value("app.url.home") + "/groupings");
         $(by("id", "overlay")).should(disappear, Duration.ofSeconds(80));
-        $(byText("testiwte-many")).click();
+        $(byText("testiwtb-many")).click();
         $(by("id", "sel")).shouldBe(visible);
     }
+
     @Disabled
     @Test
     public void idleLogout() {
