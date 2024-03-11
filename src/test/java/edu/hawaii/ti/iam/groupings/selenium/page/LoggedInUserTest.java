@@ -25,6 +25,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -162,7 +163,9 @@ public class LoggedInUserTest extends AbstractTestBase {
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Owner"));
     }
 
+    @Disabled
     @Test
+    /** Run this test if there is at least one announcement. **/
     public void announcementTest() {
         $x("/html/body/main/div[1]/div/div/div").shouldBe(visible);
         $x("/html/body/main/div[1]/div/div/div/button/span").click();

@@ -103,7 +103,7 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
         $x("//div[contains(@class, 'spinner-border')]").should(disappear, Duration.ofSeconds(30));
         $x("//h3").shouldHave(text(property.value("admin.user.firstname")));
         $x("//h3").shouldHave(text(property.value("admin.user.username")));
-        $x("//h3").shouldHave(text(property.value("admin.user.uhnumber")));
+        $x("//h3").shouldHave(text(property.value("admin.user.uhuuid")));
     }
 
     @Test
@@ -117,6 +117,7 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
     }
 
     @Test
+    /** Make sure that 'testiwta-aux' has only one owner, 'testiwta' before running this test **/
     public void removeFromGrouping() {
         // unable to remove the sole owner of any grouping such as aux grouping type of test account
         searchPerson();
@@ -206,7 +207,6 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
 
     }
 
-    @Disabled("broken")
     @Test
     public void cancelFromWithinRemoveModal() {
         searchPerson();

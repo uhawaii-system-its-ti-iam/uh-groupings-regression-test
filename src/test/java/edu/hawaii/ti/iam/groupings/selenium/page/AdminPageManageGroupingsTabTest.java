@@ -1,5 +1,5 @@
 package edu.hawaii.ti.iam.groupings.selenium.page;
-
+import org.openqa.selenium.JavascriptExecutor;
 import static com.codeborne.selenide.Condition.and;
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.disappear;
@@ -77,6 +77,8 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         tempList.sort(String::compareToIgnoreCase);
         assertEquals(groupingsName, tempList);
         tempList.clear();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0,0)");
 
         ArrayList<String> groupingsDescription = new ArrayList<>();
         $x("//*[@id=\"manage-groupings\"]/div[3]/nav/ul/li[1]").click();
@@ -93,6 +95,7 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         assertEquals(groupingsDescription, tempList);
         tempList.clear();
 
+        js.executeScript("window.scrollTo(0,0)");
         ArrayList<String> groupingsPath = new ArrayList<>();
         $x("//*[@id=\"manage-groupings\"]/div[3]/nav/ul/li[1]").click();
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[3]").doubleClick();
