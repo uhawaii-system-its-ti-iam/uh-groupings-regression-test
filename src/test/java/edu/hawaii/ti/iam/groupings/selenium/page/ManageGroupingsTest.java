@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
@@ -62,8 +63,8 @@ public class ManageGroupingsTest extends AbstractTestBase {
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.safaridriver().setup();
+        WebDriverRunner.setWebDriver(new SafariDriver());
     }
 
     @AfterAll

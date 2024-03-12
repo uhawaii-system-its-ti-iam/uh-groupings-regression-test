@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Disabled;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
@@ -93,13 +94,13 @@ public class GroupingSelectionTest extends AbstractTestBase {
 //        ChromeOptions options = new ChromeOptions();
 //        options.setCapability("proxy", proxy);
 
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
-        Configuration.fileDownload = FOLDER;
-        Configuration.downloadsFolder = System.getProperty("user.dir") + File.separator + "downloadFile";
-//        Configuration.downloadsFolder = "build/reports/tests";
-//                System.getProperty("user.dir") + File.separator + "downloadFile";
-        SelenideLogger.addListener("allure", new AllureSelenide());
+        WebDriverManager.safaridriver().setup();
+        WebDriverRunner.setWebDriver(new SafariDriver());
+//        Configuration.fileDownload = FOLDER;
+//        Configuration.downloadsFolder = System.getProperty("user.dir") + File.separator + "downloadFile";
+////        Configuration.downloadsFolder = "build/reports/tests";
+////                System.getProperty("user.dir") + File.separator + "downloadFile";
+//        SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
     @AfterAll
