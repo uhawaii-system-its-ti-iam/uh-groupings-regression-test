@@ -1,5 +1,6 @@
 package edu.hawaii.ti.iam.groupings.selenium.page;
 
+import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -18,6 +19,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -60,6 +62,7 @@ public class LoggedInUserTest extends AbstractTestBase {
         driver = WebDriverRunner.getWebDriver();
         user = createUser("student");
         loginWith(driver, user);
+        $x("//*[@id=\"overlay\"]/div/div").shouldBe(disappear, Duration.ofSeconds(30));
     }
 
     @AfterEach

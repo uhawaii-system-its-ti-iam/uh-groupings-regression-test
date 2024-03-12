@@ -95,11 +95,11 @@ public class GroupingSelectionTest extends AbstractTestBase {
 
         WebDriverManager.chromedriver().setup();
         WebDriverRunner.setWebDriver(new ChromeDriver());
-        Configuration.fileDownload = FOLDER;
-        Configuration.downloadsFolder = System.getProperty("user.dir") + File.separator + "downloadFile";
+//        Configuration.fileDownload = FOLDER;
+//        Configuration.downloadsFolder = System.getProperty("user.dir") + File.separator + "downloadFile";
 //        Configuration.downloadsFolder = "build/reports/tests";
 //                System.getProperty("user.dir") + File.separator + "downloadFile";
-        SelenideLogger.addListener("allure", new AllureSelenide());
+//        SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
     @AfterAll
@@ -350,38 +350,38 @@ public class GroupingSelectionTest extends AbstractTestBase {
         $(byText("testiwta-store-empty")).click();
         $x("//*[@id=\"group-pills\"]/li[3]/a").click();
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(user.uhuuid()).pressEnter();
-        $x("/html/body/div[1]/div/div").shouldBe(visible);
-        $("#modal-body > table > tbody").shouldHave(text(user.uhuuid()));
+        $x("/html/body/div[1]/div/div").shouldBe(visible, timeout);
+        $("#modal-body > table > tbody").shouldHave(text(user.uhuuid()), timeout);
         $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
-        $x("/html/body/div[1]/div/div").shouldBe(visible);
+        $x("/html/body/div[1]/div/div").shouldBe(visible, timeout);
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, timeout);
-        $("#modal-body").shouldHave(text(user.firstname()));
+        $("#modal-body").shouldHave(text(user.firstname()), timeout);
         $(byText("OK")).click();
         $("#include-display input[title=\"Filter Members\"]").setValue(user.username());
         $("span[class=\"far fa-trash-alt fa-pull-right clickable pt-1 ng-isolate-scope\"]").click();
-        $("#modal-body").shouldBe(visible);
-        $("#modal-body").$("tbody").shouldHave(text(user.uhuuid()));
+        $("#modal-body").shouldBe(visible, timeout);
+        $("#modal-body").$("tbody").shouldHave(text(user.uhuuid()), timeout);
         $(byText("Yes")).click();
-        $("#modal-body").shouldHave(text(user.firstname()));
+        $("#modal-body").shouldHave(text(user.firstname()), timeout);
         $(byText("OK")).click();
         $("#overlay").should(disappear, timeout);
-        $("#include-display tbody").shouldNotHave(text(user.username()));
+        $("#include-display tbody").shouldNotHave(text(user.username()), timeout);
     }
 
     public void removeMemberTextBox(String userInfo) {
         open(property.value("url.groupings"));
-        $("#overlay").should(disappear);
+        $("#overlay").should(disappear, timeout);
         $(byText("testiwta-store-empty")).click();
         $x("//*[@id=\"group-pills\"]/li[3]/a").click();
-        $("#include-display > div.table-responsive-sm > table > tbody").shouldHave(text(userInfo));
+        $("#include-display > div.table-responsive-sm > table > tbody").shouldHave(text(userInfo), timeout);
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(userInfo);
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memBtns > button.btn.btn-remove").click();
-        $x("/html/body/div[1]/div/div").shouldBe(visible);
-        $("#modal-body").shouldHave(text(userInfo));
+        $x("/html/body/div[1]/div/div").shouldBe(visible, timeout);
+        $("#modal-body").shouldHave(text(userInfo), timeout);
         $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
         $(byText("OK")).click();
-        $("#overlay").should(disappear);
-        $(byText(user.username())).shouldNot(exist);
+        $("#overlay").should(disappear, timeout);
+        $(byText(user.username())).shouldNot(exist, timeout);
     }
     @Test
     @Order(11)
@@ -393,7 +393,7 @@ public class GroupingSelectionTest extends AbstractTestBase {
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(admin.username() + " " + user.username()).pressEnter();
         $("#modal-body").shouldBe(visible);
         $("body > div.modal.fade.ng-scope.ng-isolate-scope.in > div > div > div.modal-footer.ng-scope > button.btn.btn-primary").click();
-        $("#overlay").should(disappear);
+        $("#overlay").should(disappear, timeout);
         $(byText("OK")).click();
         $x("//*[@id=\"pill-content\"]").shouldHave(and("Admin and user first name should be in the include table", text(admin.firstname()), text(user.firstname())));
         $("#include-display > div.d-lg-flex.d-block.justify-content-lg-between.justify-content-start > div > form > div > div.memSearch > input").setValue(admin.username() + " " + user.username());

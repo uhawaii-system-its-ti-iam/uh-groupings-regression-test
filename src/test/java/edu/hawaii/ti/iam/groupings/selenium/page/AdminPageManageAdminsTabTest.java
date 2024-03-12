@@ -83,16 +83,16 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
 
     @Test
     public void filterAdminsSortTest() {
-        List<String> adminList = new ArrayList<>();
+        ArrayList<String> adminList = new ArrayList<>();
+        $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1) > i").doubleClick();
         while (true) {
             adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
-            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
-        List<String> tempNameList = new ArrayList<>(adminList);
+        ArrayList<String> tempNameList = new ArrayList<String>(adminList);
         tempNameList.sort(String::compareToIgnoreCase);
         assertEquals(adminList, tempNameList);
         adminList.clear();
@@ -108,7 +108,6 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
-            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
         Collections.reverse(tempNameList);
         System.out.println(tempNameList);
@@ -125,10 +124,8 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
-            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
-
-        List<String> tempNumberList = new ArrayList<>(adminList);
+        ArrayList<String> tempNumberList = new ArrayList<String>(adminList);
         tempNumberList.sort(String::compareToIgnoreCase);
         assertEquals(tempNumberList, adminList);
 
@@ -144,10 +141,10 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
-            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
         Collections.reverse(tempNumberList);
         assertEquals(tempNumberList, adminList);
+
 
         adminList.clear();
         if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
@@ -160,9 +157,8 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
-            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
-        List<String> tempUsernameList = new ArrayList<>(adminList);
+        ArrayList<String> tempUsernameList = new ArrayList<String>(adminList);
         tempUsernameList.sort(String::compareToIgnoreCase);
         assertEquals(tempUsernameList, adminList);
 
@@ -178,7 +174,6 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
                 break;
             }
             $$(byText("Next")).filterBy(visible).first().parent().parent().click();
-            $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
         }
         Collections.reverse(tempUsernameList);
         assertEquals(tempUsernameList, adminList);
@@ -212,7 +207,7 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
     public void addAdminAndAutologoutTest() {
         $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();
         $(byText("Yes")).click();
-        $(byText("Testf-iwt-b TestIAM-staff has been successfully added to the admins list.")).should(appear);
+        $(byText("Testf-iwt-b TestIAM-staff has been successfully added to the admins list.")).should(appear, Duration.ofSeconds(80));
         $(byText("OK")).click();
         $x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
 

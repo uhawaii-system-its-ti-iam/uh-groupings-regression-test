@@ -168,6 +168,7 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
         searchPerson();
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
                 property.value("test.grouping.name"));
+        $(".manage-person > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1)").shouldBe(visible, Duration.ofSeconds(30));
         $(".manage-person > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1)").shouldHave(
                 text(property.value("test.grouping.name")));
     }

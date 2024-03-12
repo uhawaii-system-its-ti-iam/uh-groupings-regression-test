@@ -8,6 +8,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
@@ -38,6 +39,7 @@ import edu.hawaii.ti.iam.groupings.selenium.core.User;
 public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestBase {
     private WebDriver driver;
     private User user;
+    private final Duration timeout = Duration.ofSeconds(80);
 
     public String getClipboardContent() {
         String clipboardContent = null;
@@ -71,7 +73,7 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
         loginWith(driver, user);
 
         open(property.value("url.memberships"));
-        $(by("id", "overlay")).shouldBe(disappear, Duration.ofSeconds(80));
+        $(by("id", "overlay")).shouldBe(disappear, timeout);
         $("#memberTab > li:nth-child(2) > a").click();
     }
 
@@ -85,8 +87,8 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
         $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/div/button").click();
         $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/div/ul/li[3]/label").click();
         $x("//*[@id=\"optIn\"]").setValue("large");
-        $x("//*[@id=\"membership-opportunities\"]/div[2]/div[1]/table/tbody/tr[1]").shouldBe(visible, Duration.ofSeconds(80));
-        $(byText("No groupings are currently available.")).should(disappear, Duration.ofSeconds(80));
+        $x("//*[@id=\"membership-opportunities\"]/div[2]/div[1]/table/tbody/tr[1]").shouldBe(visible, timeout);
+        $(byText("No groupings are currently available.")).should(disappear, timeout);
         $$x("//*[@id=\"membership-opportunities\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldHave(or("should have test", text("large"), value("large"))));
     }
 
@@ -107,17 +109,18 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
 
     @Test
     public void optIn() {
-        $x("//*[@id=\"optIn\"]").setValue("testiwta-many");
-        $(byText("No groupings are currently available.")).should(disappear, Duration.ofSeconds(80));
+        $("#optIn").setValue("testiwta-many");
+        $(byText("No groupings are currently available.")).should(disappear, timeout);
         $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-8.align-middle.text-center > button").click();
         $("#memberTab > li:nth-child(1) > a").click();
         $("#current-memberships > div.row.m-auto.pt-2.pb-2 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > input").setValue("testiwta-many");
-        $x("//*[@id=\"membership-opportunities\"]/div[2]/div[1]/table/tbody/tr").shouldNotBe(visible);
+        $x("//*[@id=\"membership-opportunities\"]/div[2]/div[1]/table/tbody/tr").shouldNotBe(visible, timeout);
         $x("//*[@id=\"memberTab\"]/li[1]/a").click();
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("testiwta-many");
         $x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr/td/div/button").click();
-        $x("//*[@id=\"overlay\"]").should(disappear);
-        $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldNotHave(text("testiwta-many")));
+        $x("//*[@id=\"overlay\"]").should(disappear, timeout);
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("testiwta-many");
+        $("#current-memberships > div.ng-scope > div.table-responsive > table > tbody").shouldNotHave(text("testiwta-many"), timeout);
     }
 
     @Test
@@ -125,7 +128,7 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
         $("#membership-opportunities > div.row.m-auto.pt-2.pb-2 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > div > button").click();
         $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/div/ul/li[3]/label").click();
         $x("//*[@id=\"optIn\"]").setValue("testiwta");
-        $(byText("No groupings are currently available.")).should(disappear, Duration.ofSeconds(80));
+        $(byText("No groupings are currently available.")).should(disappear, timeout);
         $("#groupingOptInPath-testiwta-many > form > div > div > button").click();
         assertThat(getClipboardContent(), equalTo("tmp:testiwta:testiwta-many"));
     }

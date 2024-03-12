@@ -103,13 +103,13 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
 
     @Test
     public void optOut() {
-        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("acer-cc-ics");
-        $(byText("acer-cc-ics")).parent().find(byClassName("opt-button")).click();
-        $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldNotHave(exactText("acer-cc-ics")));
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("mikhail8-large");
+        $(byText("mikhail8-large")).parent().find(byClassName("opt-button")).click();
+        $$x("//*[@id=\"current-memberships\"]/div[2]/div[1]/table/tbody/tr").asFixedIterable().forEach(row -> row.shouldNotHave(exactText("mikhail8-large")));
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(80));
         $(byText("Membership Opportunities")).click();
-        $(by("id", "optIn")).setValue("acer-cc-ics");
-        $(byText("acer-cc-ics")).shouldBe(visible, Duration.ofSeconds(80));
+        $(by("id", "optIn")).setValue("mikhail8-large");
+        $(byText("mikhail8-large")).shouldBe(visible, Duration.ofSeconds(80));
         $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-8.align-middle.text-center > button").click();
     }
 
@@ -118,9 +118,9 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/div/button").click();
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/div/ul/li[3]/label/input").click();
         $(byText("Show All")).click();
-        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("acer-cc-ics");
+        $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("mikhail8-large");
         $("#current-memberships > div:nth-child(2) > div:nth-child(1) > table:nth-child(1) > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(3) > form:nth-child(1) > div:nth-child(2) > div:nth-child(1) > button:nth-child(1) > i:nth-child(1)").click();
-        assertThat(getClipboardContent(), equalTo("hawaii.edu:custom:test:julio:acer-cc-ics"));
+        assertThat(getClipboardContent(), equalTo("tmp:mikhail8:mikhail8-large"));
     }
 
     @Test
