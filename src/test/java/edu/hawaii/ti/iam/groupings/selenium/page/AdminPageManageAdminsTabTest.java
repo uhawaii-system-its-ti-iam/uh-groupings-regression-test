@@ -13,6 +13,7 @@ import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.screenshot;
+import static com.codeborne.selenide.Selenide.switchTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
@@ -32,6 +33,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
 import com.codeborne.selenide.WebDriverRunner;
@@ -203,8 +205,8 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         String ss = screenshot("admin_table");
     }
 
-    @Test
-    public void addAdminAndAutologoutTest() {
+    @Test //TODO UI Problem
+    public void addAdminAndAutologoutTest() throws InterruptedException {
         $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();
         $(byText("Yes")).click();
         $(byText("Testf-iwt-b TestIAM-staff has been successfully added to the admins list.")).should(appear, Duration.ofSeconds(80));
@@ -217,15 +219,53 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span").shouldBe(text(user.firstname()), Duration.ofSeconds(80));
         browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1/span/span").shouldBe(text("Admin"), Duration.ofSeconds(80));
         browser1.open("/admin");
+        Thread.sleep(10000);
         browser1.$x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
+        Thread.sleep(10000);
         browser1.$x("//*[@id=\"adminTab\"]/li[2]/a").click();
+        Thread.sleep(10000);
 
         browser1.$("input[title=\"Filter Admins\"]").setValue(user.username()).pressEnter();
+        Thread.sleep(10000);
         browser1.$("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
+        Thread.sleep(10000);
         browser1.$(byText("Are you sure you want to remove")).shouldBe(visible);
+        Thread.sleep(10000);
         browser1.$(byText("Testf-iwt-b TestIAM-staff")).shouldBe(visible);
+        Thread.sleep(10000);
         browser1.$(byText("Yes")).click();
-        browser1.$("body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button").shouldBe(visible);
+        Thread.sleep(10000);
+        browser1.$("body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button").shouldBe(visible, Duration.ofSeconds(30));
+        Thread.sleep(10000);
         browser1.close();
+    }
+    @Test
+    public void tryAgain() throws InterruptedException {
+        $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();
+        $(byText("Yes")).click();
+        $(byText("Testf-iwt-b TestIAM-staff has been successfully added to the admins list.")).should(appear,
+                Duration.ofSeconds(80));
+        $(byText("OK")).click();
+        $x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
+
+        SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl(property.value("app.url.home")));
+        browser1.open(property.value("app.url.login"));
+        loginWith(browser1.getWebDriver(), user);
+        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span").shouldBe(text(user.firstname()), Duration.ofSeconds(80));
+        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1/span/span").shouldBe(text("Admin"), Duration.ofSeconds(80));
+        browser1.open("/admin");
+
+        WebDriverRunner.getWebDriver().switchTo().defaultContent(); // Ensure main browser is in focus
+        Selenide.refresh();
+        $("input[title=\"Filter Admins\"]").setValue(user.username()).pressEnter();
+        Thread.sleep(10000);
+        $("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
+        Thread.sleep(10000);
+        $(byText("Are you sure you want to remove")).shouldBe(visible);
+        Thread.sleep(10000);
+        $(byText("Testf-iwt-b TestIAM-staff")).shouldBe(visible);
+        Thread.sleep(10000);
+        $(byText("Yes")).click();
+        Thread.sleep(10000);
     }
 }

@@ -81,8 +81,10 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void navBarLogoutButtonText() {
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").shouldHave(text("Logout (" + user.username() + ")"));
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").click();
+        //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").shouldHave(text("Logout (" + user.username() + ")"), Duration.ofSeconds(10));
+        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").shouldHave(text("Logout (" + user.username() + ") "), Duration.ofSeconds(10));
+        //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").click();
+        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").shouldHave(text("Login"));
     }
 
@@ -114,9 +116,11 @@ public class LoggedInUserTest extends AbstractTestBase {
         assertThat(field.getAttribute("href"), endsWith("ep2.210.pdf"));
     }
 
+    //This test is checking that if you add admin to the end of the url to try to get to the admin page, if you are using an unauthorized account it will go to 403 status page. If Test is failing make sure that test id testiwtb is not an admin
     @Test
-    public void adminPageTest() {
+    public void adminPageTest() throws InterruptedException {
         open(property.value("url.admin"));
+        Thread.sleep(10000);
         WebElement statusCode = driver.findElement(By.xpath("/html/body/div[2]/div/div/p[2]/span[1]"));
         WebElement statusLabel = driver.findElement(By.xpath("/html/body/div[2]/div/div/p[2]/span[2]"));
         assertThat(statusCode.getText(), equalTo("403"));
@@ -124,13 +128,17 @@ public class LoggedInUserTest extends AbstractTestBase {
     }
 
     @Test
-    public void navbarMembershipsTest() {
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a").click();
+    public void navbarMembershipsTest() throws InterruptedException {
+        //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a").click();
+        Thread.sleep(10000);
+        $x("/html/body/div/nav/div/div/ul/li[1]/a").click();
+        //*[@id="navbarSupportedContent"]/ul/li[3]/a
         webdriver().shouldHave(url(property.value("url.memberships")));
     }
 
     @Test
-    public void AbstractTestBase() {
+    public void AbstractTestBase() throws InterruptedException {
+        Thread.sleep(100000);
         $x("//*[@id=\"navbarSupportedContent\"]/ul/li[2]/a").click();
         webdriver().shouldHave(url(property.value("url.groupings")));
     }
@@ -156,7 +164,8 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void groupingsButtonTest() {
-        $x("/html/body/main/div[3]/div[2]/div/div/div[2]/div[2]/a").click();
+        //$x("/html/body/main/div[3]/div[2]/div/div/div[2]/div[2]/a").click();
+        $x("/html/body/main/div[3]/div[2]/div/div/div[3]/div[2]/a").click();
         webdriver().shouldHave(url(property.value("url.groupings")));
     }
 

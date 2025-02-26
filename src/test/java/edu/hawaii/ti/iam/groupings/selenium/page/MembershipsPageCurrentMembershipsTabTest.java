@@ -39,6 +39,7 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
 
     private WebDriver driver;
     private User user;
+    private User admin;
 
     public String getClipboardContent() {
         String clipboardContent = null;
@@ -69,6 +70,7 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
         driver = WebDriverRunner.getWebDriver();
 
         user = createUser("student");
+        admin = createUser("admin");
         loginWith(driver, user);
 
         open(property.value("url.memberships"));

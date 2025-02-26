@@ -1,4 +1,5 @@
 package edu.hawaii.ti.iam.groupings.selenium.page;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import static com.codeborne.selenide.Condition.and;
 import static com.codeborne.selenide.Condition.cssClass;
@@ -14,6 +15,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 
@@ -23,17 +25,22 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.io.FileHandler;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 
 @SpringBootTest
 public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
 
     private WebDriver driver;
-
     @BeforeAll
     public static void beforeAll() {
         WebDriverManager.chromedriver().setup();
@@ -116,8 +123,9 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
     public void groupingNameTest() {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").val(property.value("test.grouping.name"));
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[1]").shouldHave(text(" Grouping Name "));
-        $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr[1]/td[1]").shouldHave(
-                text(property.value("test.grouping.name")));
+        $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr[1]/td[1]")
+                .shouldHave(text(property.value("test.grouping.name")), Duration.ofSeconds(30));
+
     }
 
     @Test
@@ -127,13 +135,13 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[1]/label").click();
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[2]").shouldHave(text(" Description"));
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr[1]/td[2]/div").shouldHave(
-                text(property.value("test.grouping.description")));
+                text(property.value("test.grouping.description")), Duration.ofSeconds(30));
     }
 
     @Test
     public void groupingSelectionTest() {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").val(property.value("test.grouping.name"));
-        $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr[1]/td[1]").click();
+        $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr[1]/td[1]").shouldBe(visible, Duration.ofSeconds(30)).click();
         $x("//*[@id=\"groupNameCol\"]/h2").shouldHave(text(property.value("test.grouping.name")));
         $x("//*[@id=\"sel\"]/div/section[1]/div/div[2]/div/p").shouldHave(
                 text("Path: " + property.value("test.grouping.path")));
@@ -142,31 +150,34 @@ public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
     }
 
     @Test
-    public void groupingPath() {
+    public void groupingPath() throws InterruptedException { //TODO add duration of seconds for all lines of code
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button/i").click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[2]/label").click();
+        Thread.sleep(10000);
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/thead/tr/th[3]").shouldHave(text(" Grouping Path "));
         String groupingName = property.value("admin.user.username") + "-aux";
         $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > input").setValue(
                 groupingName);
         String path = "#tmp\\:" + property.value("admin.user.username") + "\\:" + groupingName;
-        $(path).shouldBe(visible);
+        $(path).shouldHave(visible);
     }
 
     @Test
-    public void clipboardCopyTest() {
+    public void clipboardCopyTest() throws InterruptedException {
         System.setProperty("java.awt.headless", "false");
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button").click();
         $(byText("Show Grouping Path")).click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").val(property.value("test.grouping.name"));
+        Thread.sleep(10000);
         $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr[1]/td[3]/form/div/div/button/i").click();
+
         assertEquals(property.value("test.grouping.path"), clipboard().getText());
     }
 
     @Test
     public void tableSettingTest() {
         $("#manage-groupings > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldNotBe(visible);
-        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.col-auto > div").shouldBe(visible);
+        $("#manage-groupings > div.table-responsive > table > tbody > tr:nth-child(1) > td.mw-0.p-10.align-middle.d-none.d-sm-table-cell.col-auto > div").shouldBe(visible, Duration.ofSeconds(30));
         $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > button").click();
         $("#manage-groupings > div.row.m-auto.pt-3.pb-3 > div.col-lg-3.col-md-4.col-12.p-0.pt-1.d-sm-flex > div > ul").shouldBe(visible);
         $(byText("Show Grouping Path")).click();

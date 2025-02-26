@@ -53,7 +53,7 @@ public class AboutPageTest extends AbstractTestBase {
         closeWebDriver();
     }
 
-    @BeforeEach
+    @BeforeEach  //Opens up the about page in Groupings before running the test
     public void setUp() {
         open(property.value("url.about"));
         driver = WebDriverRunner.getWebDriver();
@@ -64,45 +64,45 @@ public class AboutPageTest extends AbstractTestBase {
         driver.close();
     }
 
-    @Test
-    public void requestGroupingsFormLink() {
+    @Test //Clicks on the 'request form is available' link at the bottom of page and checks url to make sure the right page is opened
+    public void requestGroupingsFormLink(){
         $(byText("A request form is available")).click();
         webdriver().shouldHave(
                 url("https://uhawaii.atlassian.net/wiki/spaces/UHIAM/pages/13402308/UH+Groupings+Request+Form"));
     }
 
-    @Test
+    @Test //Clicks on the 'General information about groupings is available' link and make sure the right page is opened
     public void whatIsGroupingsLink() {
         $(byText("General information about groupings is available")).click();
         webdriver().shouldHave(url("https://uhawaii.atlassian.net/wiki/spaces/UHIAM/pages/13403213/UH+Groupings"));
     }
 
-    @Test
+    @Test //Clicks on the 'Github' link and makes sure the right page is opened
     public void githubLink() {
         $(byText("GitHub")).click();
         webdriver().shouldHave(url("https://github.com/uhawaii-system-its-ti-iam/uh-groupings-ui"));
     }
 
-    @Test
+    @Test //Clicks on the 'Introduction' link and makes sure the right page is opened
     public void mavenLink() {
         $(byText("(Introduction)")).click();
         webdriver().shouldHave(url("https://maven.apache.org/what-is-maven.html"));
     }
 
-    @Test
+    @Test //Clicks on the 'Welcome' link and makes sure the right page is opened
     public void tomcatLink() {
         $(byText("(Welcome)")).click();
         webdriver().shouldHave(url("https://tomcat.apache.org/tomcat-8.5-doc/index.html"));
     }
 
-    @Test
-    public void springFrameworkGuideLink() {
+    @Test //Clicks on the 'Guide' link for the framework and makes sure the right page is opened
+    public void springFrameworkGuideLink(){
         $("body > main > div.container.mb-5 > div > div.col-md-9 > div > div:nth-child(1) > p:nth-child(3) > a:nth-child(1)").click();
         webdriver().shouldHave(
                 url("https://docs.spring.io/spring-framework/docs/5.2.3.RELEASE/spring-framework-reference/"));
     }
 
-    @Test
+    @Test // Clicks on the 'Api' link for the framework and makes sure the right page is opened
     public void springFrameworkApiLink() {
         $x("/html/body/main/div[4]/div/div[2]/div/div[1]/p[3]/a[2]").click();
         webdriver().shouldHave(url("https://docs.spring.io/spring-framework/docs/5.2.3.RELEASE/javadoc-api/"));

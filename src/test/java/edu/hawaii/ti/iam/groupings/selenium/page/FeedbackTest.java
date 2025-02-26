@@ -59,7 +59,7 @@ public class FeedbackTest extends AbstractTestBase {
     }
 
     @Test
-    public void feedbackGeneral() {
+    public void feedbackGeneral() throws InterruptedException {
         String content = "General feedback test";
         String subject = "general";
         $("option[value=general]").shouldBe(selected);
