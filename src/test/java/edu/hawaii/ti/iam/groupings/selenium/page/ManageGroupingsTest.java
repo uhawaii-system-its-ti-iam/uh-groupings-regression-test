@@ -15,6 +15,7 @@ import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Toolkit;
@@ -138,17 +139,28 @@ public class ManageGroupingsTest extends AbstractTestBase {
     }
 
     @Test
-    public void groupingSelection() {
+    public void groupingSelection() throws InterruptedException {
+        $x("//*[@id=\"manage-groupings\"]/div[2]/div[1]/table/tbody/tr[1]/td[1]").click();
+        Thread.sleep(10000);
+        $x("//*[@id=\"sel\"]/div/section[2]/div").shouldBe(visible);
+        Thread.sleep(10000);
+        $x("//*[@id=\"manage-groupings\"]/div[2]").shouldNotBe(visible);
+        Thread.sleep(10000);
+
+    }
+    @Test
+    public void groupingSelectionWithAdmin() {
         $x("//*[@id=\"manage-groupings\"]/div[2]/div[1]/table/tbody/tr[1]/td[1]").click();
         $x("//*[@id=\"sel\"]/div/section[2]/div").shouldBe(visible);
         $x("//*[@id=\"manage-groupings\"]/div[2]").shouldNotBe(visible);
     }
 
     @Test
-    public void groupingSelectionWithAdmin() {
-        $x("//*[@id=\"manage-groupings\"]/div[2]/div[1]/table/tbody/tr[1]/td[1]").click();
-        $x("//*[@id=\"sel\"]/div/section[2]/div").shouldBe(visible);
-        $x("//*[@id=\"manage-groupings\"]/div[2]").shouldNotBe(visible);
+    public void groupingDescription(){
+        $x("/html/body/main/div[2]/div[2]/div/div[1]/div[1]/div[2]/input").setValue("testiwta-aux");
+         String description = $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/table/tbody/tr/td[2]/div").getText();
+        assertSame("Test With Aux Subgroups", description);
+
     }
 
     @Disabled("broken")
@@ -270,18 +282,17 @@ public class ManageGroupingsTest extends AbstractTestBase {
     public void clipboardCopy() {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button").click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[3]/label").click();
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("aux");
+        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("tmp:testiwtb:testiwtb-aux");  //Don't know if this is cheating
         $x("//*[@id=\"manage-groupings\"]/div[2]/div[1]/table/tbody/tr/td[3]/form/div/div/button/i").click();
         assertEquals(getClipboardContent(), "tmp:testiwtb:testiwtb-aux");
     }
 
     @Test  //Todo ask misha more about the clipboard, seems as though there is an issue with it grabbing the first item but the first item appears as a different item than it wants
-    public void clipboardCopyWithAdmin() throws InterruptedException {
+    public void clipboardCopyWithAdmin() {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button").click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[3]/label").click();
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("aux");
+        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("tmp:testiwta:testiwta-aux");
         $x("//*[@id=\"manage-groupings\"]/div[2]/div[1]/table/tbody/tr/td[3]/form/div/div/button/i").click();
-        Thread.sleep(10000);
         assertEquals(getClipboardContent(), "tmp:testiwta:testiwta-aux");
     }
 
@@ -416,6 +427,7 @@ public class ManageGroupingsTest extends AbstractTestBase {
         $("#manage-groupings > div.ng-scope > div.table-responsive > table > thead > tr > th:nth-child(3)").shouldBe(
                 and("Visible and text", visible, text("Grouping Path")));
     }
+
 }
 
 

@@ -31,6 +31,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
@@ -47,7 +48,11 @@ public class LoggedInAdminTest extends AbstractTestBase {
     @BeforeAll
     public static void beforeAll() {
         WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized"); // added this because sometimes when using the navbar there are issue
+
+        WebDriverRunner.setWebDriver(new ChromeDriver(options));
     }
 
     @AfterAll
@@ -92,7 +97,7 @@ public class LoggedInAdminTest extends AbstractTestBase {
 
     @Test
     public void equalOpportunity() {
-        $x("//a[text()='equal opportunity/affirmative action institution']").click();
+        $x("/html/body/footer/div[1]/div/div[2]/p[1]/a").click();
         webdriver().shouldHave(url(property.value("url.policy")));
     }
 
@@ -143,10 +148,17 @@ public class LoggedInAdminTest extends AbstractTestBase {
     }
 
     @Test
+    public void navbarGroupingTest() {
+        $x("/html/body/div/nav/div/div/ul/li[3]/a").click();
+        webdriver().shouldHave(url(property.value("url.groupings")));
+    }
+
+    @Test
     public void AdminButtonTest() {
         $x("/html/body/main/div[3]/div[2]/div/div/div[1]/div[2]/a").click();
         webdriver().shouldHave(url(property.value("url.admin")));
     }
+
 
     @Test
     public void membershipsButtonTest() {
@@ -164,6 +176,13 @@ public class LoggedInAdminTest extends AbstractTestBase {
     public void welcomeMessageTest() {
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + property.value("admin.user.firstname") + "!"));
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Admin"));
+    }
+
+    @Test
+    public void autoLogInWithoutCas(){
+        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").click();
+        $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, Testf-iwt-a!"));
     }
 
     @Disabled

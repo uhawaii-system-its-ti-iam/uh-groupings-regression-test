@@ -33,6 +33,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
@@ -48,7 +49,11 @@ public class LoggedInUserTest extends AbstractTestBase {
     @BeforeAll
     public static void beforeAll() {
         WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--start-maximized"); // added this because sometimes when using the navbar there are issue
+
+        WebDriverRunner.setWebDriver(new ChromeDriver(options));
     }
 
     @AfterAll
@@ -82,9 +87,10 @@ public class LoggedInUserTest extends AbstractTestBase {
     @Test
     public void navBarLogoutButtonText() {
         //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").shouldHave(text("Logout (" + user.username() + ")"), Duration.ofSeconds(10));
-        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").shouldHave(text("Logout (" + user.username() + ") "), Duration.ofSeconds(10));
+
+        $x("/html/body/div/nav/div/div/ul/li[5]/form/button").shouldHave(text("Logout (" + user.username() + ") "), Duration.ofSeconds(10));
         //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").click();
-        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").click();
+        $x("/html/body/div/nav/div/div/ul/li[5]/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").shouldHave(text("Login"));
     }
 
@@ -97,7 +103,7 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void equalOpportunity() {
-        $x("//a[text()='equal opportunity/affirmative action institution']").click();
+        $x("/html/body/footer/div[1]/div/div[2]/p[1]/a").click();
         webdriver().shouldHave(url(property.value("url.policy")));
     }
 
@@ -130,7 +136,7 @@ public class LoggedInUserTest extends AbstractTestBase {
     @Test
     public void navbarMembershipsTest() throws InterruptedException {
         //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a").click();
-        Thread.sleep(10000);
+//        Thread.sleep(10000);
         $x("/html/body/div/nav/div/div/ul/li[1]/a").click();
         //*[@id="navbarSupportedContent"]/ul/li[3]/a
         webdriver().shouldHave(url(property.value("url.memberships")));
@@ -138,21 +144,22 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void AbstractTestBase() throws InterruptedException {
-        Thread.sleep(100000);
+//        Thread.sleep(100000);
         $x("//*[@id=\"navbarSupportedContent\"]/ul/li[2]/a").click();
         webdriver().shouldHave(url(property.value("url.groupings")));
     }
 
     @Test
     public void navbarAboutTest() {
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[3]/a").click();
+        $x("/html/body/div/nav/div/div/ul/li[3]/a").click();
         webdriver().shouldHave(url(property.value("url.about")));
 
     }
 
     @Test
     public void navbarFeedbackTest() {
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[4]/a").click();
+//        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[3]/a").click();
+        $x("/html/body/div/nav/div/div/ul/li[4]/a").click();
         webdriver().shouldHave(url(property.value("url.feedback")));
     }
 
@@ -163,14 +170,20 @@ public class LoggedInUserTest extends AbstractTestBase {
     }
 
     @Test
-    public void groupingsButtonTest() {
-        //$x("/html/body/main/div[3]/div[2]/div/div/div[2]/div[2]/a").click();
-        $x("/html/body/main/div[3]/div[2]/div/div/div[3]/div[2]/a").click();
+    public void navbarGroupingTest() {
+        $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
         webdriver().shouldHave(url(property.value("url.groupings")));
     }
 
     @Test
-    public void welcomeMessageTest() {
+    public void groupingsButtonTest() throws InterruptedException {
+        //$x("/html/body/main/div[3]/div[2]/div/div/div[2]/div[2]/a").click();
+        $x("/html/body/main/div[3]/div[2]/div/div/div[2]/div[2]/a").click();
+        webdriver().shouldHave(url(property.value("url.groupings")));
+    }
+
+    @Test
+    public void welcomeMessageTest() { //Testwb is not an owner
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + user.firstname() + "!"));
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Owner"));
     }

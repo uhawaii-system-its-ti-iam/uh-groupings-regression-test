@@ -89,14 +89,14 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
     }
 
     @Test
-    public void groupingName() {
+    public void groupingName() { //suddenly worked IDK
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("JTTEST-L");
         $("#current-memberships > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").shouldHave(
                 text("JTTEST-L"));
     }
 
     @Test
-    public void groupingPath() {
+    public void groupingPath() { //suddenly worked IDK
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("JTTEST-L");
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/div/button").click();
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/div/ul/li[3]/label").click();

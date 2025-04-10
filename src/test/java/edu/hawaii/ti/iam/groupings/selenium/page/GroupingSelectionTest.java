@@ -140,7 +140,7 @@ public class GroupingSelectionTest extends AbstractTestBase {
     @Test
     @Order(3)
     public void groupingDescription() {
-        $("#sel > div > section:nth-child(1) > div > div:nth-child(3) > div > div:nth-child(1) > p").shouldHave(text("Test Many Groups In Basis"));
+        $("#sel > div > section:nth-child(1) > div > div:nth-child(3) > div > div:nth-child(1) > p").shouldHave(text("Description: Many Groupings in Basis.                 "));
     }
     @Test
     @Order(4)

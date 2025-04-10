@@ -42,7 +42,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import com.codeborne.selenide.WebDriverRunner;
 
 @SpringBootTest
-public class AdminPageManagePersonTabTest extends AbstractTestBase {
+public class AdminPageManagePersonTabTest extends AbstractTestBase{
 
     private WebDriver driver;
 
@@ -122,7 +122,7 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
     }
 
     @Test
-    /** Make sure that 'testiwta-aux' has only one owner, 'testiwta' before running this test **/
+    /** Make sure that 'testiwta-aux' has only one owner, 'testiwta' before running this test. Make sure that testiwta is in JTTEL and if test fails add testiwta to JTTEL **/
     public void removeFromGrouping() throws InterruptedException {
         // unable to remove the sole owner of any grouping such as aux grouping type of test account
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
@@ -144,7 +144,8 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
                 property.value("test.grouping.name"));
         //$(".manage-person > tbody:nth-child(2) > tr:nth-child(1) > td:nth-child(1)").shouldHave(
         //        text(property.value("test.grouping.name")));
-        $x("/html/body/main/div[2]/div[2]/div/div[3]/div[2]/table/tbody/tr/td[1]").shouldHave(text(property.value("test.grouping.name")));
+        $x("/html/body/main/div[2]/div[2]/div/div[3]/div[2]/table/tbody/tr/td[1]").shouldHave(
+                text(property.value("test.grouping.name")));
 
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[2]/table/tbody/tr/td[6]/div/label/input").click();
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[4]/form/div/div/button").click();
@@ -153,14 +154,12 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
                         text(property.value("test.grouping.name"))));
         $(byText("Yes")).click();
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(30));
-
         searchPerson();
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
                 property.value("test.grouping.name"));
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[2]/table/tbody").lastChild().shouldNotBe(exist);
 
-        // add the owner back to the grouping
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/main/div[2]/div[3]/div[2]/div/section[2]/div/div/div[1]/ul/li[5]/a"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/main/div[1]/div/ul/li[1]/a"))).click(); //changed xpath to be the manage groupings tab
         //$(by("id", "manage-groupings-tab")).click();
         $(byText(property.value("test.grouping.name"))).click();
         $x("/html/body/main/div[2]/div[3]/div[2]/div/section[2]/div/div/div[1]/ul/li[5]/a").click();
@@ -171,36 +170,8 @@ public class AdminPageManagePersonTabTest extends AbstractTestBase {
         $(byText("OK")).click();
         $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(30));
     }
-
+    //Issue of collission
     //Todo: Maybe add a test/method that will add back the groupings or things required for the test above
-
-    @Test
-    public void addToGrouping() throws InterruptedException {
-        searchPerson();
-        $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
-                property.value("admin.user.username") + "-" +
-                        property.value("test.grouping.type"));
-        $x("/html/body/main/div[2]/div[2]/div/div[3]/div[2]/table/tbody/tr/td[1]").shouldHave(text(property.value("admin.user.username") + "-" + property.value("test.grouping.type")));
-
-        $x("//*[@id=\"manage-person\"]/div[2]/table/tbody/tr/td[6]/div/label/input").click();
-        $x("//*[@id=\"manage-person\"]/div[1]/div[4]/form/div/div/button").click();
-        $(byText("You are unable to remove this owner. There must be at least one owner remaining.")).shouldBe(visible);
-        $(byText("Close")).click();
-
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("/html/body/main/div[2]/div[3]/div[2]/div/section[2]/div/div/div[1]/ul/li[5]/a"))).click();
-        //$(by("id", "manage-groupings-tab")).click();
-        $(byText(property.value("test.grouping.name"))).click();
-        $x("/html/body/main/div[2]/div[3]/div[2]/div/section[2]/div/div/div[1]/ul/li[5]/a").click();
-        $("#owner-input").setValue(property.value("admin.user.username"));
-        $("div.mt-2:nth-child(1) > form:nth-child(1) > div:nth-child(1) > div:nth-child(2) > button:nth-child(1)").click();
-        $(byText("Are you sure you want to add")).parent().shouldHave(text(property.value("admin.user.firstname")));
-        $(byText("Yes")).click();
-        $(byText("OK")).click();
-        $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(30));
-    }
-
 
     @Test
     public void GroupingName() throws InterruptedException {

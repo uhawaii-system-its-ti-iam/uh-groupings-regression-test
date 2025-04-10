@@ -93,8 +93,10 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
     }
 
     @Test
-    public void groupingName() {
+    public void groupingName() throws InterruptedException {
+//        Thread.sleep(10000);
         $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/input").setValue("testiwta-many");
+        Thread.sleep(10000);
         $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-35.p-10.align-middle.ng-binding").shouldHave(
                 text("testiwta-many"));
     }
@@ -127,7 +129,7 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
     public void copyPathToClipboard() {
         $("#membership-opportunities > div.row.m-auto.pt-2.pb-2 > div.col-lg-3.col-md-4.col-12.p-0.pt-3.d-sm-flex > div > button").click();
         $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/div/ul/li[3]/label").click();
-        $x("//*[@id=\"optIn\"]").setValue("testiwta");
+        $x("//*[@id=\"optIn\"]").setValue("tmp:testiwta:testiwta-many");
         $(byText("No groupings are currently available.")).should(disappear, timeout);
         $("#groupingOptInPath-testiwta-many > form > div > div > button").click();
         assertThat(getClipboardContent(), equalTo("tmp:testiwta:testiwta-many"));

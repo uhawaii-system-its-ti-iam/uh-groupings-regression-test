@@ -88,7 +88,8 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         ArrayList<String> adminList = new ArrayList<>();
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1) > i").doubleClick();
         while (true) {
-            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
+            adminList.addAll(
+                    $$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -99,13 +100,15 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         assertEquals(adminList, tempNameList);
         adminList.clear();
 
-        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(
+                cssClass("disabled"))) {
             $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
 
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(1)").click();
         while (true) {
-            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
+            adminList.addAll(
+                    $$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(1)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -116,12 +119,14 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         assertEquals(tempNameList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(
+                cssClass("disabled"))) {
             $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
         while (true) {
-            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
+            adminList.addAll(
+                    $$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -132,13 +137,15 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         assertEquals(tempNumberList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(
+                cssClass("disabled"))) {
             $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
 
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
         while (true) {
-            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
+            adminList.addAll(
+                    $$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -147,14 +154,15 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         Collections.reverse(tempNumberList);
         assertEquals(tempNumberList, adminList);
 
-
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(
+                cssClass("disabled"))) {
             $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
         while (true) {
-            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
+            adminList.addAll(
+                    $$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -165,13 +173,15 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
         assertEquals(tempUsernameList, adminList);
 
         adminList.clear();
-        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(cssClass("disabled"))) {
+        if (!$("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1)").is(
+                cssClass("disabled"))) {
             $("#manage-admins > div.row.justify-content-between > div.col-lg-5 > nav > ul > li:nth-child(1) > button > span").click();
         }
 
         $("#manage-admins > div.table-responsive-sm > table > thead > tr > th:nth-child(2)").click();
         while (true) {
-            adminList.addAll($$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
+            adminList.addAll(
+                    $$("#manage-admins > div.table-responsive-sm > table > tbody > tr > td:nth-child(2)").texts());
             if ($$(byText("Next")).filterBy(visible).first().parent().parent().is(cssClass("disabled"))) {
                 break;
             }
@@ -182,7 +192,8 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
 
         System.out.println(adminList);
 
-        $("#manage-admins > div.row.m-auto.pt-3.pb-3.d-flex > div.col-lg-3.col-md-4.col-12.p-0.pt-1 > input").setValue(admin.username());
+        $("#manage-admins > div.row.m-auto.pt-3.pb-3.d-flex > div.col-lg-3.col-md-4.col-12.p-0.pt-1 > input").setValue(
+                admin.username());
         $("#manage-admins > div.table-responsive-sm > table > tbody > tr").shouldHave(text(admin.username()));
     }
 
@@ -208,64 +219,35 @@ public class AdminPageManageAdminsTabTest extends AbstractTestBase {
     @Test //TODO UI Problem
     public void addAdminAndAutologoutTest() throws InterruptedException {
         $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();
-        $(byText("Yes")).click();
-        $(byText("Testf-iwt-b TestIAM-staff has been successfully added to the admins list.")).should(appear, Duration.ofSeconds(80));
-        $(byText("OK")).click();
-        $x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
-
-        SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl(property.value("app.url.home")));
-        browser1.open(property.value("app.url.login"));
-        loginWith(browser1.getWebDriver(), user);
-        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span").shouldBe(text(user.firstname()), Duration.ofSeconds(80));
-        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1/span/span").shouldBe(text("Admin"), Duration.ofSeconds(80));
-        browser1.open("/admin");
-        Thread.sleep(10000);
-        browser1.$x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
-        Thread.sleep(10000);
-        browser1.$x("//*[@id=\"adminTab\"]/li[2]/a").click();
-        Thread.sleep(10000);
-
-        browser1.$("input[title=\"Filter Admins\"]").setValue(user.username()).pressEnter();
-        Thread.sleep(10000);
-        browser1.$("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
-        Thread.sleep(10000);
-        browser1.$(byText("Are you sure you want to remove")).shouldBe(visible);
-        Thread.sleep(10000);
-        browser1.$(byText("Testf-iwt-b TestIAM-staff")).shouldBe(visible);
-        Thread.sleep(10000);
-        browser1.$(byText("Yes")).click();
-        Thread.sleep(10000);
-        browser1.$("body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button").shouldBe(visible, Duration.ofSeconds(30));
-        Thread.sleep(10000);
-        browser1.close();
-    }
-    @Test
-    public void tryAgain() throws InterruptedException {
-        $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();
-        $(byText("Yes")).click();
+        $x("/html/body/div[1]/div/div/div[3]/button[1]").click();
         $(byText("Testf-iwt-b TestIAM-staff has been successfully added to the admins list.")).should(appear,
                 Duration.ofSeconds(80));
         $(byText("OK")).click();
         $x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
 
-        SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl(property.value("app.url.home")));
+        SelenideDriver browser1 = new SelenideDriver(
+                new SelenideConfig().browser("chrome").headless(false).baseUrl(property.value("app.url.home")));
         browser1.open(property.value("app.url.login"));
         loginWith(browser1.getWebDriver(), user);
-        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span").shouldBe(text(user.firstname()), Duration.ofSeconds(80));
-        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1/span/span").shouldBe(text("Admin"), Duration.ofSeconds(80));
+        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span")
+                .shouldBe(text(user.firstname()), Duration.ofSeconds(80));
+        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1/span/span")
+                .shouldBe(text("Admin"), Duration.ofSeconds(80));
         browser1.open("/admin");
+        browser1.$x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
+        browser1.$x("//*[@id=\"adminTab\"]/li[2]/a").click();
 
-        WebDriverRunner.getWebDriver().switchTo().defaultContent(); // Ensure main browser is in focus
-        Selenide.refresh();
-        $("input[title=\"Filter Admins\"]").setValue(user.username()).pressEnter();
+        browser1.$("input[title=\"Filter Admins\"]").setValue(user.username()).pressEnter();;
+        browser1.$("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
+        browser1.$(byText("Are you sure you want to remove")).shouldBe(visible);
+        browser1.$(byText("Testf-iwt-b TestIAM-staff")).shouldBe(visible);
         Thread.sleep(10000);
-        $("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
+        browser1.$x("/html/body/div[1]/div/div/div[3]/button[1]").click();
         Thread.sleep(10000);
-        $(byText("Are you sure you want to remove")).shouldBe(visible);
+        browser1.$(
+                        "body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button")
+                .shouldBe(visible, Duration.ofSeconds(30));
         Thread.sleep(10000);
-        $(byText("Testf-iwt-b TestIAM-staff")).shouldBe(visible);
-        Thread.sleep(10000);
-        $(byText("Yes")).click();
-        Thread.sleep(10000);
+        browser1.close();
     }
 }
