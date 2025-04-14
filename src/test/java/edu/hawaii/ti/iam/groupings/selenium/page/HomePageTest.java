@@ -110,7 +110,7 @@ public class HomePageTest extends AbstractTestBase {
 
     @Test
     public void equalOpportunity() {
-        $x("//a[text()='equal opportunity/affirmative action institution']").click();
+        $x("/html/body/footer/div/div/div[2]/p[1]/a").click();
         webdriver().shouldHave(url(property.value("url.policy")));
     }
 

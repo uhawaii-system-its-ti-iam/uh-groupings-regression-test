@@ -89,6 +89,12 @@ public class LoggedInAdminTest extends AbstractTestBase {
     }
 
     @Test
+    public void logoutButton(){
+        $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").click();
+        $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").shouldHave(text("Login Here"));
+    }
+
+    @Test
     public void groupingsIcon() {
         $x("//img[@alt='UH Groupings Logo']").click();
         webdriver().shouldHave(url(property.value("app.url.home") + "/")); // Inconsistent ending use.
@@ -179,19 +185,18 @@ public class LoggedInAdminTest extends AbstractTestBase {
     }
 
     @Test
-    public void autoLogInWithoutCas(){
+    public void autoLogInWithCas(){
         $x("/html/body/div/nav/div/div/ul/li[6]/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, Testf-iwt-a!"));
     }
 
-    @Disabled
     @Test
     /** Run this test if there is at least one announcement. **/
     public void announcementTest() {
-        $x("/html/body/main/div[1]/div/div/div").shouldBe(visible);
-        $x("/html/body/main/div[1]/div/div/div/button/span").click();
-        $x("/html/body/main/div[1]/div/div/div").shouldNotBe(visible);
+        $x("/html/body/main/div[1]/div/div").shouldBe(visible);
+        $x("/html/body/main/div[1]/div/div/button/span").click();
+        $x("/html/body/main/div[1]/div/div").shouldNotBe(visible);
     }
 
 }

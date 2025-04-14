@@ -93,7 +93,11 @@ public class LoggedInUserTest extends AbstractTestBase {
         $x("/html/body/div/nav/div/div/ul/li[5]/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").shouldHave(text("Login"));
     }
-
+    @Test
+    public void logoutButton(){
+        $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").click();
+        $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").shouldHave(text("Login Here"));
+    }
     @Test
     public void groupingsIcon() {
         $x("//img[@alt='UH Groupings Logo']").click();
@@ -188,13 +192,19 @@ public class LoggedInUserTest extends AbstractTestBase {
         $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Owner"));
     }
 
-    @Disabled
+    @Test
+    public void autoLogInWithCas() {
+        $x("/html/body/div/nav/div/div/ul/li[4]/form/button").click();
+        $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, Testf-iwt-b!"));
+    }
+
     @Test
     /** Run this test if there is at least one announcement. **/
     public void announcementTest() {
-        $x("/html/body/main/div[1]/div/div/div").shouldBe(visible);
-        $x("/html/body/main/div[1]/div/div/div/button/span").click();
-        $x("/html/body/main/div[1]/div/div/div").shouldNotBe(visible);
+        $x("/html/body/main/div[1]/div/div").shouldBe(visible);
+        $x("/html/body/main/div[1]/div/div/button/span").click();
+        $x("/html/body/main/div[1]/div/div").shouldNotBe(visible);
     }
 
 }
