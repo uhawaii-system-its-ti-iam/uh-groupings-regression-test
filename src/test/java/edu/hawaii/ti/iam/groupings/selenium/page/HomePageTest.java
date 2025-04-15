@@ -11,7 +11,6 @@ import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.url;
 import static edu.hawaii.ti.iam.groupings.selenium.core.Util.encodeUrl;
 import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -23,8 +22,6 @@ import java.nio.file.Paths;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,26 +31,14 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
-import edu.hawaii.ti.iam.groupings.selenium.core.Property;
-import edu.hawaii.ti.iam.groupings.selenium.core.User;
-
 @SpringBootTest
-public class HomePageTest {
+public class HomePageTest extends AbstractTestBase {
 
-    private static final Log logger = LogFactory.getLog(HomePageTest.class);
-
-    private final Property property;
     private WebDriver driver;
-
-    // Constructor.
-    public HomePageTest(@Autowired Property property) {
-        this.property = property;
-    }
 
     @BeforeAll
     public static void beforeAll() {
@@ -94,7 +79,7 @@ public class HomePageTest {
     }
 
     @Test
-    public void navBarLogin() {
+    public void clickNavBarLogin() {
         String urlRel = property.value("url.relative.login");
         $x("//a[@href='/" + urlRel + "']").click();
         $("#uh-seal").shouldBe(visible);
@@ -103,6 +88,12 @@ public class HomePageTest {
         String serviceUrl = appUrl + "/login/cas"; // Why the extra ending?
         String expectedUrl = loginUrl + "?service=" + encodeUrl(serviceUrl);
         webdriver().shouldHave(url(expectedUrl));
+    }
+
+    public void clickLoginOnHomePage() {
+        String urlRel = property.value("url.relative.login");
+        $x("//a[@href='/" + urlRel + "']").click();
+        $("#uh-seal").shouldBe(visible);
     }
 
     @Test
@@ -119,25 +110,14 @@ public class HomePageTest {
 
     @Test
     public void equalOpportunity() {
-        $x("//a[text()='equal opportunity/affirmative action institution']").click();
+        $x("/html/body/footer/div/div/div[2]/p[1]/a").click();
         webdriver().shouldHave(url(property.value("url.policy")));
     }
 
     @Test
     public void loggingInWithStudent() {
-        User user = new User.Builder()
-                .username(property.value("student.user.username"))
-                .password(property.value("student.user.password"))
-                .firstname(property.value("student.user.firstname"))
-                .uhnumber(property.value("student.user.uhnumber"))
-                .build();
-        assertThat(user.getUsername(), not(equalTo("SET-IN-OVERRIDES")));
-
-        navBarLogin();
-
-        $("#username").val(user.getUsername());
-        $("#password").val(user.getPassword());
-        $x("//button[@name='submit']").click();
+        clickLoginOnHomePage();
+        loginWith(driver, createUser("student"));
     }
 
     @Test
