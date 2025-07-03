@@ -1,6 +1,5 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.safari;
 
-import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
@@ -19,41 +18,44 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.Duration;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
-import edu.hawaii.ti.iam.groupings.selenium.core.User;
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class LoggedInUserTest extends AbstractTestBase {
+public class LoggedInAdminTestSafari extends AbstractTestBase {
 
     private WebDriver driver;
-    private User user;
+
+    public LoggedInAdminTestSafari() {
+        super();
+    }
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.safaridriver().setup();
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized"); // added this because sometimes when using the navbar there are issue
+        SafariOptions options = new SafariOptions();
 
-        WebDriverRunner.setWebDriver(new ChromeDriver(options));
+        WebDriverRunner.setWebDriver(new SafariDriver(options));
     }
 
     @AfterAll
@@ -65,9 +67,8 @@ public class LoggedInUserTest extends AbstractTestBase {
     public void setUp() {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
-        user = createUser("student");
-        loginWith(driver, user);
-        $x("//*[@id=\"overlay\"]/div/div").shouldBe(disappear, Duration.ofSeconds(30));
+        loginWith(driver, createUser("admin"));
+        driver.manage().window().maximize();
     }
 
     @AfterEach
@@ -86,18 +87,17 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void navBarLogoutButtonText() {
-        //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").shouldHave(text("Logout (" + user.username() + ")"), Duration.ofSeconds(10));
-
-        $x("/html/body/div/nav/div/div/ul/li[5]/form/button").shouldHave(text("Logout (" + user.username() + ") "), Duration.ofSeconds(10));
-        //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/form/button").click();
-        $x("/html/body/div/nav/div/div/ul/li[5]/form/button").click();
+        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").shouldHave(text("Logout (" + property.value("admin.user.username") + ")"));
+        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").shouldHave(text("Login"));
     }
+
     @Test
     public void logoutButton(){
         $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").click();
         $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").shouldHave(text("Login Here"));
     }
+
     @Test
     public void groupingsIcon() {
         $x("//img[@alt='UH Groupings Logo']").click();
@@ -126,77 +126,73 @@ public class LoggedInUserTest extends AbstractTestBase {
         assertThat(field.getAttribute("href"), endsWith("ep2.210.pdf"));
     }
 
-    //This test is checking that if you add admin to the end of the url to try to get to the admin page, if you are using an unauthorized account it will go to 403 status page. If Test is failing make sure that test id testiwtb is not an admin
     @Test
-    public void adminPageTest() throws InterruptedException {
-        open(property.value("url.admin"));
-        Thread.sleep(10000);
-        WebElement statusCode = driver.findElement(By.xpath("/html/body/div[2]/div/div/p[2]/span[1]"));
-        WebElement statusLabel = driver.findElement(By.xpath("/html/body/div[2]/div/div/p[2]/span[2]"));
-        assertThat(statusCode.getText(), equalTo("403"));
-        assertThat(statusLabel.getText(), equalTo("(Forbidden)"));
+    public void navbarAdminTest() {
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a").click();
+        webdriver().shouldHave(url(property.value("url.admin")));
     }
 
     @Test
-    public void navbarMembershipsTest() throws InterruptedException {
-        //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a").click();
-//        Thread.sleep(10000);
-        $x("/html/body/div/nav/div/div/ul/li[1]/a").click();
-        //*[@id="navbarSupportedContent"]/ul/li[3]/a
+    public void navbarMembershipsTest() {
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[2]/a").click();
         webdriver().shouldHave(url(property.value("url.memberships")));
     }
 
     @Test
-    public void AbstractTestBase() throws InterruptedException {
-//        Thread.sleep(100000);
-        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[2]/a").click();
+    public void navbarGroupingsTest() {
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[3]/a").click();
         webdriver().shouldHave(url(property.value("url.groupings")));
     }
 
     @Test
     public void navbarAboutTest() {
-        $x("/html/body/div/nav/div/div/ul/li[3]/a").click();
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[4]/a").click();
         webdriver().shouldHave(url(property.value("url.about")));
 
     }
 
     @Test
     public void navbarFeedbackTest() {
-//        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[3]/a").click();
-        $x("/html/body/div/nav/div/div/ul/li[4]/a").click();
+        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[5]/a").click();
         webdriver().shouldHave(url(property.value("url.feedback")));
     }
 
     @Test
-    public void membershipsButtonTest() {
+    public void navbarGroupingTest() {
+        $x("/html/body/div/nav/div/div/ul/li[3]/a").click();
+        webdriver().shouldHave(url(property.value("url.groupings")));
+    }
+
+    @Test
+    public void AdminButtonTest() {
         $x("/html/body/main/div[3]/div[2]/div/div/div[1]/div[2]/a").click();
+        webdriver().shouldHave(url(property.value("url.admin")));
+    }
+
+
+    @Test
+    public void membershipsButtonTest() {
+        $x("/html/body/main/div[3]/div[2]/div/div/div[2]/div[2]/a").click();
         webdriver().shouldHave(url(property.value("url.memberships")));
     }
 
     @Test
-    public void navbarGroupingTest() {
-        $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
+    public void groupingsButtonTest() {
+        $x("/html/body/main/div[3]/div[2]/div/div/div[3]/div[2]/a").click();
         webdriver().shouldHave(url(property.value("url.groupings")));
     }
 
     @Test
-    public void groupingsButtonTest() throws InterruptedException {
-        //$x("/html/body/main/div[3]/div[2]/div/div/div[2]/div[2]/a").click();
-        $x("/html/body/main/div[3]/div[2]/div/div/div[2]/div[2]/a").click();
-        webdriver().shouldHave(url(property.value("url.groupings")));
+    public void welcomeMessageTest() {
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + property.value("admin.user.firstname") + "!"));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Admin"));
     }
 
     @Test
-    public void welcomeMessageTest() { //Testwb is not an owner
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + user.firstname() + "!"));
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Owner"));
-    }
-
-    @Test
-    public void autoLogInWithCas() {
-        $x("/html/body/div/nav/div/div/ul/li[4]/form/button").click();
+    public void autoLogInWithCas(){
+        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, Testf-iwt-b!"));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, Testf-iwt-a!"));
     }
 
     @Test
@@ -206,4 +202,5 @@ public class LoggedInUserTest extends AbstractTestBase {
         $x("/html/body/main/div[1]/div/div/button/span").click();
         $x("/html/body/main/div[1]/div/div").shouldNotBe(visible);
     }
+
 }

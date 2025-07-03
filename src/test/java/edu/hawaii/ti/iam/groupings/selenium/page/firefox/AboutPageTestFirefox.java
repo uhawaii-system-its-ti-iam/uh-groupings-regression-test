@@ -1,55 +1,43 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.firefox;
 
-import static com.codeborne.selenide.Condition.and;
-import static com.codeborne.selenide.Condition.checked;
-import static com.codeborne.selenide.Condition.cssClass;
-import static com.codeborne.selenide.Condition.disappear;
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.or;
-import static com.codeborne.selenide.Condition.selected;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.webdriver;
 import static com.codeborne.selenide.WebDriverConditions.url;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.time.Duration;
-import java.util.ArrayList;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class AboutPageTest extends AbstractTestBase {
+public class AboutPageTestFirefox extends AbstractTestBase {
 
     private WebDriver driver;
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.firefoxdriver().setup();
+        FirefoxOptions options = new FirefoxOptions();
+        options.setBinary("C:\\Program Files\\Mozilla Firefox\\firefox.exe"); // Adjust if needed
+        WebDriverRunner.setWebDriver(new FirefoxDriver(options));
     }
+
 
     @AfterAll
     public static void afterAll() {

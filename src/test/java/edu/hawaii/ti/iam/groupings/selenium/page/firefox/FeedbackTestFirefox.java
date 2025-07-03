@@ -1,15 +1,13 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.firefox;
 
 import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.selected;
-import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
-import static org.junit.Assert.assertEquals;
 
 import java.time.Duration;
 
@@ -20,22 +18,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class FeedbackTest extends AbstractTestBase {
+public class FeedbackTestFirefox extends AbstractTestBase {
 
     private WebDriver driver;
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.firefoxdriver().setup();
+        WebDriverRunner.setWebDriver(new FirefoxDriver());
     }
 
     @AfterAll
@@ -66,8 +66,8 @@ public class FeedbackTest extends AbstractTestBase {
         $("option[value=general]").shouldBe(selected);
         $(by("id", "input-name")).val(property.value("student.user.username"));
         String email = $(by("id", "input-email")).getAttribute("value");
-//        Thread.sleep(10000);
-//        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
+        //        Thread.sleep(10000);
+        //        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
         $("#input-email").setValue("testiwta@hawaii.edu");
         $(by("id", "input-feedback")).setValue(content);
         $(byText("Submit")).click();
@@ -83,7 +83,7 @@ public class FeedbackTest extends AbstractTestBase {
         $("option[value=problem]").click();
         $(by("id", "input-name")).val(property.value("student.user.username"));
         String email = $(by("id", "input-email")).getAttribute("value");
-//        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
+        //        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
         $("#input-email").setValue("testiwta@hawaii.edu");
         $(by("id", "input-feedback")).setValue(content);
         $(byText("Submit")).click();
@@ -99,7 +99,7 @@ public class FeedbackTest extends AbstractTestBase {
         $("option[value=feature]").click();
         $(by("id", "input-name")).val(property.value("student.user.username"));
         String email = $(by("id", "input-email")).getAttribute("value");
-//        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
+        //        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
         $("#input-email").setValue("testiwta@hawaii.edu");
         $(by("id", "input-feedback")).setValue(content);
         $(byText("Submit")).click();
@@ -114,7 +114,7 @@ public class FeedbackTest extends AbstractTestBase {
         $("option[value=question]").click();
         $(by("id", "input-name")).val(property.value("student.user.username"));
         String email = $(by("id", "input-email")).getAttribute("value");
-//        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
+        //        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
         $("#input-email").setValue("testiwta@hawaii.edu");
         $(by("id", "input-feedback")).setValue(content);
         $(byText("Submit")).click();

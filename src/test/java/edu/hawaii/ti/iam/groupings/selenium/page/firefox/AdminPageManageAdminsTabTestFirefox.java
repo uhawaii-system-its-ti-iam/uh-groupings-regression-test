@@ -1,9 +1,8 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.firefox;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.disappear;
-import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.by;
@@ -13,52 +12,53 @@ import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.refresh;
 import static com.codeborne.selenide.Selenide.screenshot;
-import static com.codeborne.selenide.Selenide.switchTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideConfig;
 import com.codeborne.selenide.SelenideDriver;
 import com.codeborne.selenide.WebDriverRunner;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class AdminPageManageAdminsTabTest extends AbstractTestBase {
+public class AdminPageManageAdminsTabTestFirefox extends AbstractTestBase {
 
     private WebDriver driver;
     private User admin;
     private User user;
 
     // Constructor
-    public AdminPageManageAdminsTabTest() {
+    public AdminPageManageAdminsTabTestFirefox() {
         super();
     }
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.firefoxdriver().setup();
+        FirefoxOptions options = new FirefoxOptions();
+        options.setBinary("C:/Program Files/Mozilla Firefox/firefox.exe"); // Adjust if needed
+        WebDriverRunner.setWebDriver(new FirefoxDriver(options));
     }
+
 
     @AfterAll
     public static void afterAll() {

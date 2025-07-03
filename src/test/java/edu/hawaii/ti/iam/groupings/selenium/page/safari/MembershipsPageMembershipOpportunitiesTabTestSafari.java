@@ -1,4 +1,4 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.safari;
 
 import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.or;
@@ -8,7 +8,6 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
@@ -16,12 +15,11 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.time.Duration;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,14 +27,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestBase {
+public class MembershipsPageMembershipOpportunitiesTabTestSafari extends AbstractTestBase {
     private WebDriver driver;
     private User user;
     private final Duration timeout = Duration.ofSeconds(80);
@@ -55,8 +57,8 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.safaridriver().setup();
+        WebDriverRunner.setWebDriver(new SafariDriver());
     }
 
     @AfterAll
@@ -96,7 +98,7 @@ public class MembershipsPageMembershipOpportunitiesTabTest extends AbstractTestB
 
     @Test
     public void groupingName() throws InterruptedException {
-//        Thread.sleep(10000);
+        //        Thread.sleep(10000);
         $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/input").setValue("JTTEST-L");
         $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-35.p-10.align-middle.ng-binding").shouldHave(
                 text("JTTEST-L"));

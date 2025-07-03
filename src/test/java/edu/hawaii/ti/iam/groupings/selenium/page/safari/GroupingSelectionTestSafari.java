@@ -1,112 +1,106 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.safari;
 
-import com.codeborne.selenide.FileDownloadMode;
-import com.codeborne.selenide.WebDriverRunner;
-import com.codeborne.selenide.Configuration;
-import com.codeborne.selenide.WebElementCondition;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideDriver;
-import com.codeborne.selenide.SelenideConfig;
-import com.codeborne.selenide.ex.FileNotDownloadedError;
-import com.codeborne.selenide.logevents.SelenideLogger;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
-import io.qameta.allure.selenide.AllureSelenide;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.codec.digest.DigestUtils;
-import com.opencsv.CSVWriter;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Disabled;
-import org.openqa.selenium.Proxy;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.springframework.boot.test.context.SpringBootTest;
+import static com.codeborne.selenide.Condition.and;
+import static com.codeborne.selenide.Condition.cssClass;
+import static com.codeborne.selenide.Condition.disabled;
+import static com.codeborne.selenide.Condition.disappear;
+import static com.codeborne.selenide.Condition.empty;
+import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Condition.exist;
+import static com.codeborne.selenide.Condition.interactable;
+import static com.codeborne.selenide.Condition.not;
+import static com.codeborne.selenide.Condition.selected;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.DownloadOptions.using;
+import static com.codeborne.selenide.FileDownloadMode.FOLDER;
+import static com.codeborne.selenide.Selectors.by;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$$;
+import static com.codeborne.selenide.Selenide.$$x;
+import static com.codeborne.selenide.Selenide.$x;
+import static com.codeborne.selenide.Selenide.clearBrowserCookies;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
+import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.refresh;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 
-import static com.codeborne.selenide.Condition.disappear;
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Condition.text;
-import static com.codeborne.selenide.Condition.not;
-import static com.codeborne.selenide.Condition.disabled;
-import static com.codeborne.selenide.Condition.interactable;
-import static com.codeborne.selenide.Condition.and;
-import static com.codeborne.selenide.Condition.enabled;
-import static com.codeborne.selenide.Condition.cssClass;
-import static com.codeborne.selenide.Condition.exist;
-import static com.codeborne.selenide.Condition.empty;
-import static com.codeborne.selenide.Condition.selected;
-import static com.codeborne.selenide.FileDownloadMode.FOLDER;
-import static com.codeborne.selenide.DownloadOptions.using;
-import static com.codeborne.selenide.FileDownloadMode.PROXY;
-import static com.codeborne.selenide.Selectors.by;
-import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.$x;
-import static com.codeborne.selenide.Selenide.$$;
-import static com.codeborne.selenide.Selenide.$$x;
-import static com.codeborne.selenide.Selenide.refresh;
-import static com.codeborne.selenide.Selenide.clearBrowserCookies;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideConfig;
+import com.codeborne.selenide.SelenideDriver;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
+import com.codeborne.selenide.WebElementCondition;
+import com.codeborne.selenide.ex.FileNotDownloadedError;
+import com.opencsv.CSVWriter;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class GroupingSelectionTest extends AbstractTestBase {
+public class GroupingSelectionTestSafari extends AbstractTestBase {
 
     private WebDriver driver;
     private User admin;
     private User user;
     private final Duration timeout = Duration.ofSeconds(80);
 
-    public GroupingSelectionTest() {
+    public GroupingSelectionTestSafari() {
         super();
     }
 
     @BeforeAll
     public static void beforeAll() {
-        //        Proxy proxy = new Proxy();
-        //        proxy.setAutodetect(false);
-        //        proxy.setHttpProxy("localhost:8888");
-        //        proxy.setSslProxy("localhost:8080");
-        //        Configuration.proxyEnabled = true;
-        //        Configuration.fileDownload = PROXY;
+//        Proxy proxy = new Proxy();
+//        proxy.setAutodetect(false);
+//        proxy.setHttpProxy("localhost:8888");
+//        proxy.setSslProxy("localhost:8080");
+//        Configuration.proxyEnabled = true;
+//        Configuration.fileDownload = PROXY;
 
-        //        ChromeOptions options = new ChromeOptions();
-        //        options.setCapability("proxy", proxy);
+//        ChromeOptions options = new ChromeOptions();
+//        options.setCapability("proxy", proxy);
 
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
-        //        Configuration.fileDownload = FOLDER;
-        //        Configuration.downloadsFolder = System.getProperty("user.dir") + File.separator + "downloadFile";
-        //        Configuration.downloadsFolder = "build/reports/tests";
-        //                System.getProperty("user.dir") + File.separator + "downloadFile";
-        //        SelenideLogger.addListener("allure", new AllureSelenide());
+        WebDriverManager.safaridriver().setup();
+        WebDriverRunner.setWebDriver(new SafariDriver());
+//        Configuration.fileDownload = FOLDER;
+//        Configuration.downloadsFolder = System.getProperty("user.dir") + File.separator + "downloadFile";
+//        Configuration.downloadsFolder = "build/reports/tests";
+//                System.getProperty("user.dir") + File.separator + "downloadFile";
+//        SelenideLogger.addListener("allure", new AllureSelenide());
     }
 
     @AfterAll
