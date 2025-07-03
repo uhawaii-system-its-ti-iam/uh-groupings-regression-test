@@ -1,18 +1,4 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
-
-import com.codeborne.selenide.WebDriverRunner;
-
-import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.Duration;
+package edu.hawaii.ti.iam.groupings.selenium.page.safari;
 
 import static com.codeborne.selenide.Condition.appear;
 import static com.codeborne.selenide.Condition.disappear;
@@ -24,22 +10,39 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 
+import java.time.Duration;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import com.codeborne.selenide.WebDriverRunner;
+
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class IdleLogoutTest extends AbstractTestBase {
+public class IdleLogoutTestSafari extends AbstractTestBase {
 
     private WebDriver driver;
     private User user;
 
-    public IdleLogoutTest() {
+    public IdleLogoutTestSafari() {
         super();
     }
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.safaridriver().setup();
+        WebDriverRunner.setWebDriver(new SafariDriver());
     }
 
     @AfterAll
@@ -61,7 +64,7 @@ public class IdleLogoutTest extends AbstractTestBase {
         $(by("id", "sel")).shouldBe(visible);
     }
 
-//    @Disabled
+    //    @Disabled
     // When running this test make testiwtb owner of testiwtb-many and then run and after running remove them as owner
     @Test
     public void idleLogout() {

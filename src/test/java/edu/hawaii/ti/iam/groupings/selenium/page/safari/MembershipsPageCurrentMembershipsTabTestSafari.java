@@ -1,4 +1,4 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.safari;
 
 import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.exactText;
@@ -15,12 +15,11 @@ import static com.codeborne.selenide.Selenide.open;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.time.Duration;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -28,14 +27,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.safari.SafariDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
+public class MembershipsPageCurrentMembershipsTabTestSafari extends AbstractTestBase {
 
     private WebDriver driver;
     private User user;
@@ -55,8 +58,8 @@ public class MembershipsPageCurrentMembershipsTabTest extends AbstractTestBase {
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.safaridriver().setup();
+        WebDriverRunner.setWebDriver(new SafariDriver());
     }
 
     @AfterAll

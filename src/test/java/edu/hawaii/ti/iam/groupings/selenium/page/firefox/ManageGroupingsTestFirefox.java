@@ -1,4 +1,4 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.firefox;
 
 import static com.codeborne.selenide.Condition.and;
 import static com.codeborne.selenide.Condition.cssClass;
@@ -14,12 +14,11 @@ import static com.codeborne.selenide.Selenide.$$x;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.Selenide.sleep;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.time.Duration;
@@ -27,12 +26,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
-
-import com.codeborne.selenide.ElementsCollection;
-import com.codeborne.selenide.SelenideElement;
-import com.codeborne.selenide.WebDriverRunner;
-import io.github.bonigarcia.wdm.WebDriverManager;
-import javax.tools.Tool;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -42,12 +35,20 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
+
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class ManageGroupingsTest extends AbstractTestBase {
+public class ManageGroupingsTestFirefox extends AbstractTestBase {
 
     private WebDriver driver;
     private User admin;
@@ -68,8 +69,8 @@ public class ManageGroupingsTest extends AbstractTestBase {
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.firefoxdriver().setup();
+        WebDriverRunner.setWebDriver(new FirefoxDriver());
     }
 
     @AfterAll
@@ -112,15 +113,15 @@ public class ManageGroupingsTest extends AbstractTestBase {
     @Test
     public void groupingName() {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwtb-store-empty");
-        $("#manage-groupings > div.table-responsive > table > tbody > tr > td.w-35.p-10.clickable.align-middle.ng-binding").shouldHave(
+        $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/table/tbody/tr/td[1]/text()").shouldBe(
                 text("testiwtb-store-empty"));
+
     }
 
     @Test
     public void groupingNameWithAdmin(){
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwta-store-empty");
-        sleep(1000);
-        $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr").shouldHave(
+        $("#manage-groupings > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").shouldHave(
                 text("testiwta-store-empty"));
     }
 
@@ -160,7 +161,7 @@ public class ManageGroupingsTest extends AbstractTestBase {
     @Test
     public void groupingDescription(){
         $x("/html/body/main/div[2]/div[2]/div/div[1]/div[1]/div[2]/input").setValue("testiwta-aux");
-         String description = $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/table/tbody/tr/td[2]/div").getText();
+        String description = $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/table/tbody/tr/td[2]/div").getText();
         assertSame("Test With Aux Subgroups", description);
 
     }

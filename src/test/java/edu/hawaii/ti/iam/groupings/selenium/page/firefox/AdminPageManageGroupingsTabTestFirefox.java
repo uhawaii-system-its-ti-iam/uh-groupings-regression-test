@@ -1,6 +1,5 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
+package edu.hawaii.ti.iam.groupings.selenium.page.firefox;
+
 import static com.codeborne.selenide.Condition.and;
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.disappear;
@@ -15,36 +14,34 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
 import java.time.Duration;
 import java.util.ArrayList;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.io.FileHandler;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 @SpringBootTest
-public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
+public class AdminPageManageGroupingsTabTestFirefox extends AbstractTestBase {
 
     private WebDriver driver;
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
-        WebDriverRunner.setWebDriver(new ChromeDriver());
+        WebDriverManager.firefoxdriver().setup();
+        WebDriverRunner.setWebDriver(new FirefoxDriver());
     }
 
     @AfterAll

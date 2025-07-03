@@ -1,4 +1,4 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.safari;
 
 import static com.codeborne.selenide.Condition.exist;
 import static com.codeborne.selenide.Condition.text;
@@ -20,7 +20,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -32,23 +31,31 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
-@SpringBootTest
-public class HomePageTest extends AbstractTestBase {
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
 
-    private WebDriver driver;
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+@SpringBootTest
+public class HomePageTestSafari extends AbstractTestBase {
+
+    private static WebDriver driver;
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.safaridriver().setup();
 
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized"); // added this because sometimes when using the navbar there are issue
+        SafariOptions options = new SafariOptions();
+        driver = new SafariDriver(options);
+        WebDriverRunner.setWebDriver(driver);
 
-        WebDriverRunner.setWebDriver(new ChromeDriver(options));
+        // Now maximize the window
+        driver.manage().window().maximize();
     }
 
     @AfterAll

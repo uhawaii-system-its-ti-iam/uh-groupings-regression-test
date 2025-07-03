@@ -1,4 +1,4 @@
-package edu.hawaii.ti.iam.groupings.selenium.page;
+package edu.hawaii.ti.iam.groupings.selenium.page.firefox;
 
 import static com.codeborne.selenide.Condition.disappear;
 import static com.codeborne.selenide.Condition.exist;
@@ -21,39 +21,42 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.codeborne.selenide.WebDriverRunner;
 
 import edu.hawaii.ti.iam.groupings.selenium.core.User;
+import edu.hawaii.ti.iam.groupings.selenium.page.AbstractTestBase;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 @SpringBootTest
-public class LoggedInUserTest extends AbstractTestBase {
+public class LoggedInUserTestFirefox extends AbstractTestBase {
 
     private WebDriver driver;
     private User user;
 
     @BeforeAll
     public static void beforeAll() {
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.firefoxdriver().setup();
 
-        ChromeOptions options = new ChromeOptions();
+        FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--start-maximized"); // added this because sometimes when using the navbar there are issue
 
-        WebDriverRunner.setWebDriver(new ChromeDriver(options));
+        WebDriverRunner.setWebDriver(new FirefoxDriver(options));
     }
 
     @AfterAll
@@ -140,7 +143,7 @@ public class LoggedInUserTest extends AbstractTestBase {
     @Test
     public void navbarMembershipsTest() throws InterruptedException {
         //$x("//*[@id=\"navbarSupportedContent\"]/ul/li[1]/a").click();
-//        Thread.sleep(10000);
+        //        Thread.sleep(10000);
         $x("/html/body/div/nav/div/div/ul/li[1]/a").click();
         //*[@id="navbarSupportedContent"]/ul/li[3]/a
         webdriver().shouldHave(url(property.value("url.memberships")));
@@ -148,7 +151,7 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void AbstractTestBase() throws InterruptedException {
-//        Thread.sleep(100000);
+        //        Thread.sleep(100000);
         $x("//*[@id=\"navbarSupportedContent\"]/ul/li[2]/a").click();
         webdriver().shouldHave(url(property.value("url.groupings")));
     }
@@ -162,7 +165,7 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void navbarFeedbackTest() {
-//        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[3]/a").click();
+        //        $x("//*[@id=\"navbarSupportedContent\"]/ul/li[3]/a").click();
         $x("/html/body/div/nav/div/div/ul/li[4]/a").click();
         webdriver().shouldHave(url(property.value("url.feedback")));
     }
