@@ -38,7 +38,7 @@ import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.WebDriverRunner;
 
 @SpringBootTest
-public class AdminPageManageGroupingsTabTest extends AbstractTestBase {
+public class    AdminPageManageGroupingsTabTest extends AbstractTestBase {
 
     private WebDriver driver;
     @BeforeAll

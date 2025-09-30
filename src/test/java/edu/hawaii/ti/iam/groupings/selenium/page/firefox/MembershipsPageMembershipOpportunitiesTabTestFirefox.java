@@ -84,7 +84,7 @@ public class MembershipsPageMembershipOpportunitiesTabTestFirefox extends Abstra
         driver.close();
     }
 
-    //TODO: When running this set of tests make sure that tetiwta is not a set
+    //TODO: When running this set of tests make sure that tetiwtb is not in include of JTTEST-L
 
     @Test
     public void filterGroupings() {
@@ -98,7 +98,7 @@ public class MembershipsPageMembershipOpportunitiesTabTestFirefox extends Abstra
 
     @Test
     public void groupingName() throws InterruptedException {
-        //        Thread.sleep(10000);
+        Thread.sleep(1000);
         $x("//*[@id=\"membership-opportunities\"]/div[1]/div[2]/input").setValue("JTTEST-L");
         $("#membership-opportunities > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-35.p-10.align-middle.ng-binding").shouldHave(
                 text("JTTEST-L"));

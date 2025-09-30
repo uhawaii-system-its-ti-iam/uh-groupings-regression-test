@@ -59,8 +59,11 @@ public class HomePageTest extends AbstractTestBase {
     @BeforeEach
     public void setUp() {
         open(property.value("app.url.home"));
+
         driver = WebDriverRunner.getWebDriver();
-    }
+
+        driver.manage().window().maximize();
+        }
 
     @AfterEach
     public void afterEach() {

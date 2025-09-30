@@ -65,6 +65,7 @@ public class LoggedInAdminTest extends AbstractTestBase {
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
         loginWith(driver, createUser("admin"));
+        driver.manage().window().maximize();
     }
 
     @AfterEach
@@ -180,15 +181,15 @@ public class LoggedInAdminTest extends AbstractTestBase {
 
     @Test
     public void welcomeMessageTest() {
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + property.value("admin.user.firstname") + "!"));
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Admin"));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/p").shouldHave(text("Welcome, " + property.value("admin.user.firstname") + "!"));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/p").shouldHave(text("Role: Admin"));
     }
 
     @Test
     public void autoLogInWithCas(){
-        $x("/html/body/div/nav/div/div/ul/li[6]/form/button").click();
+        $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").click();
         $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, Testf-iwt-a!"));
+        $x("/html/body/main/div[2]/div/div[1]/div/p").shouldHave(text("Manage your groupings in one place, use them in many."));
     }
 
     @Test

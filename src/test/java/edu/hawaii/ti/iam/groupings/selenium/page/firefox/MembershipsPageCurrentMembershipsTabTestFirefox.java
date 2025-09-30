@@ -94,7 +94,7 @@ public class MembershipsPageCurrentMembershipsTabTestFirefox extends AbstractTes
     @Test
     public void groupingName() { //suddenly worked IDK
         $x("//*[@id=\"current-memberships\"]/div[1]/div[2]/input").setValue("JTTEST-L");
-        $("#current-memberships > div.ng-scope > div.table-responsive > table > tbody > tr:nth-child(1) > td.w-35.p-10.align-middle.ng-binding").shouldHave(
+        $x("/html/body/main/div/div[2]/div[1]/div[2]/div[1]/table/tbody/tr/td[1]").shouldHave(
                 text("JTTEST-L"));
     }
 

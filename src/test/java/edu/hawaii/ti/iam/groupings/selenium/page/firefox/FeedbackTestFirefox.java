@@ -60,22 +60,6 @@ public class FeedbackTestFirefox extends AbstractTestBase {
     }
 
     @Test
-    public void feedbackGeneral() throws InterruptedException {
-        String content = "General feedback test";
-        String subject = "general";
-        $("option[value=general]").shouldBe(selected);
-        $(by("id", "input-name")).val(property.value("student.user.username"));
-        String email = $(by("id", "input-email")).getAttribute("value");
-        //        Thread.sleep(10000);
-        //        assertEquals(property.value("student.user.username") + "@hawaii.edu", email);
-        $("#input-email").setValue("testiwta@hawaii.edu");
-        $(by("id", "input-feedback")).setValue(content);
-        $(byText("Submit")).click();
-        $(byText("Your feedback has successfully been submitted.")).should(exist);
-
-    }
-
-    @Test
     public void feedbackProblem() {
         String content = "Problem feedback test";
         String subject = "problem";

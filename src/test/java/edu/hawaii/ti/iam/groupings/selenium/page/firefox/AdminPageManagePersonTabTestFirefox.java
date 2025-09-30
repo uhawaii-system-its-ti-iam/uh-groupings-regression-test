@@ -74,6 +74,7 @@ public class AdminPageManagePersonTabTestFirefox extends AbstractTestBase {
         driver.close();
     }
 
+    /** Make sure that 'testiwta-aux' has only one owner, 'testiwta' before running this test. Make sure that testiwta is in JTTEL and if test fails add testiwta to JTTEL. Used for a couple of the tests within this class. Can remove after.**/
     @Test
     public void searchAndFilterGroupings() throws InterruptedException {
         $x("/html/body/main/div[2]/div[2]/div/div[3]/div[1]/div[2]/input").setValue(
@@ -121,7 +122,6 @@ public class AdminPageManagePersonTabTestFirefox extends AbstractTestBase {
     }
 
     @Test
-    /** Make sure that 'testiwta-aux' has only one owner, 'testiwta' before running this test. Make sure that testiwta is in JTTEL and if test fails add testiwta to JTTEL **/
     public void removeFromGrouping() throws InterruptedException {
         // unable to remove the sole owner of any grouping such as aux grouping type of test account
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));

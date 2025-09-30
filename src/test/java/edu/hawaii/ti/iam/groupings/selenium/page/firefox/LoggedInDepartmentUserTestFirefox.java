@@ -6,6 +6,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 
@@ -62,15 +63,15 @@ public class LoggedInDepartmentUserTestFirefox extends AbstractTestBase {
         loginWith(driver, user);
         $x("//*[@id=\"overlay\"]/div/div").shouldBe(disappear, Duration.ofSeconds(30));
 
-        Assertions.assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
+        assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
         $x("/html/body/div/nav/div/div/ul/li[1]/a").click();
-        Assertions.assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
+        assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
         $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
-        Assertions.assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
+        assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
         $x("/html/body/div/nav/div/div/ul/li[3]/a").click();
-        Assertions.assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
+        assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
         $x("/html/body/div/nav/div/div/ul/li[4]/a").click();
-        Assertions.assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
+        assertTrue($x("/html/body/div/nav/div/span/i").isDisplayed());
     }
     //
     @Test

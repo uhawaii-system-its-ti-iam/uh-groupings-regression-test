@@ -470,7 +470,7 @@ public class GroupingSelectionTest extends AbstractTestBase {
     }
     @Test
     @Order(14)
-    public void groupingPreferences() {
+    public void groupingPreferences() throws InterruptedException {
         SelenideDriver browser1 = new SelenideDriver(new SelenideConfig().browser("chrome").headless(false).baseUrl(property.value("app.url.home")));
 
         open(property.value("url.memberships"));
@@ -523,3 +523,5 @@ public class GroupingSelectionTest extends AbstractTestBase {
         clearBrowserCookies();
     }
 }
+
+// https://www.test.hawaii.edu/uhgroupings/memberships

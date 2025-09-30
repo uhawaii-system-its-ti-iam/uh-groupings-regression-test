@@ -67,6 +67,8 @@ public class AdminPageManageAdminsTabTestFirefox extends AbstractTestBase {
 
     @BeforeEach
     public void setUp() {
+
+
         open(property.value("app.url.login"));
         driver = WebDriverRunner.getWebDriver();
 
@@ -82,7 +84,9 @@ public class AdminPageManageAdminsTabTestFirefox extends AbstractTestBase {
 
     @AfterEach
     public void afterEach() {
-        driver.close();
+        if (!driver.toString().contains("null")) {
+            driver.close();
+        }
     }
 
     @Test
@@ -218,7 +222,7 @@ public class AdminPageManageAdminsTabTestFirefox extends AbstractTestBase {
         String ss = screenshot("admin_table");
     }
 
-    @Test //TODO UI Problem
+    @Test
     public void addAdminAndAutologoutTest() throws InterruptedException {
         $("input[name=\"Add Admin\"]").setValue(user.username()).pressEnter();
         $x("/html/body/div[1]/div/div/div[3]/button[1]").click();
@@ -226,14 +230,14 @@ public class AdminPageManageAdminsTabTestFirefox extends AbstractTestBase {
                 Duration.ofSeconds(80));
         $(byText("OK")).click();
         $x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
-
+        driver.quit();
         SelenideDriver browser1 = new SelenideDriver(
                 new SelenideConfig().browser("chrome").headless(false).baseUrl(property.value("app.url.home")));
         browser1.open(property.value("app.url.login"));
         loginWith(browser1.getWebDriver(), user);
-        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1/span")
+        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/p/span")
                 .shouldBe(text(user.firstname()), Duration.ofSeconds(80));
-        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1/span/span")
+        browser1.$x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/p/span/span")
                 .shouldBe(text("Admin"), Duration.ofSeconds(80));
         browser1.open("/admin");
         browser1.$x("//*[@id=\"overlay\"]/div").should(disappear, Duration.ofSeconds(80));
@@ -242,13 +246,13 @@ public class AdminPageManageAdminsTabTestFirefox extends AbstractTestBase {
         browser1.$("i[class=\"far fa-trash-alt pull-right clickable pt-1 ng-isolate-scope\"]").click();
         browser1.$(byText("Are you sure you want to remove")).shouldBe(visible);
         browser1.$(byText("Testf-iwt-b TestIAM-staff")).shouldBe(visible);
-        Thread.sleep(10000);
+        Thread.sleep(100);
         browser1.$x("/html/body/div[1]/div/div/div[3]/button[1]").click();
-        Thread.sleep(10000);
+        Thread.sleep(100);
         browser1.$(
                         "body > main > div.container.mt-5.mb-5 > div > div.col-sm-7.d-inline-flex.align-items-center > div > div > form > button")
                 .shouldBe(visible, Duration.ofSeconds(30));
-        Thread.sleep(10000);
+        Thread.sleep(100);
         browser1.close();
     }
 
@@ -259,12 +263,12 @@ public class AdminPageManageAdminsTabTestFirefox extends AbstractTestBase {
         $x("/html/body/div[1]/div/div/div[3]/button[1]").click();
         $x("/html/body/div[1]/div/div/div[3]/button").click();
         $x("/html/body/div[1]/div/div/div[2]").should(disappear, Duration.ofSeconds(80));
-        }
+        Thread.sleep(10000);
+    }
     @Test //run after add
-    public void trashcanDelete() throws InterruptedException {
+    public void trashcanDelete(){
         $x("/html/body/main/div[2]/div[2]/div/div[2]/div[1]/div[2]/input").setValue("testiwtb");
         $x("/html/body/main/div[2]/div[2]/div/div[2]/div[2]/table/tbody/tr/td[4]/i").click();
-        Thread.sleep(10000);
         $x("/html/body/div[1]/div/div/div[3]/button[1]").click();
     }
 }

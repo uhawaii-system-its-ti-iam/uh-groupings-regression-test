@@ -130,11 +130,9 @@ public class LoggedInUserTest extends AbstractTestBase {
     @Test
     public void adminPageTest() throws InterruptedException {
         open(property.value("url.admin"));
-        Thread.sleep(10000);
-        WebElement statusCode = driver.findElement(By.xpath("/html/body/div[2]/div/div/p[2]/span[1]"));
-        WebElement statusLabel = driver.findElement(By.xpath("/html/body/div[2]/div/div/p[2]/span[2]"));
-        assertThat(statusCode.getText(), equalTo("403"));
-        assertThat(statusLabel.getText(), equalTo("(Forbidden)"));
+        Thread.sleep(100);
+        WebElement status = driver.findElement(By.xpath("/html/body/h1"));
+        assertThat(status.getText(), equalTo("HTTP Status 403 – Forbidden"));
     }
 
     @Test
@@ -188,15 +186,15 @@ public class LoggedInUserTest extends AbstractTestBase {
 
     @Test
     public void welcomeMessageTest() { //Testwb is not an owner
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, " + user.firstname() + "!"));
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/h1").shouldHave(text("Role: Owner"));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/p").shouldHave(text("Welcome, " + user.firstname() + "!"));
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/div/p").shouldHave(text("Role: Owner"));
     }
 
     @Test
     public void autoLogInWithCas() {
-        $x("/html/body/div/nav/div/div/ul/li[4]/form/button").click();
-        $x("/html/body/div/nav/div/div/ul/li[2]/a").click();
-        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/h1").shouldHave(text("Welcome, Testf-iwt-b!"));
+        $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").click();
+        $x("/html/body/main/div[2]/div/div[1]/div/div/form/button").click();
+        $x("/html/body/main/div[3]/div[1]/div/div/div[2]/p").shouldHave(text("Welcome, Testf-iwt-b!"));
     }
 
     @Test

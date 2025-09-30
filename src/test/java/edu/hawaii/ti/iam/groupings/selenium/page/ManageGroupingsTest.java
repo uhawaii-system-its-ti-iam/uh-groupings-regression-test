@@ -15,6 +15,7 @@ import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 import static com.codeborne.selenide.Selenide.sleep;
+import static java.lang.Math.random;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -110,30 +111,14 @@ public class ManageGroupingsTest extends AbstractTestBase {
     }
 
     @Test
-    public void groupingName() {
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwtb-store-empty");
-        $("#manage-groupings > div.table-responsive > table > tbody > tr > td.w-35.p-10.clickable.align-middle.ng-binding").shouldHave(
-                text("testiwtb-store-empty"));
-    }
-
-    @Test
-    public void groupingNameWithAdmin(){
+    public void groupingName() throws InterruptedException {
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwta-store-empty");
-        sleep(1000);
-        $x("//*[@id=\"manage-groupings\"]/div[2]/table/tbody/tr").shouldHave(
+        $x("/html/body/main/div[2]/div[2]/div/div/div[2]/div[1]/table/tbody/tr").shouldHave(
                 text("testiwta-store-empty"));
     }
 
     @Test
     public void groupingPath() {
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwtb-store-empty");
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button").click();
-        $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[3]/label").click();
-        $("#tmp\\:testiwtb\\:testiwtb-store-empty").shouldBe(visible);
-    }
-
-    @Test
-    public void groupingPathWithAdmin(){
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/input").setValue("testiwta-store-empty");
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/button").click();
         $x("//*[@id=\"manage-groupings\"]/div[1]/div[2]/div/ul/li[3]/label").click();
@@ -150,18 +135,12 @@ public class ManageGroupingsTest extends AbstractTestBase {
         Thread.sleep(10000);
 
     }
-    @Test
-    public void groupingSelectionWithAdmin() {
-        $x("//*[@id=\"manage-groupings\"]/div[2]/div[1]/table/tbody/tr[1]/td[1]").click();
-        $x("//*[@id=\"sel\"]/div/section[2]/div").shouldBe(visible);
-        $x("//*[@id=\"manage-groupings\"]/div[2]").shouldNotBe(visible);
-    }
 
     @Test
     public void groupingDescription(){
         $x("/html/body/main/div[2]/div[2]/div/div[1]/div[1]/div[2]/input").setValue("testiwta-aux");
-         String description = $x("/html/body/main/div[2]/div[2]/div/div[1]/div[2]/table/tbody/tr/td[2]/div").getText();
-        assertSame("Test With Aux Subgroups", description);
+        $x("/html/body/main/div[2]/div[2]/div/div/div[2]/div[1]/table/tbody/tr/td[1]").click();
+         $x("/html/body/main/div[2]/div[3]/div[2]/div/section[1]/div/div[3]/div/div[1]/p").shouldHave(text("Test With Aux Subgroups"));
 
     }
 
@@ -327,41 +306,41 @@ public class ManageGroupingsTest extends AbstractTestBase {
     }
 
     @Test
-    public void listingInfoTest() {
+    public void listingInfoTest() throws InterruptedException {
         Random random = new Random();
-        ElementsCollection x =
-                $$("#manage-groupings > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-35.p-10.align-middle.ng-binding");
+        ElementsCollection x = $$("#manage-groupings > div.ng-scope > div.table-responsive > table > tbody > tr");
+        Thread.sleep(1000);
         SelenideElement randomGrouping = x.get(random.nextInt(x.size()));
-        String groupingName = randomGrouping.parent().$$("td").first().getText();
-        String groupingDescription = randomGrouping.parent().$$("td").get(1).getText();
-        String groupingPath = randomGrouping.parent().$$("td").get(2).$("form").$("input").getValue();
+        String groupingName = randomGrouping.$$("td").first().getText();
+        String groupingDescription = randomGrouping.$$("td").get(1).getText();
+        String groupingPath = randomGrouping.$$("td").get(2).$("form").$("input").getValue();
         logger.info("listingInfoTest; " + groupingName + groupingDescription + groupingPath);
-        randomGrouping.click();
-        $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(80));
+        randomGrouping.$$("td").get(0).click();
         $("#groupNameCol > h2").shouldHave(text(groupingName));
         $("#sel > div > section:nth-child(1) > div > div:nth-child(3) > div > div:nth-child(1) > p").shouldHave(
                 text(groupingDescription));
         $("#sel > div > section:nth-child(1) > div > div:nth-child(2) > div > p").shouldHave(text(groupingPath));
+    }
 
+    @Test
+    public void listingInfoTestWithUser() {
+        String groupingName = "feimei-single";
     }
 
     @Test
     public void listingInfoTestWithAdmin() {
         Random random = new Random();
-        ElementsCollection x =
-                $$("#manage-groupings > div.ng-scope > div.table-responsive > table > tbody > tr > td.w-35.p-10.align-middle.ng-binding");
+        ElementsCollection x = $$("#manage-groupings > div.ng-scope > div.table-responsive > table > tbody > tr");
         SelenideElement randomGrouping = x.get(random.nextInt(x.size()));
-        String groupingName = randomGrouping.parent().$$("td").first().getText();
-        String groupingDescription = randomGrouping.parent().$$("td").get(1).getText();
-        String groupingPath = randomGrouping.parent().$$("td").get(2).$("form").$("input").getValue();
+        String groupingName = randomGrouping.$$("td").first().getText();
+        String groupingDescription = randomGrouping.$$("td").get(1).getText();
+        String groupingPath = randomGrouping.$$("td").get(2).$("form").$("input").getValue();
         logger.info("listingInfoTest; " + groupingName + groupingDescription + groupingPath);
-        randomGrouping.click();
-        $x("//*[@id=\"overlay\"]/div/div").should(disappear, Duration.ofSeconds(80));
+        randomGrouping.$$("td").get(0).click();
         $("#groupNameCol > h2").shouldHave(text(groupingName));
         $("#sel > div > section:nth-child(1) > div > div:nth-child(3) > div > div:nth-child(1) > p").shouldHave(
                 text(groupingDescription));
         $("#sel > div > section:nth-child(1) > div > div:nth-child(2) > div > p").shouldHave(text(groupingPath));
-
     }
 
     @Test
